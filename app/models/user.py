@@ -21,6 +21,7 @@ class User(db.Model, UserMixin):
     goals = db.relationship('Goal', backref='user', lazy=True)
 
     test = db.relationship('Goal', backref='user', lazy=True)
+    test = db.relationship('Goal', backref='user', lazy=True)
 
     @property
     def password(self):
