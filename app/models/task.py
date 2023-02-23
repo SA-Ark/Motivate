@@ -10,7 +10,6 @@ class Task(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    note_id = db.Column(db.Integer, db.ForeignKey('task_notes.id'), nullable=False)
     goal_id = db.Column(db.Integer, db.ForeignKey('goals.id'), nullable=False)
     parent_task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'), nullable=True)
     name = db.Column(db.String(255), nullable=False)

@@ -10,7 +10,7 @@ class GoalShare(db.Model):
 
     goal_id = db.Column(db.Integer, db.ForeignKey('goals.id'), primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
-    edit_access = db.Column(db.String(50), nullable=True)
+    edit_access = db.Column(db.Boolean, default=True, nullable=False)
     shared_on = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
     def to_dict(self):
