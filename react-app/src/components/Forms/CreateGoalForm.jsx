@@ -1,10 +1,17 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { useModal } from "../../context/Modal";
+import { thunkCreateGoal } from '../../store/goal';
+
 
 const CreateGoalForm = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const {closeModal} = useModal()
+  const [errors, setErrors] = useState([]);
+
+  const singleGoal = useSelector(state=> state.goals.singleGoal)
 
   const [formValues, setFormValues] = useState({
     name: "",
@@ -21,12 +28,19 @@ const CreateGoalForm = () => {
     setFormValues({ ...formValues, [name]: value });
   };
 
-  const handleSubmit = event => {
-    event.preventDefault();
-    dispatch(createGoal(formValues));
-    history.push("/goals");
-  };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+      const data = await dispatch(thunkCreateGoal(formValues));
+      if (data) {
+        setErrors(data);
+        history.push("/allgoals")
+      } else {
+        closeModal();
+         history.push(`/goals/${singleGoal?.id}`)
+      }
+  };
   return (
     <form onSubmit={handleSubmit}>
       <div>

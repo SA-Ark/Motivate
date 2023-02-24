@@ -5,6 +5,10 @@ import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
 import { authenticate } from "./store/session";
 import Navigation from "./components/Navigation";
+import Goals from "./components/Pages/Goals";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
+import SingleGoal from "./components/Pages/SingleGoal";
+
 
 function App() {
   const dispatch = useDispatch();
@@ -24,6 +28,12 @@ function App() {
           <Route path="/signup">
             <SignupFormPage />
           </Route>
+          <ProtectedRoute path="/allgoals" >
+            <Goals />
+          </ProtectedRoute>
+          <ProtectedRoute path="/goals/:id" >
+            <SingleGoal />
+          </ProtectedRoute>
         </Switch>
       )}
     </>
