@@ -7,17 +7,17 @@ def seed_goal_shares():
     users = User.query.all()
     for i in range(0,len(goals),9):
         user_id = users[randint(0,len(users)-1)].id
-        edit_access = True
+        edit_access = 1
         while user_id == goals[i].user_id:
             user_id = users[randint(0,len(users)-1)].id
         if i%12 == 0:
-            edit_access = False
+            edit_access = 2
         goal_share = GoalShare(
             goal_id = goals[i].id,
             user_id = user_id,
             edit_access = edit_access
         )
-        edit_access = True
+
 
         db.session.add(goal_share)
     db.session.commit()
