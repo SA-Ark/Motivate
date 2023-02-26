@@ -44,25 +44,40 @@ const actionDeleteGoal = (goalId) => {
 export const thunkFetchAllGoals = () => async (dispatch) => {
 
     const res = await fetch('/api/goals/');
-    const data = await res.json();
-
     if(res?.ok){
-
+        const data = await res.json();
         dispatch(actionLoadGoals(data));
-    }else{
+        return data
+    }else if (res?.status <500){
+        const data = await res.json()
+        if (data.errors){
+
+            return data
+        }
 
     }
 
   };
 
   export const thunkFetchGoalById = (id) => async (dispatch) => {
-    const res = await fetch(`/api/goals/${id}/`);
-    const data = await res.json();
-    dispatch(actionLoadSingleGoal(data));
+    const res = await fetch(`/api/goals/${id}`);
+
+    if(res?.ok){
+        const data = await res.json();
+        dispatch(actionLoadSingleGoal(data));
+        return data
+    }else if (res?.status <500){
+        const data = await res.json()
+        if (data.errors){
+
+            return data
+        }
+
+    }
   };
 
   export const thunkCreateGoal = (goalData) => async (dispatch) => {
-    console.log(goalData, "GOAL DATA")
+
     const {name, description, difficulty, importance,
     tags, due_date} = goalData
 
@@ -75,8 +90,19 @@ export const thunkFetchAllGoals = () => async (dispatch) => {
       body: JSON.stringify({name, description, difficulty, importance,
         tags, due_date} ),
     });
-    const data = await res.json();
-    dispatch(actionCreateGoal(data));
+
+    if(res?.ok){
+        const data = await res.json();
+        dispatch(actionCreateGoal(data));
+        return data
+    }else if (res?.status <500){
+        const data = await res.json()
+        if (data.errors){
+
+            return data
+        }
+
+    }
 
   };
 
@@ -88,8 +114,20 @@ export const thunkFetchAllGoals = () => async (dispatch) => {
       },
       body: JSON.stringify(goalData),
     });
-    const data = await res.json();
-    dispatch(actionEditGoal(data));
+
+    if(res?.ok){
+        const data = await res.json();
+        dispatch(actionEditGoal(data));
+
+        return data
+    }else if (res?.status <500){
+        const data = await res.json()
+        if (data.errors){
+
+            return data
+        }
+
+    }
 
   };
 
@@ -100,8 +138,19 @@ export const thunkFetchAllGoals = () => async (dispatch) => {
         'Content-Type': 'application/json',
       },
     });
-    const data = await res.json();
-    dispatch(actionDeleteGoal(id));
+
+    if(res?.ok){
+        const data = await res.json();
+        dispatch(actionDeleteGoal(id));
+        return data
+    }else if (res?.status <500){
+        const data = await res.json()
+        if (data.errors){
+
+            return data
+        }
+
+    }
 
   };
 
@@ -115,10 +164,7 @@ const initialState = {
 const goalReducer = (state = initialState, action) => {
     switch (action.type) {
         case LOAD_GOALS:
-            console.log({
-                ...state,
-                goals: {...action.goals}
-            }, "GOALS")
+
             return {
                 ...state,
                 goals: {...action.goals}
@@ -129,15 +175,13 @@ const goalReducer = (state = initialState, action) => {
                 singleGoal: action.goal
             };
         case CREATE_GOAL:
-            console.log(state, "state")
-            console.log(action.goal, "goal")
             return {
                 ...state,
-                goals: [...state?.goals, action.goal],
+                goals: {...state?.goals, ...action.goal},
                 singleGoal: action.goal
             };
         case EDIT_GOAL:
-            const updatedGoals = state?.goals?.goals.map(goal => {
+            const updatedGoals = state?.goals.map(goal => {
                 if (goal.id === action.goal.id) {
                     return action.goal;
                 } else {

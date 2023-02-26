@@ -5,22 +5,18 @@ import { thunkFetchGoalById } from '../../store/goal';
 
 function SingleGoal() {
     const singleGoal = useSelector(state=>state.goals?.singleGoal)
-    const {id} = useParams()
-
-
-    // const [goals, setGoals] = useState(Object.values(allGoals));
-    let goal = singleGoal
     const dispatch = useDispatch()
+    const {id} = useParams()
+    let goal = singleGoal
 
     useEffect(()=>{
       dispatch(thunkFetchGoalById(id))
 
-      console.log(goal, "GOAL")
-    }, [dispatch])
+
+    }, [dispatch, id])
 
 
     if(singleGoal?.length){
-      console.log("Hi")
       goal = singleGoal
     }
 
@@ -30,7 +26,6 @@ function SingleGoal() {
       <h1>{goal?.name}</h1>
 
         <div key={goal?.id}>
-          <h3>{goal?.name}</h3>
           <p>{goal?.description}</p>
           <p>Difficulty: {goal?.difficulty}</p>
           <p>Importance: {goal?.importance}</p>

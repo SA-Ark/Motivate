@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch} from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useModal } from "../../context/Modal";
 import { thunkCreateGoal } from '../../store/goal';
@@ -10,8 +10,6 @@ const CreateGoalForm = () => {
   const history = useHistory();
   const {closeModal} = useModal()
   const [errors, setErrors] = useState([]);
-
-  const singleGoal = useSelector(state=> state.goals.singleGoal)
 
   const [formValues, setFormValues] = useState({
     name: "",
@@ -31,14 +29,14 @@ const CreateGoalForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
       const data = await dispatch(thunkCreateGoal(formValues));
-      if (data) {
-        setErrors(data);
+      if (data?.errors) {
+        setErrors(data.errors);
         history.push("/allgoals")
       } else {
+       
+        history.push(`/goals/${data.id}`)
         closeModal();
-         history.push(`/goals/${singleGoal?.id}`)
       }
   };
   return (
