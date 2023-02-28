@@ -51,6 +51,6 @@ right: 1%;
 }
 
 .all-goals-card:hover{
-  box-shadow: 2px 2px 3px lightgreen;
+  box-shadow: 2px 2px 2px lightgreen;
   cursor: pointer;
 }
