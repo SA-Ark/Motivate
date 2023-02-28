@@ -31,7 +31,6 @@ class Goal(db.Model):
         return {
             'id': self.id,
             'user_id': self.user_id,
-            'note_id': self.note_id,
             'parent_goal_id': self.parent_goal_id,
             'child_goal_id': self.child_goal_id,
             'name': self.name,

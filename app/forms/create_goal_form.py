@@ -3,7 +3,7 @@ from wtforms import StringField, TextAreaField, BooleanField, IntegerField, Date
 from wtforms.validators import DataRequired, Length, Optional
 
 class CreateGoalForm(FlaskForm):
-    name = StringField('Name', validators=[DataRequired(), Length(max=255)])
+    name = StringField('Name', validators=[DataRequired(), Length(min=2, max=255)])
     description = TextAreaField('Description', validators=[DataRequired()])
     difficulty = StringField('Difficulty', validators=[Optional(), Length(max=50)])
     importance = StringField('Importance', validators=[Optional(), Length(max=50)])
