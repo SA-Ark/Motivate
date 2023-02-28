@@ -82,9 +82,9 @@ const actionDeleteNote = (noteId) => {
 
   };
 
-  export const thunkEditNote = (id, goalData) => async (dispatch) => {
-    
-    const res = await fetch(`/api/goalnotes/${id}`, {
+  export const thunkEditNote = (goalId, goalData) => async (dispatch) => {
+
+    const res = await fetch(`/api/goalnotes/${goalId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -108,8 +108,8 @@ const actionDeleteNote = (noteId) => {
 
   };
 
-  export const thunkDeleteNote = (id) => async (dispatch) => {
-    const res = await fetch(`/api/goalnotes/${id}`, {
+  export const thunkDeleteNote = (goalId) => async (dispatch) => {
+    const res = await fetch(`/api/goalnotes/${goalId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -132,53 +132,47 @@ const actionDeleteNote = (noteId) => {
   };
 
 
-// define the reducer
+// define the initial state
 const initialState = {
-    goals: {},
-    singleGoal: null
+  notes: []
 };
 
-const goalReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case LOAD_NOTES:
-
-            return {
-                ...state,
-                goals: {...action.goals}
-            };
-        case LOAD_NOTE:
-            return {
-                ...state,
-                singleGoal: action.goal
-            };
-        case CREATE_NOTE:
-
-            return {
-                ...state,
-                goals: {...state?.goals, [action.goal?.id]:{...action.goal}},
-                singleGoal: {...action.goal}
-            };
-        case EDIT_NOTE:
-
-            delete state?.goals[action.goal?.id]
-            return {
-                ...state,
-                goals: {...state?.goals, [action.goal?.id]:{...action.goal}},
-                singleGoal: {...action.goal}
-            };
-
-        case DELETE_NOTE:
-            const newGoals = { ...state };
-            console.log(newGoals, "NEW GOALS")
-            delete newGoals.goals[action.goalId];
-            return {
-                ...newGoals,
-                singleGoal: null
-            };
-        default:
-            return state;
-    }
+const notesReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case LOAD_NOTE:
+      return {
+        ...state,
+        notes: [...action.note]
+      };
+    case CREATE_NOTE:
+      return {
+        ...state,
+        notes: [...state.notes, action.note]
+      };
+    case EDIT_NOTE:
+      const updatedNotes = state.notes.map(note => {
+        if (note.id === action.note.id) {
+          return action.note;
+        } else {
+          return note;
+        }
+      });
+      return {
+        ...state,
+        notes: updatedNotes
+      };
+    case DELETE_NOTE:
+      const filteredNotes = state.notes.filter(note => note.id !== action.noteId);
+      return {
+        ...state,
+        notes: filteredNotes
+      };
+    default:
+      return state;
+  }
 };
 
+export default notesReducer;
 
-export { goalReducer, actionLoadGoals, actionLoadGoal, actionCreateGoal, actionEditGoal, actionDeleteGoal };
+
+
