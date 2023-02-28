@@ -20,5 +20,6 @@
 
 #modal-content {
   position: absolute;
-  background-color:white;
+  background-color:rgb(26, 44, 28);
+  border: 3px solid rgb(185, 210, 188);
 }
