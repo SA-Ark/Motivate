@@ -106,8 +106,9 @@ export const thunkFetchAllGoals = () => async (dispatch) => {
 
   };
 
-  export const thunkEditGoal = (goalData, id) => async (dispatch) => {
-    const res = await fetch(`/api/goals/${id}/`, {
+  export const thunkEditGoal = (id, goalData) => async (dispatch) => {
+    console.log(id, goalData, "DATA IN THUNK")
+    const res = await fetch(`/api/goals/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -132,7 +133,7 @@ export const thunkFetchAllGoals = () => async (dispatch) => {
   };
 
   export const thunkDeleteGoal = (id) => async (dispatch) => {
-    const res = await fetch(`/api/goals/${id}/`, {
+    const res = await fetch(`/api/goals/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -175,31 +176,27 @@ const goalReducer = (state = initialState, action) => {
                 singleGoal: action.goal
             };
         case CREATE_GOAL:
+
             return {
                 ...state,
-                goals: {...state?.goals, ...action.goal},
-                singleGoal: action.goal
+                goals: {...state?.goals, [action.goal?.id]:{...action.goal}},
+                singleGoal: {...action.goal}
             };
         case EDIT_GOAL:
-            const updatedGoals = state?.goals.map(goal => {
-                if (goal.id === action.goal.id) {
-                    return action.goal;
-                } else {
-                    return goal;
-                }
-            });
+
+            delete state?.goals[action.goal?.id]
             return {
                 ...state,
-                goals: updatedGoals,
-                singleGoal: action.goal
+                goals: {...state?.goals, [action.goal?.id]:{...action.goal}},
+                singleGoal: {...action.goal}
             };
 
         case DELETE_GOAL:
-            const newGoals = { ...state?.goals?.goals };
-            delete newGoals[action.goalId];
+            const newGoals = { ...state };
+            console.log(newGoals, "NEW GOALS")
+            delete newGoals.goals[action.goalId];
             return {
-                ...state,
-                goals: newGoals,
+                ...newGoals,
                 singleGoal: null
             };
         default:

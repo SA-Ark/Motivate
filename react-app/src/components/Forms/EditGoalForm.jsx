@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
-
-const EditGoalForm = () => {
-  const { id } = useParams();
+import { thunkEditGoal } from "../../store/goal";
+const EditGoalForm = ({id}) => {
+  console.log(id, "id")
   const dispatch = useDispatch();
   const history = useHistory();
   const goal = useSelector(state => state.goal?.goals[id]);
-
+  const [errors, setErrors] = useState([]);
   const [formValues, setFormValues] = useState({
     name: "",
     description: "",
@@ -37,14 +37,24 @@ const EditGoalForm = () => {
     setFormValues({ ...formValues, [name]: value });
   };
 
-  const handleSubmit = event => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    dispatch(updateGoal(id, formValues));
-    history.push("/goals");
+    const data = await dispatch(thunkEditGoal(id, formValues));
+    if (data?.errors) {
+      setErrors(data?.errors);
+      history.push("/allgoals")
+    } else {
+    history.push(`/goals/${data.id}`);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit}>
+      <ul>
+					{errors.map((error, idx) => (
+						<li key={idx}>{error}</li>
+					))}
+				</ul>
       <div>
         <label htmlFor="name">Name</label>
         <input

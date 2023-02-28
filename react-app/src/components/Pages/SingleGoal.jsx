@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { thunkFetchGoalById } from '../../store/goal';
+import GoalCard from '../Cards/GoalCard';
 
 function SingleGoal() {
     const singleGoal = useSelector(state=>state.goals?.singleGoal)
@@ -25,14 +26,7 @@ function SingleGoal() {
     <div>
       <h1>{goal?.name}</h1>
 
-        <div key={goal?.id}>
-          <p>{goal?.description}</p>
-          <p>Difficulty: {goal?.difficulty}</p>
-          <p>Importance: {goal?.importance}</p>
-          <p>Tags: {goal?.tags}</p>
-          <p>Due Date: {goal?.due_date}</p>
-          <p>Finished On: {goal?.finished_on}</p>
-        </div>
+       <GoalCard goal={goal} />
 
     </div>
   );

@@ -8,3 +8,49 @@ body {
     color: white;
     font-size: 40px;
   }
+
+.top{
+    position: absolute;
+    top: 65%;
+    transform: translateY(-50%);
+    right: 1%;
+  }
+
+.login{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 50%;
+  }
+
+.signup{
+/* float:right; */
+position: absolute;
+top: 2.77%;
+transform: translateY(-50%);
+right: 1%;
+
+}
+
+.navigation{
+    position: relative;
+    margin-top: 10px;
+}
+
+
+
+.errors{
+    color: black;
+}
+
+.all-goals-card{
+  padding: 10px;
+  border: 2px solid green;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.all-goals-card:hover{
+  box-shadow: 2px 2px 3px lightgreen;
+  cursor: pointer;
+}

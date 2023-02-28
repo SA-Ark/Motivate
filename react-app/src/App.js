@@ -6,7 +6,7 @@ import Navigation from "./components/Navigation";
 import Goals from "./components/Pages/Goals";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import SingleGoal from "./components/Pages/SingleGoal";
-
+import SplashPage from "./components/Pages/SplashPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -21,7 +21,7 @@ function App() {
       {isLoaded && (
         <Switch>
           <Route path="/" exact={true}>
-        
+          <SplashPage />
           </Route>
           <ProtectedRoute path="/allgoals" exact={true} >
             <Goals />

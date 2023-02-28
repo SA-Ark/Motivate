@@ -4,46 +4,35 @@ import { logout } from "../../store/session";
 import OpenModalButton from "../OpenModalButton";
 import LoginFormModal from "../Modals/LoginFormModal";
 import SignupFormModal from "../Modals/SignupFormModal";
+import { useHistory } from "react-router-dom";
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
+  const history = useHistory();
 
 
   const handleLogout = (e) => {
     e.preventDefault();
     dispatch(logout());
+    history.push("/")
   };
 
   return (
     <>
-      <button onClick={openMenu}>
-        <i className="fas fa-user-circle" />
-      </button>
-      <ul className="top">
-        {user ? (
-          <>
-            <li>{user.username}</li>
-            <li>{user.email}</li>
-            <li>
-              <button onClick={handleLogout}>Log Out</button>
-            </li>
-          </>
-        ) : (
-          <>
-            <OpenModalButton
-              buttonText="Log In"
-              onItemClick={closeMenu}
-              modalComponent={<LoginFormModal />}
-            />
+      <div className="top">
+        {user && (
+          <div className="logout">
 
-            <OpenModalButton
-              buttonText="Sign Up"
-              onItemClick={closeMenu}
-              modalComponent={<SignupFormModal />}
-            />
+          <>
+            <div>{user.username}</div>
+            <div>{user.email}</div>
+            <div>
+              <button onClick={handleLogout}>Log Out</button>
+            </div>
           </>
+          </div>
         )}
-      </ul>
+      </div>
     </>
   );
 }

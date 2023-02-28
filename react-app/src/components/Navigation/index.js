@@ -9,9 +9,9 @@ function Navigation({ isLoaded }){
 
 	return (
 		<div className="navigation">
-				<NavLink exact to="/" className="nav-link">MOTIVATE</NavLink>
+				<NavLink exact to="/allgoals" className="nav-link">MOTIVATE</NavLink>
 			{isLoaded && (
-					<ProfileButton user={sessionUser} />
+				<ProfileButton user={sessionUser} />
 			)}
 		</div>
 	);

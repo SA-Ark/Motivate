@@ -31,16 +31,21 @@ const CreateGoalForm = () => {
     e.preventDefault();
       const data = await dispatch(thunkCreateGoal(formValues));
       if (data?.errors) {
-        setErrors(data.errors);
+        setErrors(data?.errors);
         history.push("/allgoals")
       } else {
-       
+
         history.push(`/goals/${data.id}`)
         closeModal();
       }
   };
   return (
     <form onSubmit={handleSubmit}>
+      <ul>
+					{errors.map((error, idx) => (
+						<li key={idx}>{error}</li>
+					))}
+				</ul>
       <div>
         <label htmlFor="name">Name</label>
         <input
