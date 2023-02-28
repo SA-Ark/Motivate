@@ -10,20 +10,23 @@ class Task(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    note_id = db.Column(db.Integer, db.ForeignKey('task_notes.id'), nullable=False)
     goal_id = db.Column(db.Integer, db.ForeignKey('goals.id'), nullable=False)
-    parent_task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'), nullable=True)
+    parent_task_id = db.Column(
+        db.Integer, db.ForeignKey('tasks.id'), nullable=True)
     name = db.Column(db.String(255), nullable=False)
     description = db.Column(db.Text, nullable=False)
-    edit_access = db.Column(db.Boolean, nullable=False)
+    edit_access = db.Column(db.Integer, default=2, nullable=False)
     difficulty = db.Column(db.String(255), nullable=True)
     priority = db.Column(db.String(255), nullable=True)
     completion_percent = db.Column(db.Integer, nullable=False)
     tags = db.Column(db.String(255), nullable=True)
     due_date = db.Column(db.DateTime, nullable=True)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    updated_at = db.Column(db.DateTime, onupdate=datetime.utcnow, nullable=True)
+    created_at = db.Column(
+        db.DateTime, default=datetime.utcnow, nullable=False)
+    updated_at = db.Column(
+        db.DateTime, onupdate=datetime.utcnow, nullable=True)
     finished_on = db.Column(db.DateTime, nullable=True)
+
 
 def to_dict(self):
     return {
