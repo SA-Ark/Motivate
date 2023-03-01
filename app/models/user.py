@@ -20,8 +20,9 @@ class User(db.Model, UserMixin):
 
     goals = db.relationship('Goal', backref='user', lazy=True)
     shared_goals = db.relationship('Goal', secondary='goal_shares',
-                             backref=db.backref('shared_users', lazy=True),
-                             lazy=True)
+                                    backref='shared_with_users', lazy=True,
+                                    foreign_keys='[GoalShare.user_id]',
+                                    secondaryjoin="Goal.id==GoalShare.goal_id")
 
     @property
     def password(self):
