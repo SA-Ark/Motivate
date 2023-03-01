@@ -24,8 +24,8 @@ class Goal(db.Model):
     updated_at=db.Column(db.DateTime, onupdate=datetime.utcnow, nullable=True)
     finished_on=db.Column(db.DateTime, nullable=True)
     badges=db.relationship('Badge', backref='goal', lazy=True)
-    users=db.relationship('User', secondary='goal_shares',
-                          backref=db.backref('shared_goals', lazy=True))
+    
+
     note=db.relationship('GoalNote', backref='goal', uselist=False)
 
     def to_dict(self):

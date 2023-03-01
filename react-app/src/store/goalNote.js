@@ -38,7 +38,7 @@ const actionEditNote = (note) => {
 
 
   export const thunkFetchNoteByGoalId = (goalId) => async (dispatch) => {
-    const res = await fetch(`/api/goal_notes/${goalId}`);
+    const res = await fetch(`/api/goalnotes/${goalId}`);
 
     if(res?.ok){
         const data = await res.json();
@@ -60,7 +60,7 @@ const actionEditNote = (note) => {
     const goal_id = goalId
     const note_body = noteBody
 
-    const res = await fetch('/api/goal_notes/', {
+    const res = await fetch('/api/goalnotes/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -90,7 +90,7 @@ const actionEditNote = (note) => {
     const goal_id = goalId
     const note_body = noteBody
 
-    const res = await fetch(`/api/goal_notes/`, {
+    const res = await fetch(`/api/goalnotes/`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

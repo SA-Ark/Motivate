@@ -19,7 +19,10 @@ class User(db.Model, UserMixin):
     updated_at = db.Column(db.DateTime, onupdate=datetime.utcnow, nullable=True)
 
     goals = db.relationship('Goal', backref='user', lazy=True)
-
+    users = db.relationship('User', secondary='goalshares',
+                             backref='shared_goals', lazy=True,
+                             foreign_keys='[GoalShare.goal_id]',
+                             secondaryjoin="User.id==GoalShare.user_id")
 
     @property
     def password(self):

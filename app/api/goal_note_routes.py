@@ -4,7 +4,7 @@ from app.forms import CreateGoalNoteForm
 from flask_login import current_user, login_user, logout_user, login_required
 from datetime import datetime
 
-goal_note_routes = Blueprint("goal_notes", __name__)
+goal_note_routes = Blueprint("goalnotes", __name__)
 
 
 def validation_errors_to_error_messages(validation_errors):
@@ -47,7 +47,7 @@ def create_goal_note():
         return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
 @goal_note_routes.route('/', methods=['PUT'])
-# @login_required
+@login_required
 def edit_goal_note():
     print("hi**************")
     form = CreateGoalNoteForm()
