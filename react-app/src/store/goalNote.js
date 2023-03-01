@@ -90,7 +90,7 @@ const actionEditNote = (note) => {
     const goal_id = goalId
     const note_body = noteBody
 
-    const res = await fetch(`/api/goal_notes`, {
+    const res = await fetch(`/api/goal_notes/`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
