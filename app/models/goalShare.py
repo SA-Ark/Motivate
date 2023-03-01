@@ -15,6 +15,8 @@ class GoalShare(db.Model):
     edit_access=db.Column(db.Integer, default=2, nullable=False)
     shared_on=db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
+    goal = db.relationship('Goal', backref='shares', lazy=True)
+    user = db.relationship('User', backref='shares', lazy=True)
     def to_dict(self):
         return {
             'goal_id': self.goal_id,
