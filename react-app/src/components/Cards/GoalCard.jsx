@@ -1,17 +1,34 @@
+import EditGoalModal from '../Modals/EditGoalModal';
+import DeleteGoalButton from '../Buttons/DeleteGoalButton';
+import OpenModalButton from '../OpenModalButton';
+import CreateGoalNoteModal from '../Modals/EditGoalNote';
 
-function GoalCard({goal}){
-    
+function GoalCard({ goal }) {
 
-    return (
-        <div key={goal?.id}>
-          <p>Description: {goal?.description}</p>
-          <p>Difficulty: {goal?.difficulty}</p>
-          <p>Importance: {goal?.importance}</p>
-          <p>Tags: {goal?.tags}</p>
-          <p>Due Date: {goal?.due_date}</p>
-          <p>Finished On: {goal?.finished_on}</p>
-        </div>
-    )
+
+  return (
+    <div key={goal?.id}>
+      <p>Description: {goal?.description}</p>
+      <p>Difficulty: {goal?.difficulty || "unspecified"}</p>
+      <p>Importance: {goal?.importance ||"unspecified" }</p>
+      <p>Tags: {goal?.tags || "no tags"}</p>
+      <p>Due Date: {goal?.due_date || "unspecified"}</p>
+      <div>
+        <OpenModalButton
+        buttonText="Edit Goal"
+        modalComponent={
+        <EditGoalModal id={goal?.id} />
+        }
+        />
+      </div>
+      <div>
+        <DeleteGoalButton goalId={goal?.id} />
+      </div>
+      <div>
+        <CreateGoalNoteModal goalId={goal?.id} />
+      </div>
+    </div>
+  )
 }
 
 export default GoalCard

@@ -9,13 +9,13 @@ class Badge(db.Model):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
-    goal_id = db.Column(db.Integer, db.ForeignKey('goals.id'), nullable=False)
-    name = db.Column(db.String(255), nullable=False)
-    description = db.Column(db.Text, nullable=False)
-    level = db.Column(db.Integer, nullable=False, default=0)
-    url = db.Column(db.String(255), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    updated_at = db.Column(db.DateTime, onupdate=datetime.utcnow, nullable=True)
+    goal_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('goals.id'), nullable=False))
+    name=db.Column(db.String(255), nullable=False)
+    description=db.Column(db.Text, nullable=False)
+    level=db.Column(db.Integer, nullable=False, default=0)
+    url=db.Column(db.String(255), nullable=False)
+    created_at=db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    updated_at=db.Column(db.DateTime, onupdate=datetime.utcnow, nullable=True)
 
 def to_dict(self):
     return {

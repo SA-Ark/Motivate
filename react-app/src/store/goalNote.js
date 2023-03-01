@@ -2,7 +2,7 @@
 const LOAD_NOTE = 'LOAD_NOTE';
 const CREATE_NOTE = 'CREATE_NOTE';
 const EDIT_NOTE = 'EDIT_NOTE';
-const DELETE_NOTE = 'DELETE_NOTE';
+// const DELETE_NOTE = 'DELETE_NOTE';
 
 // define the action creators
 
@@ -28,17 +28,17 @@ const actionEditNote = (note) => {
     };
 };
 
-const actionDeleteNote = (noteId) => {
-    return {
-        type: DELETE_NOTE,
-        noteId: noteId
-    };
-};
+// const actionDeleteNote = (noteId) => {
+//     return {
+//         type: DELETE_NOTE,
+//         noteId: noteId
+//     };
+// };
 
 
 
   export const thunkFetchNoteByGoalId = (goalId) => async (dispatch) => {
-    const res = await fetch(`/api/goalnotes/${goalId}`);
+    const res = await fetch(`/api/goal_notes/${goalId}`);
 
     if(res?.ok){
         const data = await res.json();
@@ -54,21 +54,23 @@ const actionDeleteNote = (noteId) => {
     }
   };
 
-  export const thunkCreateNote = (noteData) => async (dispatch) => {
+  export const thunkCreateGoalNote = (noteData) => async (dispatch) => {
 
     const {goalId, noteBody} = noteData
+    const goal_id = goalId
+    const note_body = noteBody
 
-
-    const res = await fetch('/api/goalnotes/', {
+    const res = await fetch('/api/goal_notes/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({goalId, noteBody} ),
+      body: JSON.stringify({goal_id, note_body} ),
     });
-
+    console.log(res, "RES")
     if(res?.ok){
         const data = await res.json();
+
         dispatch(actionCreateNote(data));
         return data
     }else if (res?.status <500){
@@ -82,18 +84,23 @@ const actionDeleteNote = (noteId) => {
 
   };
 
-  export const thunkEditNote = (goalId, goalData) => async (dispatch) => {
+  export const thunkEditGoalNote = (noteData) => async (dispatch) => {
+    const {goalId, noteBody} = noteData
+    console.log(goalId, noteBody,"THUNK")
+    const goal_id = goalId
+    const note_body = noteBody
 
-    const res = await fetch(`/api/goalnotes/${goalId}`, {
+    const res = await fetch(`/api/goal_notes`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(goalData),
+      body: JSON.stringify({goal_id, note_body}),
     });
 
     if(res?.ok){
         const data = await res.json();
+        console.log(data, "DATA THUNK")
         dispatch(actionEditNote(data));
 
         return data
@@ -108,28 +115,28 @@ const actionDeleteNote = (noteId) => {
 
   };
 
-  export const thunkDeleteNote = (goalId) => async (dispatch) => {
-    const res = await fetch(`/api/goalnotes/${goalId}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+  // export const thunkDeleteNote = (goalId) => async (dispatch) => {
+  //   const res = await fetch(`/api/goalnotes/${goalId}`, {
+  //     method: 'DELETE',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   });
 
-    if(res?.ok){
-        const data = await res.json();
-        dispatch(actionDeleteNote(id));
-        return data
-    }else if (res?.status <500){
-        const data = await res.json()
-        if (data.errors){
+  //   if(res?.ok){
+  //       const data = await res.json();
+  //       dispatch(actionDeleteNote(id));
+  //       return data
+  //   }else if (res?.status <500){
+  //       const data = await res.json()
+  //       if (data.errors){
 
-            return data
-        }
+  //           return data
+  //       }
 
-    }
+  //   }
 
-  };
+  // };
 
 
 // define the initial state
@@ -161,18 +168,15 @@ const notesReducer = (state = initialState, action) => {
         ...state,
         notes: updatedNotes
       };
-    case DELETE_NOTE:
-      const filteredNotes = state.notes.filter(note => note.id !== action.noteId);
-      return {
-        ...state,
-        notes: filteredNotes
-      };
+    // case DELETE_NOTE:
+    //   const filteredNotes = state.notes.filter(note => note.id !== action.noteId);
+    //   return {
+    //     ...state,
+    //     notes: filteredNotes
+    //   };
     default:
       return state;
   }
 };
 
 export default notesReducer;
-
-
-

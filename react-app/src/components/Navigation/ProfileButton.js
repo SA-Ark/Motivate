@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { logout } from "../../store/session";
-import OpenModalButton from "../OpenModalButton";
-import LoginFormModal from "../Modals/LoginFormModal";
-import SignupFormModal from "../Modals/SignupFormModal";
 import { useHistory } from "react-router-dom";
 
 function ProfileButton({ user }) {

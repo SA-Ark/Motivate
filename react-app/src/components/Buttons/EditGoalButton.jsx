@@ -1,8 +1,8 @@
-import EditGoalForm from "../Forms/EditGoalForm";
+import EditGoalModal from "../Forms/EditGoalModal";
 const EditGoalButton = () => {
 
     function showEditForm() {
-        return(<EditGoalForm />)
+        return (<EditGoalModal />)
     }
 
     return (

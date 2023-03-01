@@ -2,21 +2,30 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { thunkEditGoal } from "../../store/goal";
-const EditGoalForm = ({id}) => {
-  console.log(id, "id")
+import { useModal } from "../../context/Modal";
+const EditGoalModal = ({ id }) => {
+
   const dispatch = useDispatch();
   const history = useHistory();
-  const goal = useSelector(state => state.goal?.goals[id]);
+  const goal = useSelector(state => state.goals?.singleGoal);
   const [errors, setErrors] = useState([]);
+  const {closeModal} = useModal()
   const [formValues, setFormValues] = useState({
-    name: "",
-    description: "",
-    difficulty: "",
-    importance: "",
-    tags: "",
-    due_date: "",
-    finished_on: ""
+    // name: "",
+    // description: "",
+    // difficulty: "",
+    // importance: "",
+    // tags: "",
+    // due_date: "",
+    name: goal?.name || "",
+        description: goal?.description || "",
+        difficulty: goal?.difficulty || "",
+        importance: goal?.importance || "",
+        // tags: goal?.tags || "",
+        due_date: goal?.due_date || "",
+
   });
+  console.log(goal, "GOAL")
 
   useEffect(() => {
     if (goal) {
@@ -27,7 +36,7 @@ const EditGoalForm = ({id}) => {
         importance: goal.importance || "",
         tags: goal.tags || "",
         due_date: goal.due_date || "",
-        finished_on: goal.finished_on || ""
+
       });
     }
   }, [goal]);
@@ -42,21 +51,22 @@ const EditGoalForm = ({id}) => {
     const data = await dispatch(thunkEditGoal(id, formValues));
     if (data?.errors) {
       setErrors(data?.errors);
-      history.push("/allgoals")
+
     } else {
-    history.push(`/goals/${data.id}`);
+
+      closeModal()
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <ul>
-					{errors.map((error, idx) => (
-						<li key={idx}>{error}</li>
-					))}
-				</ul>
+        {errors.map((error, idx) => (
+          <li key={idx}>{error}</li>
+        ))}
+      </ul>
       <div>
-        <label htmlFor="name">Name</label>
+        <label htmlFor="name">Name *</label>
         <input
           type="text"
           name="name"
@@ -67,7 +77,7 @@ const EditGoalForm = ({id}) => {
         />
       </div>
       <div>
-        <label htmlFor="description">Description</label>
+        <label htmlFor="description">Description *</label>
         <textarea
           name="description"
           id="description"
@@ -77,26 +87,24 @@ const EditGoalForm = ({id}) => {
         />
       </div>
       <div>
-        <label htmlFor="difficulty">Difficulty</label>
-        <input
-          type="text"
-          name="difficulty"
-          id="difficulty"
-          value={formValues.difficulty}
-          onChange={handleInputChange}
-        />
+        <label htmlFor="difficulty">Difficulty *</label>
+        <select id="difficulty" name="difficulty" value={formValues.difficulty}
+        onChange={handleInputChange} required>
+          <option value="Easy">Easy</option>
+          <option value="Medium">Medium</option>
+          <option value="Hard">Hard</option>
+        </select>
       </div>
       <div>
-        <label htmlFor="importance">Importance</label>
-        <input
-          type="text"
-          name="importance"
-          id="importance"
-          value={formValues.importance}
-          onChange={handleInputChange}
-        />
+        <label htmlFor="importance">Importance *</label>
+        <select id="importance" name="importance" value={formValues.importance}
+        onChange={handleInputChange} required>
+          <option value="Crucial">Crucial</option>
+          <option value="Important">Important</option>
+          <option value="Not Important">Not Important</option>
+        </select>
       </div>
-      <div>
+      {/* <div>
         <label htmlFor="tags">Tags</label>
         <input
           type="text"
@@ -105,30 +113,22 @@ const EditGoalForm = ({id}) => {
           value={formValues.tags}
           onChange={handleInputChange}
         />
-      </div>
+      </div> */}
       <div>
         <label htmlFor="due_date">Due Date</label>
         <input
           type="datetime-local"
           name="due_date"
           id="due_date"
+          min={(new Date(Date.now() + 60000)).toISOString().slice(0, -8)}
           value={formValues.due_date}
           onChange={handleInputChange}
         />
       </div>
-      <div>
-        <label htmlFor="finished_on">Finished On</label>
-        <input
-          type="datetime-local"
-          name="finished_on"
-          id="finished_on"
-          value={formValues.finished_on}
-          onChange={handleInputChange}
-        />
-      </div>
+
       <button type="submit">Update Goal</button>
     </form>
   );
 };
 
-export default EditGoalForm;
+export default EditGoalModal;
