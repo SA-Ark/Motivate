@@ -126,7 +126,7 @@ def upgrade():
     sa.Column('parent_task_id', sa.Integer(), nullable=True),
     sa.Column('name', sa.String(length=255), nullable=False),
     sa.Column('description', sa.Text(), nullable=False),
-   sa.Column('edit_access', sa.Integer(), nullable=False),
+    sa.Column('edit_access', sa.Integer(), nullable=False),
     sa.Column('difficulty', sa.String(length=255), nullable=True),
     sa.Column('priority', sa.String(length=255), nullable=True),
     sa.Column('completion_percent', sa.Integer(), nullable=False),
