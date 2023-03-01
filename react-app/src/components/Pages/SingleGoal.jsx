@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { thunkFetchGoalById } from '../../store/goal';
 import GoalCard from '../Cards/GoalCard';
 
+
 function SingleGoal() {
     const singleGoal = useSelector(state=>state.goals?.singleGoal)
     const dispatch = useDispatch()

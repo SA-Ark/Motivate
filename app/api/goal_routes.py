@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, session, request
-from app.models import db, Goal
+from app.models import db, Goal, GoalNote, Badge
 from app.forms import CreateGoalForm
 from flask_login import current_user, login_user, logout_user, login_required
 
@@ -31,7 +31,7 @@ def get_goal_by_id(goal_id):
     if goal and goal.user_id == current_user.id:
         return goal.to_dict(), 200
     else:
-        return {'message': f'This goal was not found'}, 404
+        return {'errors': f'This goal was not found'}, 404
 
 
 
@@ -74,8 +74,6 @@ def edit_goal(goal_id):
         prev_goal.importance = form.importance.data
         prev_goal.tags = form.tags.data
         prev_goal.due_date = form.due_date.data
-        prev_goal.finished_on = form.finished_on.data
-
         db.session.commit()
 
 
@@ -89,8 +87,16 @@ def edit_goal(goal_id):
 @goal_routes.route('/<int:goal_id>', methods=['DELETE'])
 @login_required
 def delete_goal(goal_id):
-   del_goal = Goal.query.get(goal_id)
-
-   db.session.delete(del_goal)
-   db.session.commit()
-   return {'message': f'Goal has been successfully deleted'}, 200
+    del_goal = Goal.query.get(goal_id)
+    note = GoalNote.query.filter(GoalNote.goal_id == goal_id).first()
+    badge = Badge.query.filter(Badge.goal_id == goal_id).first()
+    if del_goal:
+        if note:
+            db.session.delete(note)
+        if badge:
+            db.session.delete(badge)
+        db.session.delete(del_goal)
+        db.session.commit()
+        return {'message': f'Goal has been successfully deleted'}, 200
+    else:
+        return {'errors': "Goal to delete was not found"}, 404

@@ -9,9 +9,9 @@ const DeleteGoalButton = ({goalId}) => {
         e.preventDefault();
 
         const res = await dispatch(thunkDeleteGoal(goalId))
-        if (res?.ok) {
-            history.pushState("/allgoals")
-        }
+
+        history.push("/allgoals")
+
     }
 
     return (

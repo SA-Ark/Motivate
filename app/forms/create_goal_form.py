@@ -4,9 +4,8 @@ from wtforms.validators import DataRequired, Length, Optional
 
 class CreateGoalForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired(), Length(min=2, max=255)])
-    description = TextAreaField('Description', validators=[DataRequired()])
-    difficulty = StringField('Difficulty', validators=[Optional(), Length(max=50)])
-    importance = StringField('Importance', validators=[Optional(), Length(max=50)])
+    description = TextAreaField('Description', validators=[DataRequired(), Length(min=2, max=2000)])
+    difficulty = StringField('Difficulty', validators=[DataRequired(), Length(max=50)])
+    importance = StringField('Importance', validators=[DataRequired(), Length(max=50)])
     tags = StringField('Tags', validators=[Optional(), Length(max=255)])
-    due_date = DateTimeField('Due Date', validators=[Optional()])
-    finished_on = DateTimeField('Finished On', validators=[Optional()])
+    due_date = DateTimeField('Due Date',format='%Y-%m-%dT%H:%M', validators=[Optional()])
