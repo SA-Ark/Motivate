@@ -164,7 +164,7 @@ def downgrade():
     op.drop_table('goal_shares')
     op.drop_table('goal_notes')
     op.drop_table('badges')
-    op.drop_table('paymentinfos')
+    op.drop_table('payment_infos')
     op.drop_table('goals')
     op.drop_table('users')
     # ### end Alembic commands ###
