@@ -13,7 +13,7 @@ class Task(db.Model):
     goal_id=db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('goals.id'), nullable=False))
     parent_task_id=db.Column(
         db.Integer, db.ForeignKey(
-            add_prefix_for_prod('tasks.id'), nullable=True)
+            add_prefix_for_prod('tasks.id'), nullable=True))
     name=db.Column(db.String(255), nullable=False)
     description=db.Column(db.Text, nullable=False)
     edit_access=db.Column(db.Integer, default=2, nullable=False)
