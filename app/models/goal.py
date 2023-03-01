@@ -9,9 +9,9 @@ class Goal(db.Model):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id'), nullable=False))
-    parent_goal_id=db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('goals.id'), nullable=True))
-    child_goal_id=db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('goals.id'), nullable=True))
+    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
+    parent_goal_id=db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('goals.id')), nullable=True)
+    child_goal_id=db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('goals.id')), nullable=True)
     name=db.Column(db.String(255), nullable=False)
     description=db.Column(db.Text, nullable=False)
     edit_access=db.Column(db.Integer, default=2, nullable=False)
