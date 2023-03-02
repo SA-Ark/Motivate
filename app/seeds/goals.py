@@ -42,7 +42,7 @@ def seed_goals():
                 user_id = u.id,
                 name= name,
             description= description,
-            edit_access=True,
+            edit_access=2,
             difficulty='Easy' if u.id%3 == 0 else ('Medium' if u.id%3 == 1 else 'Hard'),
             importance='Trivial' if u.id%3 == 0 else ('Important' if u.id%3 == 1 else 'Crucial'),
             completion_percent=0,
