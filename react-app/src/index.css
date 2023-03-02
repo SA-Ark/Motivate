@@ -54,3 +54,8 @@ right: 1%;
   box-shadow: 2px 2px 2px lightgreen;
   cursor: pointer;
 }
+
+.note-body{
+  height: "500px";
+  background-color: "#f7f7f7";
+}

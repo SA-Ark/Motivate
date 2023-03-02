@@ -1,7 +1,8 @@
 import EditGoalModal from '../Modals/EditGoalModal';
 import DeleteGoalButton from '../Buttons/DeleteGoalButton';
 import OpenModalButton from '../OpenModalButton';
-import CreateGoalNoteModal from '../Modals/EditGoalNote';
+
+import EditGoalNoteModal from '../Modals/EditGoalNote';
 
 function GoalCard({ goal }) {
 
@@ -25,7 +26,11 @@ function GoalCard({ goal }) {
         <DeleteGoalButton goalId={goal?.id} />
       </div>
       <div>
-        <CreateGoalNoteModal goalId={goal?.id} />
+      <OpenModalButton
+      buttonText="Add To Goal Notes"
+        modalComponent={
+        <EditGoalNoteModal goalId={goal?.id} />}
+        />
       </div>
     </div>
   )
