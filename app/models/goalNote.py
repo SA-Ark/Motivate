@@ -10,7 +10,8 @@ class GoalNote(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     goal_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('goals.id')), nullable=False)
-    note_body=db.Column(db.String(255), nullable=True)
+    note_body=db.Column(db.Text, nullable=True)
+    note_style=db.Column(db.Text, nullable=True)
     created_at=db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     updated_at=db.Column(db.DateTime, onupdate=datetime.utcnow, nullable=True)
 
@@ -20,6 +21,7 @@ class GoalNote(db.Model):
             'id': self.id,
             'goal_id': self.goal_id,
             'note_body': self.note_body,
+            'note_style': self.note_style,
             'created_at': self.created_at,
             'updated_at': self.updated_at if self.updated_at else None
         }

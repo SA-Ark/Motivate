@@ -52,8 +52,13 @@ def create_goal():
             tags=form.tags.data,
             due_date=form.due_date.data
         )
-
         db.session.add(new_goal)
+        db.session.commit()
+        new_note = GoalNote(
+            goal_id = new_goal.id,
+            note_body = ""
+        )
+        db.session.add(new_note)
         db.session.commit()
 
         return new_goal.to_dict(), 201
@@ -74,6 +79,7 @@ def edit_goal(goal_id):
         prev_goal.importance = form.importance.data
         prev_goal.tags = form.tags.data
         prev_goal.due_date = form.due_date.data
+
         db.session.commit()
 
 

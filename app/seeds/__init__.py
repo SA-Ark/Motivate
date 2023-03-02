@@ -2,7 +2,7 @@ from flask.cli import AppGroup
 from .users import seed_users, undo_users
 from .goals import seed_goals, undo_goals
 from .goal_notes import seed_goal_notes, undo_goal_notes
-from .goal_shares import seed_goal_shares, undo_goal_shares
+# from .goal_shares import seed_goal_shares, undo_goal_shares
 from .tasks import seed_tasks, undo_tasks
 from .task_notes import seed_task_notes, undo_task_notes
 from .badges import seed_badges, undo_badges
@@ -26,7 +26,7 @@ def seed():
         undo_badges()
         undo_task_notes()
         undo_tasks()
-        undo_goal_shares()
+        # undo_goal_shares()
         undo_goal_notes()
         undo_goals()
         undo_payment_infos()
@@ -35,7 +35,7 @@ def seed():
     seed_users()
     seed_goals()
     seed_goal_notes()
-    seed_goal_shares()
+    # seed_goal_shares()
     seed_tasks()
     seed_task_notes()
     seed_badges()
@@ -49,7 +49,7 @@ def undo():
     undo_badges()
     undo_task_notes()
     undo_tasks()
-    undo_goal_shares()
+    # undo_goal_shares()
     undo_goal_notes()
     undo_goals()
     undo_payment_infos()

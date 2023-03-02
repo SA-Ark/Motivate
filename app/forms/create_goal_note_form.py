@@ -3,4 +3,6 @@ from wtforms import StringField, TextAreaField, BooleanField, IntegerField, Date
 from wtforms.validators import DataRequired, Length, Optional
 
 class CreateGoalNoteForm(FlaskForm):
+    goal_id = IntegerField("Goal Id")
     note_body = TextAreaField('Description')
+    note_style = TextAreaField('Style')
