@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { thunkFetchGoalById } from '../../store/goal';
+import { thunkFetchNoteByGoalId } from '../../store/goalNote';
 import GoalCard from '../Cards/GoalCard';
 
 
@@ -13,7 +14,7 @@ function SingleGoal() {
 
     useEffect(()=>{
       dispatch(thunkFetchGoalById(id))
-
+      dispatch(thunkFetchNoteByGoalId(id))
 
     }, [dispatch, id])
 

@@ -42,6 +42,7 @@ const actionEditNote = (note) => {
 
     if(res?.ok){
         const data = await res.json();
+
         dispatch(actionLoadNote(data));
         return data
     }else if (res?.status <500){
@@ -56,16 +57,17 @@ const actionEditNote = (note) => {
 
   export const thunkCreateGoalNote = (noteData) => async (dispatch) => {
 
-    const {goalId, noteBody} = noteData
+    const {goalId, noteBody, noteState} = noteData
     const goal_id = goalId
     const note_body = noteBody
+    const note_state = noteState
 
     const res = await fetch('/api/goalnotes/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({goal_id, note_body} ),
+      body: JSON.stringify({goal_id, note_body, note_state} ),
     });
     console.log(res, "RES")
     if(res?.ok){
@@ -85,17 +87,18 @@ const actionEditNote = (note) => {
   };
 
   export const thunkEditGoalNote = (noteData) => async (dispatch) => {
-    const {goalId, noteBody} = noteData
+    const {goalId, noteBody, noteStyle} = noteData
     console.log(goalId, noteBody,"THUNK")
     const goal_id = goalId
     const note_body = noteBody
+    const note_style = noteStyle
 
     const res = await fetch(`/api/goalnotes/`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({goal_id, note_body}),
+      body: JSON.stringify({goal_id, note_body, note_style}),
     });
 
     if(res?.ok){
@@ -141,32 +144,22 @@ const actionEditNote = (note) => {
 
 // define the initial state
 const initialState = {
-  notes: []
+  note: {},
 };
 
-const notesReducer = (state = initialState, action) => {
+const goalNotesReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_NOTE:
       return {
-        ...state,
-        notes: [...action.note]
+        note: {...action.note}
       };
     case CREATE_NOTE:
       return {
-        ...state,
-        notes: [...state.notes, action.note]
+        note: { ...action.note}
       };
     case EDIT_NOTE:
-      const updatedNotes = state.notes.map(note => {
-        if (note.id === action.note.id) {
-          return action.note;
-        } else {
-          return note;
-        }
-      });
       return {
-        ...state,
-        notes: updatedNotes
+        note: {...action.note}
       };
     // case DELETE_NOTE:
     //   const filteredNotes = state.notes.filter(note => note.id !== action.noteId);
@@ -179,4 +172,4 @@ const notesReducer = (state = initialState, action) => {
   }
 };
 
-export default notesReducer;
+export default goalNotesReducer;
