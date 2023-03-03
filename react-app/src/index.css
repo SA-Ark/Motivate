@@ -20,7 +20,7 @@ body {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    right: 50%;
+    right: 44%;
   }
 
 .signup{
@@ -58,4 +58,26 @@ right: 1%;
 .note-body{
   height: "500px";
   background-color: "#f7f7f7";
+}
+
+button{
+  background-color: aquamarine;
+  height: 36px;
+  border-radius: 10px;
+  margin: 2px;
+  padding: 6px;
+
+
+}
+
+button:hover{
+  background-color: blueviolet;
+  box-shadow: 2px 2px 2px darkgreen;
+  cursor: pointer;
+}
+
+.login > *{
+  margin-right: 10px;
+  margin-left: 10px;
+  width: 90px;
 }
