@@ -22,28 +22,30 @@ const EditGoalModal = ({ id }) => {
         difficulty: goal?.difficulty || "",
         importance: goal?.importance || "",
         // tags: goal?.tags || "",
-        due_date: goal?.due_date || "",
+        due_date: goal?.due_date ? new Date(goal.due_date).toISOString().slice(0, 16) : "",
 
   });
   console.log(goal, "GOAL")
+  console.log(formValues, "duedate")
 
-  useEffect(() => {
-    if (goal) {
-      setFormValues({
-        name: goal.name,
-        description: goal.description,
-        difficulty: goal.difficulty || "",
-        importance: goal.importance || "",
-        tags: goal.tags || "",
-        due_date: goal.due_date || "",
+  // useEffect(() => {
+  //   if (goal) {
+  //     setFormValues({
+  //       name: goal.name,
+  //       description: goal.description,
+  //       difficulty: goal.difficulty || "",
+  //       importance: goal.importance || "",
+  //       tags: goal.tags || "",
+  //       due_date: goal.due_date || "",
 
-      });
-    }
-  }, [goal]);
+  //     });
+  //   }
+  // }, [goal]);
 
   const handleInputChange = event => {
     const { name, value } = event.target;
     setFormValues({ ...formValues, [name]: value });
+    console.log(formValues,"fORM VALS")
   };
 
   const handleSubmit = async (event) => {
