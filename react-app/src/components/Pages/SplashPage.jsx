@@ -9,7 +9,7 @@ function SplashPage(){
 
             <SplashButtons/>
         </div>
-    <div class='splash-footer-container'>
+    {/* <div class='splash-footer-container'>
 
 
         <div class='footer-img-container'>
@@ -23,7 +23,7 @@ function SplashPage(){
         </p>
 
     </div>
-    </div>
+    </div> */}
     </div>
 
     )
