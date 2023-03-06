@@ -15,6 +15,16 @@ if (!sessionUser){
 
   return (
     <>
+   <div className="background-image">
+
+
+    <div className="mid-splash-container">
+    <div className="splash-quote">
+
+          <p>The journey of a thousand miles begins with a single step...</p>
+          <p>Are you brave enough to take that step?</p>
+          <p> Turn your dreams into reality with this to-do-list.</p>
+    </div>
           <div className="login">
             <OpenModalButton
               buttonText="Log In"
@@ -23,6 +33,8 @@ if (!sessionUser){
             />
             <DemoUserButton/>
            </div>
+           </div>
+          </div>
            <div className="signup">
             <OpenModalButton
               buttonText="Sign Up"
@@ -30,7 +42,7 @@ if (!sessionUser){
               modalComponent={<SignupFormModal />}
             />
           </div>
-    </>
+          </>
   );
 }else{
   return (null)

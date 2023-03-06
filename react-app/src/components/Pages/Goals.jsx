@@ -17,15 +17,15 @@ function Goals() {
 
 
   return (
-    <div>
-      <div>
+    <div className="all-goals-page">
+      <div className="create-goal-button">
         <OpenModalButton
         buttonText="Create New Goal"
         modalComponent={
-        <CreateGoalModal />}
-        />
+          <CreateGoalModal />}
+          />
         </div>
-      <h1>All Goals</h1>
+          <h1 className="all-goal-title">All Goals</h1>
      <AllGoalsCard goals={goals}/>
 
     </div>

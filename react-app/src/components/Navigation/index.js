@@ -6,10 +6,13 @@ import './Navigation.css';
 
 function Navigation({ isLoaded }){
 	const sessionUser = useSelector(state => state.session.user);
-
+	let cName = "nav-link"
+	if (!sessionUser){
+		cName="logged-out-nav-link"
+	}
 	return (
 		<div className="navigation">
-				<NavLink exact to="/allgoals" className="nav-link">MOTIVATE</NavLink>
+				<NavLink exact to="/allgoals" className={cName}>MOTIVATE</NavLink>
 			{isLoaded && (
 				<ProfileButton user={sessionUser} />
 			)}

@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 const DemoUserButton = () =>{
     const dispatch = useDispatch();
-    const [email, password] = ["user1@aa.io", "123"]
+    const [email, password] = ["demouser@aa.io", "123"]
 
     const [errors, setErrors] = useState([]);
 

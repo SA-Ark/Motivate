@@ -25,7 +25,7 @@ function SingleGoal() {
 
 
   return (
-    <div>
+    <div className="goal-page">
       <h1>{goal?.name}</h1>
 
        <GoalCard goal={goal} />
