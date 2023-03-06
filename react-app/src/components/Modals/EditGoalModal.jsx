@@ -67,7 +67,7 @@ const EditGoalModal = ({ id }) => {
           <li key={idx}>{error}</li>
         ))}
       </ul>
-      <div>
+      <div >
         <label htmlFor="name">Name *</label>
         <input
           type="text"

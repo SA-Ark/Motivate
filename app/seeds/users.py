@@ -42,6 +42,12 @@ last_names = [
 
 
 def seed_users():
+    demo_user = User(
+            username=f'Demo User',
+            email=f'demouser@aa.io',
+            password='123',
+            first_name = "Demo",
+            last_name = "User")
     for i in range(10):
         first_name = first_names[randint(0, len(first_names)-1)]
         last_name = last_names[randint(0, len(last_names)-1)]
@@ -53,6 +59,7 @@ def seed_users():
             last_name = last_name)
 
         db.session.add(user)
+    db.session.add(demo_user)
     db.session.commit()
 
 

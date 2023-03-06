@@ -7,7 +7,7 @@ def seed_goal_notes():
     for g in goals:
         goal_note = GoalNote(
             goal_id = g.id,
-            note_body = "Add notes for this goal here"
+            note_body = ""
         )
 
         db.session.add(goal_note)

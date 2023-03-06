@@ -8,11 +8,13 @@ function GoalCard({ goal }) {
 
 
   return (
-    <div key={goal?.id}>
-      <p>Description: {goal?.description}</p>
+    <div className="goal-card" key={goal?.id}>
+      <p>Description: {goal?.description}
+
+      </p>
       <p>Difficulty: {goal?.difficulty || "unspecified"}</p>
       <p>Importance: {goal?.importance ||"unspecified" }</p>
-      <p>Tags: {goal?.tags || "no tags"}</p>
+      {/* <p>Tags: {goal?.tags || "no tags"}</p> */}
       <p>Due Date: {goal?.due_date || "unspecified"}</p>
       <div>
         <OpenModalButton
@@ -27,7 +29,7 @@ function GoalCard({ goal }) {
       </div>
       <div>
       <OpenModalButton
-      buttonText="Add To Goal Notes"
+      buttonText="View & Update Notes"
         modalComponent={
         <EditGoalNoteModal goalId={goal?.id} />}
         />
