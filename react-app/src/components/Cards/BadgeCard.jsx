@@ -17,7 +17,7 @@ function BadgeCard({ badge }) {
   const history = useHistory()
 useEffect(()=>{
 
-      dispatch(thunkFetchNoteByGoalId(badge?.goal_id))
+      // dispatch(thunkFetchNoteByGoalId(badge?.goal_id))
       dispatch(thunkFetchGoalById(badge?.goal_id))
 
     },[dispatch, badge?.goal_id])
@@ -39,13 +39,7 @@ useEffect(()=>{
       <p>Badge Level: {badge?.level}</p>
 
 
-      <div>
-      <OpenModalButton
-      buttonText="View & Update Notes"
-        modalComponent={
-        <EditGoalNoteModal goalId={goal?.id} />}
-        />
-      </div>
+
       <div>
         {!goal?.child_goal_id?
         <OpenModalButton
