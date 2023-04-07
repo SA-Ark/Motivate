@@ -3,6 +3,7 @@ import DeleteGoalButton from '../Buttons/DeleteGoalButton';
 import OpenModalButton from '../OpenModalButton';
 
 import EditGoalNoteModal from '../Modals/EditGoalNote';
+import CompleteGoalButton from '../Buttons/CompleteGoalButton';
 
 function GoalCard({ goal }) {
 
@@ -12,10 +13,13 @@ function GoalCard({ goal }) {
       <p>Description: {goal?.description}
 
       </p>
+      <p> {goal?.id}</p>
       <p>Difficulty: {goal?.difficulty || "unspecified"}</p>
       <p>Importance: {goal?.importance ||"unspecified" }</p>
       {/* <p>Tags: {goal?.tags || "no tags"}</p> */}
       <p>Due Date: {goal?.due_date || "unspecified"}</p>
+
+
       <div>
         <OpenModalButton
         buttonText="Edit Goal"
@@ -34,6 +38,7 @@ function GoalCard({ goal }) {
         <EditGoalNoteModal goalId={goal?.id} />}
         />
       </div>
+      <CompleteGoalButton goalId={goal?.id}/>
     </div>
   )
 }

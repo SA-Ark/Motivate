@@ -79,10 +79,40 @@ export const thunkFetchAllGoals = () => async (dispatch) => {
   export const thunkCreateGoal = (goalData) => async (dispatch) => {
 
     const {name, description, difficulty, importance,
+    tags, due_date, parent_goal_id} = goalData
+
+    console.log(goalData, "Thunk data")
+    const res = await fetch('/api/goals/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({name, description, difficulty, importance,
+        tags, due_date, parent_goal_id} ),
+    });
+
+    if(res?.ok){
+        const data = await res.json();
+        dispatch(actionCreateGoal(data));
+        return data
+    }else if (res?.status <500){
+        const data = await res.json()
+        if (data.errors){
+
+            return data
+        }
+
+    }
+
+  };
+
+  export const thunkCreateChildGoal = (goalData, parentGoalId) => async (dispatch) => {
+
+    const {name, description, difficulty, importance,
     tags, due_date} = goalData
 
 
-    const res = await fetch('/api/goals/', {
+    const res = await fetch(`/api/goals/chaingoal/${parentGoalId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -105,6 +135,7 @@ export const thunkFetchAllGoals = () => async (dispatch) => {
     }
 
   };
+
 
   export const thunkEditGoal = (id, goalData) => async (dispatch) => {
     console.log(id, goalData, "DATA IN THUNK")
@@ -131,6 +162,34 @@ export const thunkFetchAllGoals = () => async (dispatch) => {
     }
 
   };
+
+
+  export const thunkCompleteGoal = (id) => async (dispatch) => {
+
+    const res = await fetch(`/api/goals/complete/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: "none",
+    });
+    console.log("HI")
+    if(res?.ok){
+        const data = await res.json();
+        dispatch(actionEditGoal(data));
+
+        return data
+    }else if (res?.status <500){
+        const data = await res.json()
+        if (data.errors){
+
+            return data
+        }
+
+    }
+
+  };
+
 
   export const thunkDeleteGoal = (id) => async (dispatch) => {
     const res = await fetch(`/api/goals/${id}`, {

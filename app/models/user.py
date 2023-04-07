@@ -19,6 +19,7 @@ class User(db.Model, UserMixin):
     updated_at = db.Column(db.DateTime, onupdate=datetime.utcnow, nullable=True)
 
     goals = db.relationship('Goal', backref='user', lazy=True)
+    badges = db.relationship('Badge', backref='user', lazy=True)
     # shared_goals = db.relationship('Goal', secondary='goal_shares',
     #                                 backref='shared_with_users', lazy=True,
     #                                 foreign_keys='[GoalShare.user_id]',

@@ -1,12 +1,12 @@
 
 import { useHistory } from "react-router-dom";
-function AllGoalsCard ({goals}){
+function FinishedGoalsCard ({goals}){
     const history = useHistory();
 
     const onClick = (goal)=>{
         history.push(`/goals/${goal?.id}`)
     }
-    goals = goals.filter(goal => goal.finished_on === null)
+   
     return (
         <div>
           {goals?.map((goal, index) => (
@@ -24,4 +24,4 @@ function AllGoalsCard ({goals}){
                 )
 }
 
-export default AllGoalsCard
+export default FinishedGoalsCard

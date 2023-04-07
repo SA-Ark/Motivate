@@ -1,5 +1,5 @@
 import React from "react";
-import { EditorState, convertFromRaw, convertToRaw, ContentState } from "draft-js";
+import { EditorState, convertFromRaw, ContentState } from "draft-js";
 import  {Editor, RichUtils, getDefaultKeyBinding } from "draft-js";
 import "./textEditor.css"
 class TextEditor extends React.Component {

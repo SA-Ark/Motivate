@@ -3,11 +3,13 @@ import thunk from 'redux-thunk';
 import session from './session'
 import { goalReducer } from './goal';
 import goalNotesReducer from './goalNote';
+import badgesReducer from './badge';
 
 const rootReducer = combineReducers({
   session,
   goals: goalReducer,
-  goalNote: goalNotesReducer
+  goalNote: goalNotesReducer,
+  badges: badgesReducer
 });
 
 

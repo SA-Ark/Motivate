@@ -9,6 +9,9 @@ from .api.user_routes import user_routes
 from .api.auth_routes import auth_routes
 from .api.goal_routes import goal_routes
 from .api.goal_note_routes import goal_note_routes
+from .api.badge_routes import badge_routes
+from .api.task_routes import task_routes
+from .api.task_note_routes import task_note_routes
 from .seeds import seed_commands
 from .config import Config
 
@@ -32,6 +35,9 @@ app.register_blueprint(user_routes, url_prefix='/api/users')
 app.register_blueprint(auth_routes, url_prefix='/api/auth')
 app.register_blueprint(goal_routes, url_prefix='/api/goals')
 app.register_blueprint(goal_note_routes, url_prefix='/api/goalnotes')
+app.register_blueprint(badge_routes, url_prefix='/api/badges')
+app.register_blueprint(task_routes, url_prefix='/api/tasks')
+app.register_blueprint(task_note_routes, url_prefix='/api/task_notes')
 db.init_app(app)
 Migrate(app, db)
 

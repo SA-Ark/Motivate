@@ -4,16 +4,17 @@ from datetime import datetime
 
 
 def seed_badges():
-    goals = Goal.query.all()
-    for g in goals:
-        badge = Badge(
-            goal_id = g.id,
-            name = g.name,
-            description = g.description,
-            url = "https://www.seekpng.com/png/detail/195-1951005_zootopia-party-badge-emoticon-police-badge-emoji.png"
-        )
-        db.session.add(badge)
-    db.session.commit()
+    # goals = Goal.query.all()
+    # for g in goals:
+    #     badge = Badge(
+    #         goal_id = g.id,
+    #         name = g.name,
+    #         description = g.description,
+    #         # url = "https://www.seekpng.com/png/detail/195-1951005_zootopia-party-badge-emoticon-police-badge-emoji.png"
+    #     )
+    #     db.session.add(badge)
+    # db.session.commit()
+    pass
 
 
 # Uses a raw SQL query to TRUNCATE or DELETE the users table. SQLAlchemy doesn't
