@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { thunkEditGoalNote, thunkFetchNoteByGoalId } from "../../store/goalNote";
 import { EditorState, convertFromRaw, convertToRaw, ContentState } from "draft-js";
-import { Editor } from "react-draft-wysiwyg";
+
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import TextEditor from "../TextEditor/textEditor";
 

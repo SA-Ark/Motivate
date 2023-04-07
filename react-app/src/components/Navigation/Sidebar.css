@@ -1,0 +1,72 @@
+/* Sidebar.css */
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #333;
+    padding: 10px;
+    margin-top: 50px;
+  }
+
+  .nav-menu {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-menu li {
+    margin-right: 10px;
+  }
+
+  .nav-menu li a {
+    color: white;
+    text-decoration: none;
+  }
+
+  .nav-menu li a:hover {
+    color: #ccc;
+  }
+
+  .search-bar {
+    display: flex;
+    align-items: center;
+  }
+
+  .search-bar input {
+    height: 20px;
+    margin-right: 5px;
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+  }
+
+  .search-button {
+    height: 30px;
+    width: 30px;
+    padding: 5px;
+    border: none;
+    background-color: transparent;
+  }
+
+  .image {
+    width: 20px;
+    height: 20px;
+  }
+
+  .search-button:hover {
+    cursor: pointer;
+    transform: scale(1.3);
+  }
+
+ .nav-menu-links{
+    margin-right: 10px;
+    padding: 2px;
+
+  }
+  .nav-menu-links:hover{
+    margin-right: 10px;
+    padding: 2px;
+    border: 1px solid green;
+    background-color: lightgreen;
+  }

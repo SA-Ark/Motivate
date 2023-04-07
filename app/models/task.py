@@ -19,7 +19,7 @@ class Task(db.Model):
     edit_access=db.Column(db.Integer, default=2, nullable=False)
     difficulty=db.Column(db.String(255), nullable=True)
     priority=db.Column(db.String(255), nullable=True)
-    completion_percent=db.Column(db.Integer, nullable=False)
+    completion_percent=db.Column(db.Integer, default=0, nullable=False)
     tags=db.Column(db.String(255), nullable=True)
     due_date=db.Column(db.DateTime, nullable=True)
     created_at=db.Column(

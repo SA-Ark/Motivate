@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import './Navigation.css';
+import Sidebar from './Sidebar';
 
 function Navigation({ isLoaded }){
 	const sessionUser = useSelector(state => state.session.user);
@@ -11,12 +12,18 @@ function Navigation({ isLoaded }){
 		cName="logged-out-nav-link"
 	}
 	return (
+		<>
+
 		<div className="navigation">
 				<NavLink exact to="/allgoals" className={cName}>MOTIVATE</NavLink>
 			{isLoaded && (
 				<ProfileButton user={sessionUser} />
 			)}
 		</div>
+		{sessionUser &&
+		<Sidebar/>
+}
+		</>
 	);
 }
 
