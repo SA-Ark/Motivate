@@ -54,9 +54,30 @@ def create_task():
             parent_task_id = form.parent_task_id.data,
             due_date=form.due_date.data,
 
+
         )
         db.session.add(new_task)
         db.session.commit()
+        if new_task.parent_task_id:
+            parent_task = Task.query.get(new_task.parent_task_id)
+            completion = parent_task.completion_percent/100
+            comp_tasks = Task.query.filter(Task.parent_task_id == parent_task.id).all()
+            denominator = 0
+            for task in comp_tasks:
+                if task.difficulty == "Easy":
+                    denominator+=1
+                if task.difficulty == "Medium":
+                    denominator+=2
+                if task.difficulty == "Hard":
+                    denominator+=3
+            numerator = int(completion*denominator)
+            if new_task.difficulty == "Easy":
+                denominator+=1
+            if new_task.difficulty == "Medium":
+                denominator+=2
+            if new_task.difficulty == "Hard":
+                denominator+=3
+            parent_task.completion_percent = (numerator/denominator)*100
 
         db.session.commit()
         style = '{"blocks":[{"key":"cr1ke","text":"                                                                                     General:                                                                                  ","type":"header-three","depth":0,"inlineStyleRanges":[{"offset":0,"length":175,"style":"BOLD"},{"offset":85,"length":8,"style":"UNDERLINE"}],"entityRanges":[],"data":{}},{"key":"88mi","text":"                                                                            ","type":"unordered-list-item","depth":0,"inlineStyleRanges":[{"offset":0,"length":76,"style":"BOLD"}],"entityRanges":[],"data":{}},{"key":"8vuee","text":"","type":"header-three","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"7u67h","text":"                                                                            Resources & Links:","type":"header-three","depth":0,"inlineStyleRanges":[{"offset":0,"length":94,"style":"BOLD"},{"offset":76,"length":18,"style":"UNDERLINE"}],"entityRanges":[],"data":{}},{"key":"c0fbs","text":"                                                                                     ","type":"unordered-list-item","depth":0,"inlineStyleRanges":[{"offset":0,"length":85,"style":"BOLD"}],"entityRanges":[],"data":{}},{"key":"9olma","text":"","type":"header-three","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"eursi","text":"                                                                                    Journal:","type":"header-three","depth":0,"inlineStyleRanges":[{"offset":0,"length":92,"style":"BOLD"},{"offset":84,"length":8,"style":"UNDERLINE"}],"entityRanges":[],"data":{}},{"key":"46i5a","text":"","type":"unordered-list-item","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}'
@@ -90,6 +111,28 @@ def edit_task(task_id):
 
         db.session.commit()
 
+        if prev_task.parent_task_id:
+            parent_task = Task.query.get(prev_task.parent_task_id)
+            completion = parent_task.completion_percent/100
+            comp_tasks = Task.query.filter(Task.parent_task_id == parent_task.id).all()
+            denominator = 0
+            for task in comp_tasks:
+                if task.difficulty == "Easy":
+                    denominator+=1
+                if task.difficulty == "Medium":
+                    denominator+=2
+                if task.difficulty == "Hard":
+                    denominator+=3
+            numerator = int(completion*denominator)
+            if prev_task.difficulty == "Easy":
+                denominator+=1
+            if prev_task.difficulty == "Medium":
+                denominator+=2
+            if prev_task.difficulty == "Hard":
+                denominator+=3
+            parent_task.completion_percent = (numerator/denominator)*100
+
+        db.session.commit()
 
         # Return a dictionary with the updated task data
 
@@ -105,13 +148,39 @@ def delete_task(task_id):
     note = TaskNote.query.filter(TaskNote.task_id == task_id).first()
 
     if del_task:
-        tasks = [del_task]
-
-        if note:
-            db.session.delete(note)
-        if del_task.parent_task_id:
-            parent = Task.query.get(del_task.parent_task_id)
-            parent.child_task_id = None
+        parent = Task.query.get(Task.parent_task_id == del_task.id).first()
+        comp_tasks = Task.query.filter(Task.parent_task_id == parent.id).all()
+        denominator = 0
+        for task in comp_tasks:
+            if task.difficulty == "Easy":
+                denominator+=1
+            if task.difficulty == "Medium":
+                denominator+=2
+            if task.difficulty == "Hard":
+                denominator+=3
+        parent_completion = parent.completion_percent
+        parent_completion = parent_completion/100
+        numerator = int(parent_completion*denominator)
+        if del_task.difficulty == "Easy":
+            denominator-=1
+        if del_task.difficulty == "Medium":
+            denominator-=2
+        if del_task.difficulty == "Hard":
+            denominator-=3
+        parent.completion_percent = (numerator/denominator)*100
+        all_tasks = []
+        tasks = Task.query.get(Task.parent_task_id == del_task.id).all()
+        while tasks:
+            for i in tasks:
+                new_tasks = Task.query.get(Task.parent_task_id==tasks[i].id).all()
+                if len(new_tasks):
+                    tasks.append(*new_tasks)
+                all_tasks.append(tasks.pop(i))
+        for task in all_tasks:
+            note = TaskNote.query.get(TaskNote.task_id == task.id).first()
+            if note:
+                db.session.delete(note)
+            db.session.delete(task)
         db.session.commit()
         return {'message': f'task has been successfully deleted'}, 200
     else:
@@ -122,21 +191,27 @@ def delete_task(task_id):
 def complete_task(task_id):
     task = task.query.get(task_id)
     task.finished_on= datetime.now()
-    if not task.parent_task_id:
-        badge = Badge(
-        user_id = current_user.id,
-        task_id = task.id,
-        name = task.name,
-        description = task.description,
-        level = 1
-        )
-        db.session.add(badge)
+    if task.parent_task_id:
+        parent = Task.query.get(Task.id==task.parent_task_id).first()
+        total_tasks = Task.query.get(Task.parent_task_id == parent.id).all()
+        points = 0
+        add_pt = 0
+        if task.difficulty == "Easy":
+                add_pt=1
+        if task.difficulty == "Medium":
+                add_pt=2
+        if task.difficulty == "Hard":
+                add_pt=3
+        for task in total_tasks:
+            if task.difficulty == "Easy":
+                points+=1
+            if task.difficulty == "Medium":
+                points+=2
+            if task.difficulty == "Hard":
+                points+=3
+        curr_completion = parent.completion_percent
+        parent.completion_percent = curr_completion + (add_pt/points)*100
     else:
-        badge = Badge.query.filter(Badge.task_id == task.parent_task_id).first()
-
-        badge.task_id = task_id
-        badge.name = task.name
-        badge.description= badge.description + f'\n {task.description}'
-        badge.level= badge.level +1
+        task.completion_percent = 100
     db.session.commit()
     return task.to_dict(), 200
