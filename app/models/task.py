@@ -29,22 +29,21 @@ class Task(db.Model):
     finished_on=db.Column(db.DateTime, nullable=True)
 
 
-def to_dict(self):
-    return {
-        'id': self.id,
-        'user_id': self.user_id,
-        'note_id': self.note_id,
-        'goal_id': self.goal_id,
-        'parent_task_id': self.parent_task_id,
-        'name': self.name,
-        'description': self.description,
-        'edit_access': self.edit_access,
-        'difficulty': self.difficulty,
-        'priority': self.priority,
-        'completion_percent': self.completion_percent,
-        'tags': self.tags,
-        'due_date': self.due_date if self.due_date else None,
-        'created_at': self.created_at,
-        'updated_at': self.updated_at if self.updated_at else None,
-        'finished_on': self.finished_on if self.finished_on else None
-    }
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'goal_id': self.goal_id,
+            'parent_task_id': self.parent_task_id,
+            'name': self.name,
+            'description': self.description,
+            'edit_access': self.edit_access,
+            'difficulty': self.difficulty,
+            'priority': self.priority,
+            'completion_percent': self.completion_percent,
+            'tags': self.tags,
+            'due_date': self.due_date if self.due_date else None,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at if self.updated_at else None,
+            'finished_on': self.finished_on if self.finished_on else None
+        }

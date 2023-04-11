@@ -31,8 +31,8 @@ const actionEditNote = (note) => {
 
 
 
-  export const thunkFetchNoteByGoalId = (goalId) => async (dispatch) => {
-    const res = await fetch(`/api/goalnotes/${goalId}`);
+  export const thunkFetchNoteByTaskId = (taskId) => async (dispatch) => {
+    const res = await fetch(`/api/tasknotes/${taskId}`);
 
     if(res?.ok){
         const data = await res.json();
@@ -49,19 +49,19 @@ const actionEditNote = (note) => {
     }
   };
 
-  export const thunkCreateGoalNote = (noteData) => async (dispatch) => {
+  export const thunkCreateTaskNote = (noteData) => async (dispatch) => {
 
-    const {goalId, noteBody, noteState} = noteData
-    const goal_id = goalId
+    const {taskId, noteBody, noteState} = noteData
+    const task_id = taskId
     const note_body = noteBody
     const note_state = noteState
 
-    const res = await fetch('/api/goalnotes/', {
+    const res = await fetch('/api/tasknotes/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({goal_id, note_body, note_state} ),
+      body: JSON.stringify({task_id, note_body, note_state} ),
     });
     console.log(res, "RES")
     if(res?.ok){
@@ -80,19 +80,19 @@ const actionEditNote = (note) => {
 
   };
 
-  export const thunkEditGoalNote = (noteData) => async (dispatch) => {
-    const {goalId, noteBody, noteStyle} = noteData
-    console.log(goalId, noteBody,"THUNK")
-    const goal_id = goalId
+  export const thunkEditTaskNote = (noteData) => async (dispatch) => {
+    const {taskId, noteBody, noteStyle} = noteData
+    console.log(taskId, noteBody,"THUNK")
+    const task_id = taskId
     const note_body = noteBody
     const note_style = noteStyle
 
-    const res = await fetch(`/api/goalnotes/`, {
+    const res = await fetch(`/api/tasknotes/`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({goal_id, note_body, note_style}),
+      body: JSON.stringify({task_id, note_body, note_style}),
     });
 
     if(res?.ok){
@@ -120,7 +120,7 @@ const initialState = {
   note: {},
 };
 
-const goalNotesReducer = (state = initialState, action) => {
+const taskNotesReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_NOTE:
       return {
@@ -140,4 +140,4 @@ const goalNotesReducer = (state = initialState, action) => {
   }
 };
 
-export default goalNotesReducer;
+export default taskNotesReducer;

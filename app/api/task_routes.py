@@ -18,34 +18,35 @@ def validation_errors_to_error_messages(validation_errors):
     return errorMessages
 
 
-@task_routes.route('/<int:goal_id>', methods=['GET'])
-@login_required
-def get_all_tasks_for_a_goal(goal_id):
+# @task_routes.route('/<int:goal_id>', methods=['GET'])
+# @login_required
+# def get_all_tasks_for_a_goal(goal_id):
 
-    tasks = task.query.filter(task.goal_id == goal_id).all()
-    task_list = {}
-    for task in tasks:
-        task_list[task.id] = task.to_dict()
-    return task_list, 200
+#     tasks = task.query.filter(task.goal_id == goal_id).all()
+#     task_list = {}
+#     for task in tasks:
+#         task_list[task.id] = task.to_dict()
+#     return task_list, 200
 
 @task_routes.route('/<int:task_id>', methods=['GET'])
 @login_required
 def get_task_by_id(task_id):
-    task = task.query.get(task_id)
+    task = Task.query.get(task_id)
     if task and task.user_id == current_user.id:
         return task.to_dict(), 200
     else:
         return {'errors': f'This task was not found'}, 404
 
-@task_routes.route('/', methods=['POST'])
+@task_routes.route('/<int:goal_id>', methods=['POST'])
 @login_required
-def create_task():
+def create_task(goal_id):
     form = CreateTaskForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate():
         # Get the form data
         new_task = Task(
             user_id = current_user.id,
+            goal_id = goal_id,
             name=form.name.data,
             description=form.description.data,
             difficulty=form.difficulty.data,
@@ -105,7 +106,7 @@ def edit_task(task_id):
         prev_task.name = form.name.data
         prev_task.description = form.description.data
         prev_task.difficulty = form.difficulty.data
-        prev_task.importance = form.importance.data
+        prev_task.priority = form.priority.data
         prev_task.tags = form.tags.data
         prev_task.due_date = form.due_date.data
 
@@ -148,39 +149,42 @@ def delete_task(task_id):
     note = TaskNote.query.filter(TaskNote.task_id == task_id).first()
 
     if del_task:
-        parent = Task.query.get(Task.parent_task_id == del_task.id).first()
-        comp_tasks = Task.query.filter(Task.parent_task_id == parent.id).all()
-        denominator = 0
-        for task in comp_tasks:
-            if task.difficulty == "Easy":
-                denominator+=1
-            if task.difficulty == "Medium":
-                denominator+=2
-            if task.difficulty == "Hard":
-                denominator+=3
-        parent_completion = parent.completion_percent
-        parent_completion = parent_completion/100
-        numerator = int(parent_completion*denominator)
-        if del_task.difficulty == "Easy":
-            denominator-=1
-        if del_task.difficulty == "Medium":
-            denominator-=2
-        if del_task.difficulty == "Hard":
-            denominator-=3
-        parent.completion_percent = (numerator/denominator)*100
+        parent = Task.query.filter(Task.parent_task_id == del_task.id).first()
+        if parent:
+            comp_tasks = Task.query.filter(Task.parent_task_id == parent.id).all()
+            denominator = 0
+            for task in comp_tasks:
+                if task.difficulty == "Easy":
+                    denominator+=1
+                if task.difficulty == "Medium":
+                    denominator+=2
+                if task.difficulty == "Hard":
+                    denominator+=3
+            parent_completion = parent.completion_percent
+            parent_completion = parent_completion/100
+            numerator = int(parent_completion*denominator)
+            if del_task.difficulty == "Easy":
+                denominator-=1
+            if del_task.difficulty == "Medium":
+                denominator-=2
+            if del_task.difficulty == "Hard":
+                denominator-=3
+            if denominator !=0:
+                parent.completion_percent = (numerator/denominator)*100
         all_tasks = []
-        tasks = Task.query.get(Task.parent_task_id == del_task.id).all()
+        tasks = Task.query.filter(Task.parent_task_id == del_task.id).all()
         while tasks:
-            for i in tasks:
-                new_tasks = Task.query.get(Task.parent_task_id==tasks[i].id).all()
+            for i in range(len(tasks)):
+                new_tasks = Task.query.filter(Task.parent_task_id==tasks[i].id).all()
                 if len(new_tasks):
                     tasks.append(*new_tasks)
                 all_tasks.append(tasks.pop(i))
         for task in all_tasks:
-            note = TaskNote.query.get(TaskNote.task_id == task.id).first()
+            note = TaskNote.query.filter(TaskNote.task_id == task.id).first()
             if note:
                 db.session.delete(note)
             db.session.delete(task)
+        db.session.delete(del_task)
         db.session.commit()
         return {'message': f'task has been successfully deleted'}, 200
     else:
@@ -189,7 +193,7 @@ def delete_task(task_id):
 @task_routes.route('/complete/<int:task_id>', methods=['PUT'])
 @login_required
 def complete_task(task_id):
-    task = task.query.get(task_id)
+    task = Task.query.get(task_id)
     task.finished_on= datetime.now()
     if task.parent_task_id:
         parent = Task.query.get(Task.id==task.parent_task_id).first()

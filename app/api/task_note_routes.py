@@ -17,7 +17,7 @@ def validation_errors_to_error_messages(validation_errors):
             errorMessages.append(f'{field} : {error}')
     return errorMessages
 
-@task_note_routes.route('/<int:task_id>')
+@task_note_routes.route('/<int:task_id>', methods=['GET'])
 @login_required
 def fetch_task_notes_by_task_id(task_id):
     note = TaskNote.query.filter(TaskNote.task_id==task_id).first()

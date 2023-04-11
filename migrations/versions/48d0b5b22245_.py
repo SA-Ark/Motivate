@@ -140,6 +140,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('task_id', sa.Integer(), nullable=False),
     sa.Column('note_body', sa.String(length=255), nullable=True),
+    sa.Column('note_style', sa.Text(), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
     sa.ForeignKeyConstraint(['task_id'], ['tasks.id'], ),

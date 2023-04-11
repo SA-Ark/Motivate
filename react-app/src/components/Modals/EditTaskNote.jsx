@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
-import { thunkEditGoalNote, thunkFetchNoteByGoalId } from "../../store/goalNote";
+import { thunkFetchNoteByTaskId, thunkEditTaskNote } from "../../store/taskNote";
 import { EditorState, convertFromRaw, convertToRaw, ContentState } from "draft-js";
 
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import TextEditor from "../TextEditor/textEditor";
 
 
-const EditGoalNoteModal = ({ goalId }) => {
+const EditTaskNoteModal = ({ taskId }) => {
 
 
   const dispatch = useDispatch();
   const { closeModal } = useModal();
-  const stateNote = useSelector(state => state.goalNote?.note)
+  const stateNote = useSelector(state => state.taskNote?.note)
   const [errors, setErrors] = useState([]);
   const [noteBody, setNoteBody] = useState("")
   let [buttonText, setButtonText] = useState("Create Note")
@@ -45,19 +45,13 @@ const EditGoalNoteModal = ({ goalId }) => {
   }, [stateNote]);
 
 
-
-  console.log(stateNote, "statenote")
-
-
-
-
   useEffect(() => {
 
     if (!noteBody && stateNote?.note_body && stateNote?.note_body !== "") {
       setButtonText("Update Note")
 
      }
-  }, [dispatch, goalId])
+  }, [dispatch, taskId])
 
 
 
@@ -74,9 +68,9 @@ const EditGoalNoteModal = ({ goalId }) => {
     const noteData = {
        noteBody: plainText,
        noteStyle: rawState,
-      goalId,
+      taskId,
     };
-    const data = await dispatch(thunkEditGoalNote(noteData));
+    const data = await dispatch(thunkEditTaskNote(noteData));
 
     if (data?.errors) {
       setErrors(data?.errors);
@@ -101,7 +95,7 @@ const EditGoalNoteModal = ({ goalId }) => {
           editorState={editorState}
           onEditorStateChange={setEditorState}
           noteState={stateNote?.note_style}
-         
+
         />
 
       </div>
@@ -110,4 +104,4 @@ const EditGoalNoteModal = ({ goalId }) => {
   );
 }
 
-export default EditGoalNoteModal
+export default EditTaskNoteModal

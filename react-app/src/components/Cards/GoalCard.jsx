@@ -1,12 +1,20 @@
 import EditGoalModal from '../Modals/EditGoalModal';
 import DeleteGoalButton from '../Buttons/DeleteGoalButton';
 import OpenModalButton from '../OpenModalButton';
-
 import EditGoalNoteModal from '../Modals/EditGoalNote';
 import CompleteGoalButton from '../Buttons/CompleteGoalButton';
+import { useHistory } from 'react-router-dom';
+import CreateTaskModal from '../Modals/CreateTaskModal';
 
 function GoalCard({ goal }) {
+  const history = useHistory();
+  const tasks = ()=>{
+    history.push(`/goals/tasks/${goal?.id}`)
+  }
 
+  const finishedTasks = ()=>{
+    history.push(`/goals/finishedtasks/${goal?.id}`)
+  }
 
   return (
     <div className="goal-card" key={goal?.id}>
@@ -40,6 +48,13 @@ function GoalCard({ goal }) {
 
 
       <CompleteGoalButton goalId={goal?.id}/>
+      <button onClick={tasks}>See Current Tasks For This Goal</button>
+      <button onClick={finishedTasks}>See Finished Tasks</button>
+      <OpenModalButton
+        buttonText="Create New Task"
+        modalComponent={
+          <CreateTaskModal goalId={goal?.id}/>}
+          />
       </>
 }
 <div>

@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, session, request
-from app.models import db, Goal, GoalNote, Badge
+from app.models import db, Goal, GoalNote, Badge, Task
 from app.forms import CreateGoalForm
 from flask_login import current_user, login_user, logout_user, login_required
 from datetime import datetime
@@ -142,3 +142,14 @@ def complete_goal(goal_id):
         badge.level= badge.level +1
     db.session.commit()
     return goal.to_dict(), 200
+
+
+@goal_routes.route('/tasks/<int:goal_id>', methods=['GET'])
+@login_required
+def get_all_tasks_for_a_goal(goal_id):
+
+    tasks = Task.query.filter(Task.goal_id == goal_id).all()
+    task_list = {}
+    for task in tasks:
+        task_list[task.id] = task.to_dict()
+    return task_list, 200
