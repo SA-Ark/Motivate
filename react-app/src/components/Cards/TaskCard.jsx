@@ -37,7 +37,7 @@ function TaskCard({ task }) {
       <p>Priority: {task?.priority ||"unspecified" }</p>
       {/* <p>Tags: {task?.tags || "no tags"}</p> */}
       <p>Due Date: {task?.due_date || "unspecified"}</p>
-      <p>{task?.completion_percent}</p>
+      {/* <p>{task?.completion_percent}</p> */}
       {task?.finished_on && <p>Finished On: {task.finished_on}</p>}
 
       {

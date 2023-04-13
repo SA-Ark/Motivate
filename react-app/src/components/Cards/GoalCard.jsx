@@ -26,7 +26,7 @@ function GoalCard({ goal }) {
       <p>Importance: {goal?.importance ||"unspecified" }</p>
       {/* <p>Tags: {goal?.tags || "no tags"}</p> */}
       <p>Due Date: {goal?.due_date || "unspecified"}</p>
-      <p>{goal?.completion_percent}</p>
+      {/* <p>{goal?.completion_percent}</p> */}
       {goal?.finished_on && <p>Finished On: {goal.finished_on}</p>}
 
       {
