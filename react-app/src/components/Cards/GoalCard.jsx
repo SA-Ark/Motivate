@@ -26,6 +26,7 @@ function GoalCard({ goal }) {
       <p>Importance: {goal?.importance ||"unspecified" }</p>
       {/* <p>Tags: {goal?.tags || "no tags"}</p> */}
       <p>Due Date: {goal?.due_date || "unspecified"}</p>
+      <p>{goal?.completion_percent}</p>
       {goal?.finished_on && <p>Finished On: {goal.finished_on}</p>}
 
       {
@@ -49,7 +50,6 @@ function GoalCard({ goal }) {
 
       <CompleteGoalButton goalId={goal?.id}/>
       <button onClick={tasks}>See Current Tasks For This Goal</button>
-      <button onClick={finishedTasks}>See Finished Tasks</button>
       <OpenModalButton
         buttonText="Create New Task"
         modalComponent={
@@ -58,6 +58,7 @@ function GoalCard({ goal }) {
       </>
 }
 <div>
+<button onClick={finishedTasks}>See Finished Tasks</button>
       <OpenModalButton
       buttonText="View & Update Notes"
         modalComponent={

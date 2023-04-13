@@ -4,13 +4,14 @@ import { thunkFetchAllTasksByGoalId } from '../../store/task';
 import CreateTaskModal from '../Modals/CreateTaskModal';
 import CurrentTasksForGoalCard from '../Cards/CurrentTasksForGoalCard';
 import OpenModalButton from '../OpenModalButton';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { thunkFetchGoalById } from '../../store/goal';
 import FinishedTasksCard from '../Cards/FinishedTasksCard';
 
 function FinishedTasks() {
   const tasks = useSelector(state => Object.values(state.tasks?.tasks))
   const goal = useSelector(state => state.goals?.singleGoal)
+  const history = useHistory()
   const dispatch = useDispatch()
   const { goalId } = useParams()
   useEffect(() => {
@@ -18,6 +19,9 @@ function FinishedTasks() {
     dispatch(thunkFetchGoalById(goalId))
 
   }, [dispatch, tasks?.length])
+  const backToGoal = () => {
+    history.push(`/goals/${goalId}`)
+  }
 
 
   return (
@@ -29,7 +33,8 @@ function FinishedTasks() {
             <CreateTaskModal goalId={goalId} />}
         />
       </div>
-      <h1 className="all-goal-title">Current Tasks For {goal?.name}</h1>
+      <h1 className="all-goal-title">Finished Tasks For {goal?.name}</h1>
+      <button onClick={backToGoal}> Back To Goal</button>
       <FinishedTasksCard tasks={tasks} />
 
     </div>

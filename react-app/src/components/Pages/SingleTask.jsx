@@ -11,18 +11,17 @@ function SingleTask() {
     const singleTask = useSelector(state=>state.tasks?.singleTask)
     const dispatch = useDispatch()
     const {id} = useParams()
-    let task = singleTask
+
 
     useEffect(()=>{
       dispatch(thunkFetchTaskById(id))
       dispatch(thunkFetchNoteByTaskId(id))
+     
 
     }, [dispatch, id])
 
 
-    if(singleTask?.length){
-      task = singleTask
-    }
+
 
 
   return (
@@ -31,12 +30,12 @@ function SingleTask() {
         <OpenModalButton
         buttonText="Create SubTask"
         modalComponent={
-          <CreateSubtaskModal parentTaskId={task?.id} goalId={task?.goal_id}/>}
+          <CreateSubtaskModal parentTaskId={singleTask?.id} goalId={singleTask?.goal_id}/>}
           />
         </div>
-      <h1>{task?.name}</h1>
+      <h1>{singleTask?.name}</h1>
 
-       <TaskCard task={task} />
+       <TaskCard task={singleTask} />
 
     </div>
   );

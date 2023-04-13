@@ -71,14 +71,14 @@ def create_task(goal_id):
                     denominator+=2
                 if task.difficulty == "Hard":
                     denominator+=3
-            numerator = int(completion*denominator)
+            numerator = completion*denominator
             if new_task.difficulty == "Easy":
                 denominator+=1
             if new_task.difficulty == "Medium":
                 denominator+=2
             if new_task.difficulty == "Hard":
                 denominator+=3
-            parent_task.completion_percent = (numerator/denominator)*100
+            parent_task.completion_percent = int((numerator/denominator))*100
 
         db.session.commit()
         style = '{"blocks":[{"key":"cr1ke","text":"                                                                                     General:                                                                                  ","type":"header-three","depth":0,"inlineStyleRanges":[{"offset":0,"length":175,"style":"BOLD"},{"offset":85,"length":8,"style":"UNDERLINE"}],"entityRanges":[],"data":{}},{"key":"88mi","text":"                                                                            ","type":"unordered-list-item","depth":0,"inlineStyleRanges":[{"offset":0,"length":76,"style":"BOLD"}],"entityRanges":[],"data":{}},{"key":"8vuee","text":"","type":"header-three","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"7u67h","text":"                                                                            Resources & Links:","type":"header-three","depth":0,"inlineStyleRanges":[{"offset":0,"length":94,"style":"BOLD"},{"offset":76,"length":18,"style":"UNDERLINE"}],"entityRanges":[],"data":{}},{"key":"c0fbs","text":"                                                                                     ","type":"unordered-list-item","depth":0,"inlineStyleRanges":[{"offset":0,"length":85,"style":"BOLD"}],"entityRanges":[],"data":{}},{"key":"9olma","text":"","type":"header-three","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"eursi","text":"                                                                                    Journal:","type":"header-three","depth":0,"inlineStyleRanges":[{"offset":0,"length":92,"style":"BOLD"},{"offset":84,"length":8,"style":"UNDERLINE"}],"entityRanges":[],"data":{}},{"key":"46i5a","text":"","type":"unordered-list-item","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}'
@@ -124,14 +124,14 @@ def edit_task(task_id):
                     denominator+=2
                 if task.difficulty == "Hard":
                     denominator+=3
-            numerator = int(completion*denominator)
+            numerator = completion*denominator
             if prev_task.difficulty == "Easy":
                 denominator+=1
             if prev_task.difficulty == "Medium":
                 denominator+=2
             if prev_task.difficulty == "Hard":
                 denominator+=3
-            parent_task.completion_percent = (numerator/denominator)*100
+            parent_task.completion_percent = int((numerator/denominator))*100
 
         db.session.commit()
 
@@ -162,7 +162,7 @@ def delete_task(task_id):
                     denominator+=3
             parent_completion = parent.completion_percent
             parent_completion = parent_completion/100
-            numerator = int(parent_completion*denominator)
+            numerator = parent_completion*denominator
             if del_task.difficulty == "Easy":
                 denominator-=1
             if del_task.difficulty == "Medium":
@@ -170,7 +170,7 @@ def delete_task(task_id):
             if del_task.difficulty == "Hard":
                 denominator-=3
             if denominator !=0:
-                parent.completion_percent = (numerator/denominator)*100
+                parent.completion_percent = int((numerator/denominator))*100
         all_tasks = []
         tasks = Task.query.filter(Task.parent_task_id == del_task.id).all()
         while tasks:
@@ -196,8 +196,8 @@ def complete_task(task_id):
     task = Task.query.get(task_id)
     task.finished_on= datetime.now()
     if task.parent_task_id:
-        parent = Task.query.get(Task.id==task.parent_task_id).first()
-        total_tasks = Task.query.get(Task.parent_task_id == parent.id).all()
+        parent = Task.query.get(task.parent_task_id)
+        total_tasks = Task.query.filter(Task.parent_task_id == parent.id).all()
         points = 0
         add_pt = 0
         if task.difficulty == "Easy":
@@ -213,8 +213,8 @@ def complete_task(task_id):
                 points+=2
             if task.difficulty == "Hard":
                 points+=3
-        curr_completion = parent.completion_percent
-        parent.completion_percent = curr_completion + (add_pt/points)*100
+        numerator = (parent.completion_percent/100)*points
+        parent.completion_percent = int((numerator/(add_pt+points)))*100
     else:
         task.completion_percent = 100
     db.session.commit()

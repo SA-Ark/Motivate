@@ -1,9 +1,9 @@
 
 import { useHistory } from "react-router-dom";
 
-function CurrentTasksForGoalCard({ tasks }) {
+function CurrentSubtasksForTaskCard({ tasks, taskId }) {
   const history = useHistory();
-
+  console.log(taskId, 'TID')
   const onClick = (task) => {
 
 
@@ -11,13 +11,14 @@ function CurrentTasksForGoalCard({ tasks }) {
 
   }
 
-  tasks = tasks.filter(task => task.finished_on === null && task.parent_task_id === null)
-  if (tasks?.length){
+  tasks = tasks.filter(task => task.finished_on === null && task.parent_task_id === taskId)
 
+  if (tasks?.length){
 
   return (
 
     <div>
+
       {tasks?.map((task, index) => (
         <div key={task?.id || index}
           className="all-goals-card"
@@ -35,10 +36,11 @@ function CurrentTasksForGoalCard({ tasks }) {
   else{
     return (
       <div>
-        <h3>No Current Tasks For This Goal</h3>
+        <h3>No Current Subtasks For This Task</h3>
+
       </div>
     )
   }
 }
 
-export default CurrentTasksForGoalCard
+export default CurrentSubtasksForTaskCard

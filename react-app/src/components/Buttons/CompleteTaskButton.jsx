@@ -14,7 +14,7 @@ const CompleteTaskButton = ({taskId})=>{
 
     const handleSubmit = async ()=>{
       const task = await dispatch(thunkFetchTaskById(taskId))
-      .then((data)=> history.push(`/goals/${data?.goal_id}`))
+      .then((data)=> history.push(`/tasks/subtasks/finished/${data?.parent_task_id}`))
       const res = await dispatch(thunkCompleteTask(taskId))
 
 

@@ -30,14 +30,17 @@ const CreateSubtaskModal = ({parentTaskId, goalId}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = await dispatch(thunkCreateTask(formValues, goalId));
-    if (data?.errors) {
-      setErrors(data?.errors);
-    } else {
+    const data = await dispatch(thunkCreateTask(formValues, goalId))
+    .then((data)=>{
 
-      history.push(`/tasks/${data.id}`)
-      closeModal();
-    }
+      if (data?.errors) {
+        setErrors(data?.errors);
+      } else {
+        console.log(data?.id, "data Id")
+        history.push(`/tasks/${data?.id}`)
+        closeModal();
+      }
+    })
   };
   return (
     <form onSubmit={handleSubmit}>

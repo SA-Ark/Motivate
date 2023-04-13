@@ -11,7 +11,21 @@ function TaskCard({ task }) {
   const tasks = ()=>{
     history.push(`/goals/tasks/${task?.goal_id}`)
   }
+  const currSubtasks = ()=>{
+    history.push(`/tasks/subtasks/${task?.id}`)
+  }
 
+  const finishedSubtasks = ()=>{
+    history.push(`/tasks/subtasks/finished/${task?.id}`)
+  }
+
+  const parentTask = ()=>{
+    history.push(`/tasks/${task?.parent_task_id}`)
+  }
+
+  const goal = ()=>{
+    history.push(`/goals/${task?.goal_id}`)
+  }
 
   return (
     <div className="goal-card" key={task?.id}>
@@ -23,6 +37,7 @@ function TaskCard({ task }) {
       <p>Priority: {task?.priority ||"unspecified" }</p>
       {/* <p>Tags: {task?.tags || "no tags"}</p> */}
       <p>Due Date: {task?.due_date || "unspecified"}</p>
+      <p>{task?.completion_percent}</p>
       {task?.finished_on && <p>Finished On: {task.finished_on}</p>}
 
       {
@@ -45,10 +60,18 @@ function TaskCard({ task }) {
 
 
       <CompleteTaskButton taskId={task?.id}/>
+      <button onClick={currSubtasks}>See Current Subtasks For This Task</button>
+      <button onClick={finishedSubtasks}>See Finished Subtasks For This Task</button>
+        {
+          task?.parent_task_id &&
+
+      <button onClick={parentTask}>Go To Parent Task</button>
+        }
+      <button onClick={goal}>Go To Goal</button>
       </>
 }
 <div>
-      <button onClick={tasks}>See Current Tasks For This Goal</button>
+      <button onClick={tasks}>Back to Current Tasks For This Goal</button>
       <OpenModalButton
       buttonText="View & Update Notes"
         modalComponent={

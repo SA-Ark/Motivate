@@ -81,7 +81,6 @@ export const thunkFetchAllTasksByGoalId = (goalId) => async (dispatch) => {
     const {name, description, difficulty, priority,
     tags, due_date, parent_task_id} = taskData
 
-    console.log(taskData, "Thunk data")
     const res = await fetch(`/api/tasks/${goalId}`, {
       method: 'POST',
       headers: {
@@ -94,7 +93,7 @@ export const thunkFetchAllTasksByGoalId = (goalId) => async (dispatch) => {
     if(res?.ok){
         const data = await res.json();
         dispatch(actionCreateTask(data));
-        console.log(data, "thunk data")
+        
         return data
     }else if (res?.status <500){
         const data = await res.json()

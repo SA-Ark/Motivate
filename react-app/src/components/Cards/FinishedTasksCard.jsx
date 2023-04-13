@@ -7,9 +7,11 @@ function FinishedTasksCard({ tasks }) {
   const onClick = (task) => {
     history.push(`/tasks/${task?.id}`)
   }
-  tasks = tasks.filter(task => task.finished_on !== null)
+  tasks = tasks.filter(task => task.finished_on !== null && task.parent_task_id === null)
   return (
+
     <div>
+      {!tasks.length && <h3>No Finished Tasks For This Goal</h3>}
       {tasks?.map((task, index) => (
         <div key={task?.id || index}
           className="all-goals-card"
