@@ -37,7 +37,7 @@ app.register_blueprint(goal_routes, url_prefix='/api/goals')
 app.register_blueprint(goal_note_routes, url_prefix='/api/goalnotes')
 app.register_blueprint(badge_routes, url_prefix='/api/badges')
 app.register_blueprint(task_routes, url_prefix='/api/tasks')
-app.register_blueprint(task_note_routes, url_prefix='/api/task_notes')
+app.register_blueprint(task_note_routes, url_prefix='/api/tasknotes')
 db.init_app(app)
 Migrate(app, db)
 

@@ -1,27 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
-import { thunkEditGoal } from "../../store/goal";
+import { thunkEditTask } from "../../store/task";
 import { useModal } from "../../context/Modal";
-const EditGoalModal = ({ id }) => {
+
+const EditTaskModal = ({ id }) => {
 
   const dispatch = useDispatch();
   const history = useHistory();
-  const goal = useSelector(state => state.goals?.singleGoal);
+  const task = useSelector(state => state.tasks?.singleTask);
   const [errors, setErrors] = useState([]);
   const {closeModal} = useModal()
   const [formValues, setFormValues] = useState({
 
-        name: goal?.name || "",
-        description: goal?.description || "",
-        difficulty: goal?.difficulty || "",
-        importance: goal?.importance || "",
-        // tags: goal?.tags || "",
-        due_date: goal?.due_date ? new Date(goal.due_date).toISOString().slice(0, 16) : "",
+        name: task?.name || "",
+        description: task?.description || "",
+        difficulty: task?.difficulty || "",
+        priority: task?.priority || "",
+        // tags: task?.tags || "",
+        due_date: task?.due_date ? new Date(task.due_date).toISOString().slice(0, 16) : "",
 
   });
-  console.log(goal, "GOAL")
-  console.log(formValues, "duedate")
 
 
 
@@ -33,7 +32,7 @@ const EditGoalModal = ({ id }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = await dispatch(thunkEditGoal(id, formValues));
+    const data = await dispatch(thunkEditTask(id, formValues));
     if (data?.errors) {
       setErrors(data?.errors);
 
@@ -81,12 +80,12 @@ const EditGoalModal = ({ id }) => {
         </select>
       </div>
       <div>
-        <label htmlFor="importance">Importance *</label>
-        <select id="importance" name="importance" value={formValues.importance}
+        <label htmlFor="priority">Priority *</label>
+        <select id="priority" name="priority" value={formValues.importance}
         onChange={handleInputChange} required>
-          <option value="Crucial">Crucial</option>
-          <option value="Important">Important</option>
-          <option value="Not Important">Not Important</option>
+           <option value="Urgent">Urgent</option>
+          <option value="Soon">Soon</option>
+          <option value="Trivial">Trivial</option>
         </select>
       </div>
       {/* <div>
@@ -111,9 +110,9 @@ const EditGoalModal = ({ id }) => {
         />
       </div>
 
-      <button type="submit">Update Goal</button>
+      <button type="submit">Update Task</button>
     </form>
   );
 };
 
-export default EditGoalModal;
+export default EditTaskModal;

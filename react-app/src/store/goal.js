@@ -81,7 +81,7 @@ export const thunkFetchAllGoals = () => async (dispatch) => {
     const {name, description, difficulty, importance,
     tags, due_date, parent_goal_id} = goalData
 
-    console.log(goalData, "Thunk data")
+    
     const res = await fetch('/api/goals/', {
       method: 'POST',
       headers: {

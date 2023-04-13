@@ -16,8 +16,12 @@ const CompleteGoalButton = ({goalId})=>{
       const res = await dispatch(thunkCompleteGoal(goalId))
         let badges = await dispatch(thunkGetAllBadges())
         const badge = Object.values(badges).filter(badge=>badge.goal_id === goalId)
-        
-      history.push(`/badges/${badge[0]?.id}`)
+        if (badge){
+
+          history.push(`/badges/${badge[0]?.id}`)
+        }
+
+
     }
 
     return (

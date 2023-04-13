@@ -4,12 +4,17 @@ import session from './session'
 import { goalReducer } from './goal';
 import goalNotesReducer from './goalNote';
 import badgesReducer from './badge';
+import { taskReducer } from './task';
+import taskNotesReducer from './taskNote';
 
 const rootReducer = combineReducers({
   session,
   goals: goalReducer,
   goalNote: goalNotesReducer,
-  badges: badgesReducer
+  badges: badgesReducer,
+  tasks: taskReducer,
+  taskNote: taskNotesReducer
+
 });
 
 

@@ -1,47 +1,67 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
-import { thunkEditGoal } from "../../store/goal";
 import { useModal } from "../../context/Modal";
-const EditGoalModal = ({ id }) => {
+import { thunkCreateTask } from "../../store/task";
 
+
+const CreateTaskModal = ({goalId}) => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const goal = useSelector(state => state.goals?.singleGoal);
+  const { closeModal } = useModal()
   const [errors, setErrors] = useState([]);
-  const {closeModal} = useModal()
-  const [formValues, setFormValues] = useState({
 
-        name: goal?.name || "",
-        description: goal?.description || "",
-        difficulty: goal?.difficulty || "",
-        importance: goal?.importance || "",
-        // tags: goal?.tags || "",
-        due_date: goal?.due_date ? new Date(goal.due_date).toISOString().slice(0, 16) : "",
+  const [formValues, setFormValues] = useState({
+    name: "",
+    description: "",
+    difficulty: "Medium",
+    priority: "Soon",
+    tags: "",
+    due_date: "",
 
   });
-  console.log(goal, "GOAL")
-  console.log(formValues, "duedate")
 
-
-
+  console.log(goalId)
   const handleInputChange = event => {
     const { name, value } = event.target;
     setFormValues({ ...formValues, [name]: value });
-    console.log(formValues,"fORM VALS")
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const data = await dispatch(thunkEditGoal(id, formValues));
-    if (data?.errors) {
-      setErrors(data?.errors);
 
-    } else {
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   const data = await dispatch(thunkCreateTask(formValues, goalId))
 
-      closeModal()
+  //   if (data?.errors) {
+  //     setErrors(data?.errors);
+  //   } else {
+
+  //     console.log(data)
+  //     history.push(`/tasks/${data.id}`)
+  //     closeModal();
+  //   }
+
+
+  // };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const data = await dispatch(thunkCreateTask(formValues, goalId));
+
+      if (data?.errors) {
+        setErrors(data?.errors);
+      } else {
+        console.log(data);
+        history.push(`/tasks/${data.id}`);
+        closeModal();
+      }
+    } catch (error) {
+      // Handle any errors that might occur during the dispatch
+      console.error("Error occurred during task creation:", error);
     }
   };
+
 
   return (
     <form onSubmit={handleSubmit}>
@@ -50,7 +70,7 @@ const EditGoalModal = ({ id }) => {
           <li key={idx}>{error}</li>
         ))}
       </ul>
-      <div >
+      <div>
         <label htmlFor="name">Name *</label>
         <input
           type="text"
@@ -81,12 +101,12 @@ const EditGoalModal = ({ id }) => {
         </select>
       </div>
       <div>
-        <label htmlFor="importance">Importance *</label>
-        <select id="importance" name="importance" value={formValues.importance}
+        <label htmlFor="priority">Priority *</label>
+        <select id="priority" name="priority" value={formValues.importance}
         onChange={handleInputChange} required>
-          <option value="Crucial">Crucial</option>
-          <option value="Important">Important</option>
-          <option value="Not Important">Not Important</option>
+          <option value="Urgent">Urgent</option>
+          <option value="Soon">Soon</option>
+          <option value="Trivial">Trivial</option>
         </select>
       </div>
       {/* <div>
@@ -95,11 +115,12 @@ const EditGoalModal = ({ id }) => {
           type="text"
           name="tags"
           id="tags"
+          placeholder="Max 10 tags"
           value={formValues.tags}
           onChange={handleInputChange}
         />
       </div> */}
-      <div>
+       <div>
         <label htmlFor="due_date">Due Date</label>
         <input
           type="datetime-local"
@@ -111,9 +132,9 @@ const EditGoalModal = ({ id }) => {
         />
       </div>
 
-      <button type="submit">Update Goal</button>
+      <button type="submit">Create Task</button>
     </form>
   );
 };
 
-export default EditGoalModal;
+export default CreateTaskModal;

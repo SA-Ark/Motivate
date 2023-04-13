@@ -10,6 +10,11 @@ import SingleGoal from "./components/Pages/SingleGoal";
 import SingleBadge from "./components/Pages/SingleBadge";
 import SplashPage from "./components/Pages/SplashPage";
 import ParentGoals from "./components/Pages/ParentGoals";
+import SingleTask from "./components/Pages/SingleTask";
+import Tasks from "./components/Pages/Tasks";
+import FinishedTasks from "./components/Pages/FinishedTasks";
+import SubTasks from "./components/Pages/Subtasks";
+import FinishedSubTasks from "./components/Pages/FinishedSubtasks";
 
 function App() {
   const dispatch = useDispatch();
@@ -40,6 +45,21 @@ function App() {
           </ProtectedRoute>
           <ProtectedRoute path="/badges/:id" exact={true} >
             <SingleBadge />
+          </ProtectedRoute>
+          <ProtectedRoute path="/tasks/:id" exact={true} >
+            <SingleTask />
+          </ProtectedRoute>
+          <ProtectedRoute path="/goals/tasks/:goalId" exact={true} >
+            <Tasks />
+          </ProtectedRoute>
+          <ProtectedRoute path="/goals/finishedtasks/:goalId" exact={true} >
+            <FinishedTasks />
+          </ProtectedRoute>
+          <ProtectedRoute path="/tasks/subtasks/:taskId" exact={true} >
+            <SubTasks />
+          </ProtectedRoute>
+          <ProtectedRoute path="/tasks/subtasks/finished/:taskId" exact={true} >
+            <FinishedSubTasks />
           </ProtectedRoute>
         </Switch>
       )}
