@@ -15,6 +15,7 @@ import Tasks from "./components/Pages/Tasks";
 import FinishedTasks from "./components/Pages/FinishedTasks";
 import SubTasks from "./components/Pages/Subtasks";
 import FinishedSubTasks from "./components/Pages/FinishedSubtasks";
+import Home from "./components/Pages/Home";
 
 function App() {
   const dispatch = useDispatch();
@@ -31,6 +32,9 @@ function App() {
           <Route path="/" exact={true}>
           <SplashPage />
           </Route>
+          <ProtectedRoute path="/home" exact={true} >
+            <Home />
+          </ProtectedRoute>
           <ProtectedRoute path="/allgoals" exact={true} >
             <Goals />
           </ProtectedRoute>

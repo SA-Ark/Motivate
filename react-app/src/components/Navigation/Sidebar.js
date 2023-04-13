@@ -17,16 +17,16 @@ function Sidebar() {
   return (
     <nav>
         <ul className="nav-menu">
-        <li className="nav-menu-links"><Link to="/">Home</Link></li>
+        {/* <li className="nav-menu-links"><Link to="/home">Home</Link></li> */}
         <li className="nav-menu-links"><Link to="/allgoals">Goals</Link></li>
         <li className="nav-menu-links"><Link to="/badges">Badges</Link></li>
       </ul>
-      <div className="search-bar">
+      {/* <div className="search-bar">
         <input type="text" placeholder="Search..." value={searchTerm} onChange={handleSearch} />
 
             <img className="search-button image" onClick={handleSearchClick}
             src={searchIcon} alt="Search" />
-      </div>
+      </div> */}
 
     </nav>
   );
