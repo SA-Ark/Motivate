@@ -8,7 +8,7 @@ import { useParams, useHistory } from 'react-router-dom';
 import { thunkFetchGoalById } from '../../store/goal';
 
 
-function Tasks() {
+function HabitTasks() {
   const tasks = useSelector(state => Object.values(state.tasks?.tasks))
   const goal = useSelector(state => state.goals?.singleGoal)
   const history = useHistory()
@@ -20,25 +20,18 @@ function Tasks() {
 
   }, [dispatch, tasks?.length])
 
-  const backToGoal = () => {
-    history.push(`/goals/${goalId}`)
+  const backToHome = () => {
+    history.push(`/home`)
   }
 
   return (
     <div className="all-goals-page">
-      <div className="create-goal-button">
-        <OpenModalButton
-          buttonText="Create New Task"
-          modalComponent={
-            <CreateTaskModal goalId={goalId} />}
-        />
-      </div>
-      <h1 className="all-goal-title">Current Tasks For {goal?.name}</h1>
-        <button onClick={backToGoal}> Back To Goal</button>
+      <h1 className="all-goal-title">Current Daily Tasks </h1>
+        <button onClick={backToHome}> Back To Home</button>
       <CurrentTasksForGoalCard tasks={tasks} />
 
     </div>
   );
 }
 
-export default Tasks;
+export default HabitTasks;

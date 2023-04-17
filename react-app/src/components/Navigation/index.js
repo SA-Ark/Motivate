@@ -1,12 +1,13 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import './Navigation.css';
-import Sidebar from './Sidebar';
+import {Sidebar} from './Sidebar';
 
 function Navigation({ isLoaded }){
 	const sessionUser = useSelector(state => state.session.user);
+	
 	let cName = "nav-link"
 	if (!sessionUser){
 		cName="logged-out-nav-link"

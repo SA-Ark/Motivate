@@ -11,10 +11,10 @@ function FinishedTasksCard({ tasks }) {
   return (
 
     <div>
-      {!tasks.length && <h3>No Finished Tasks For This Goal</h3>}
+      {/* {!tasks.length && <h3>No Finished Tasks For This Goal</h3>} */}
       {tasks?.map((task, index) => (
         <div key={task?.id || index}
-          className="all-goals-card"
+          className="all-goals-card card"
           onClick={() => onClick(task)} >
           <h3>{task?.name}</h3>
           <p>Description: {task?.description}</p>

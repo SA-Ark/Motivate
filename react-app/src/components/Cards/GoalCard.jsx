@@ -5,15 +5,34 @@ import EditGoalNoteModal from '../Modals/EditGoalNote';
 import CompleteGoalButton from '../Buttons/CompleteGoalButton';
 import { useHistory } from 'react-router-dom';
 import CreateTaskModal from '../Modals/CreateTaskModal';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { thunkGetAllBadges } from '../../store/badge';
+import { useEffect } from 'react';
 function GoalCard({ goal }) {
   const history = useHistory();
+  const dispatch = useDispatch()
+  let id;
+  useEffect(()=>{
+    dispatch(thunkGetAllBadges())
+  }, [dispatch]
+  )
+  const badges = useSelector(state => Object.values(state.badges?.badges))
+    badges.forEach((badge)=>{
+      if(badge?.goal_id === goal?.id){
+        id = badge?.id
+      }
+    })
+
   const tasks = ()=>{
     history.push(`/goals/tasks/${goal?.id}`)
   }
 
   const finishedTasks = ()=>{
     history.push(`/goals/finishedtasks/${goal?.id}`)
+  }
+
+  const backToBadge = ()=>{
+    history.push(`/badges/${id}`)
   }
 
   return (
@@ -30,7 +49,8 @@ function GoalCard({ goal }) {
       {goal?.finished_on && <p>Finished On: {goal.finished_on}</p>}
 
       {
-      goal?.finished_on? null:
+      goal?.finished_on?
+      <button onClick={backToBadge}>Go Back To The Badge For This Goal</button>:
       <>
       <div>
         <OpenModalButton
@@ -68,5 +88,6 @@ function GoalCard({ goal }) {
     </div>
   )
 }
+
 
 export default GoalCard

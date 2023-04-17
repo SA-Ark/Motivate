@@ -4,15 +4,20 @@ import {useDispatch, useSelector } from "react-redux";
 import { thunkFetchTaskById } from "../../store/task";
 import { useEffect } from "react";
 
-const CompleteTaskButton = ({task})=>{
+const CompleteSubtaskButton = ({task})=>{
     const dispatch = useDispatch();
     const history = useHistory();
+    useEffect(()=>{
 
+
+    }, [])
 
     const handleSubmit = async ()=>{
 
-       history.push(`/goals/finishedtasks/${task?.goal_id}`)
-    dispatch(thunkCompleteTask(task?.id))
+        dispatch(thunkCompleteTask(task?.id))
+        history.push(`/tasks/subtasks/finished/${task?.parent_task_id}`)
+
+
 
     }
 
@@ -23,4 +28,4 @@ const CompleteTaskButton = ({task})=>{
     )
 }
 
-export default CompleteTaskButton
+export default CompleteSubtaskButton

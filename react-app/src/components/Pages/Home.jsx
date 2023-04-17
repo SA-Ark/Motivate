@@ -1,5 +1,5 @@
 import React from 'react'
-
+import {GoalCard} from '../Cards/GoalCard'
 
 function Home(){
     return(

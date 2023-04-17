@@ -21,6 +21,7 @@ def seed_tasks():
             due_date= datetime(datetime.now().year, randint(5,12), randint(5,12))
             )
             db.session.add(task)
+            db.session.commit()
             for i in range(randint(1,6)):
                 sub_task = Task(
                 user_id = g.user_id,

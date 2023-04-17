@@ -11,7 +11,7 @@ function AllGoalsCard ({goals}){
         <div>
           {goals?.map((goal, index) => (
             <div key={goal?.id || index}
-            className="all-goals-card"
+            className="all-goals-card card card"
             onClick={()=> onClick(goal)} >
               <h3>{goal?.name}</h3>
               <p>Description: {goal?.description}</p>

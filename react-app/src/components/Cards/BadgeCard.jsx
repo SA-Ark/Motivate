@@ -18,7 +18,10 @@ function BadgeCard({ badge }) {
 useEffect(()=>{
 
       // dispatch(thunkFetchNoteByGoalId(badge?.goal_id))
-      dispatch(thunkFetchGoalById(badge?.goal_id))
+      if (badge?.goal_id){
+
+        dispatch(thunkFetchGoalById(badge?.goal_id))
+      }
 
     },[dispatch, badge?.goal_id])
 
@@ -48,7 +51,7 @@ useEffect(()=>{
           <CreateChildGoalModal parentGoalId={goal?.id} />}
           />
         : <button onClick={goToChildGoal}>Go To Next Goal</button>}
-        <button onClick={seeChainedGoals}>See Previous Goals</button>
+        <button onClick={seeChainedGoals}>See Completed Goals For This Badge</button>
         </div>
 
     </div>

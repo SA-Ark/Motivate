@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { thunkFetchAllTasksByGoalId } from '../../store/task';
 import CreateTaskModal from '../Modals/CreateTaskModal';
@@ -14,11 +14,31 @@ function FinishedTasks() {
   const history = useHistory()
   const dispatch = useDispatch()
   const { goalId } = useParams()
-  useEffect(() => {
-    dispatch(thunkFetchAllTasksByGoalId(goalId))
-    dispatch(thunkFetchGoalById(goalId))
 
-  }, [dispatch, tasks?.length])
+  const searchTerm = useSelector(state => state.search?.searchTerm)?.toLowerCase()
+  let [t2, setT2] = useState(tasks)
+
+  if (tasks && !searchTerm &&
+    JSON.stringify(t2) !== JSON.stringify(tasks)) {
+    setT2(tasks)
+  }
+
+
+  useEffect(() => {
+    dispatch(thunkFetchGoalById(goalId))
+    dispatch(thunkFetchAllTasksByGoalId(goalId))
+    .then(() => {
+
+      if (searchTerm) {
+
+        setT2(tasks.filter((task) => task.name.toLowerCase().includes(searchTerm) || task.description.toLowerCase().includes(searchTerm)))
+      } else {
+
+        setT2(tasks)
+      }
+    })
+
+  }, [dispatch, searchTerm])
   const backToGoal = () => {
     history.push(`/goals/${goalId}`)
   }
@@ -35,8 +55,9 @@ function FinishedTasks() {
       </div>
       <h1 className="all-goal-title">Finished Tasks For {goal?.name}</h1>
       <button onClick={backToGoal}> Back To Goal</button>
-      <FinishedTasksCard tasks={tasks} />
-
+      <FinishedTasksCard tasks={t2} />
+      {!tasks.length && <h3>No Finished Tasks For This Goal</h3>}
+      {(tasks?.length && !t2?.length) ? <h3>No Finished Tasks Match Search Criteria.</h3> : null}
     </div>
   );
 }

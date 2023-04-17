@@ -1,8 +1,8 @@
 import EditTaskModal from '../Modals/EditTaskModal';
 import DeleteTaskButton from '../Buttons/DeleteTaskButton';
 import OpenModalButton from '../OpenModalButton';
-
 import EditTaskNoteModal from '../Modals/EditTaskNote';
+import CompleteSubtaskButton from '../Buttons/CompleteSubtaskButton';
 import CompleteTaskButton from '../Buttons/CompleteTaskButton';
 import { useHistory } from 'react-router-dom';
 
@@ -58,8 +58,9 @@ function TaskCard({ task }) {
 
       </div>
 
-
-      <CompleteTaskButton taskId={task?.id}/>
+        {task?.parent_task_id? <CompleteSubtaskButton task={task}/>
+         : <CompleteTaskButton task={task}/>}
+     
       <button onClick={currSubtasks}>See Current Subtasks For This Task</button>
       <button onClick={finishedSubtasks}>See Finished Subtasks For This Task</button>
         {

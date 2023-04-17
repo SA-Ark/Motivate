@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { thunkFetchAllTasksByGoalId } from '../../store/task';
 import CreateSubtaskModal from '../Modals/CreateSubtaskModal';
@@ -11,21 +11,41 @@ import { thunkFetchTaskById } from '../../store/task';
 function SubTasks() {
   const history = useHistory();
   let tasks = useSelector(state => Object.values(state.tasks?.tasks))
-  const goal = useSelector(state => state.goals?.singleGoal)
   const task = useSelector(state => state.tasks?.singleTask)
   const dispatch = useDispatch()
   let taskId
   taskId = useParams().taskId
-  if(task?.parent_task_id && !taskId){
+  if (task?.parent_task_id && !taskId) {
 
     taskId = task.parent_task_id
   }
-  console.log(taskId, "taskId")
+
+  if (!task?.id) {
+    taskId = taskId
+  }
+  const searchTerm = useSelector(state => state.search?.searchTerm)?.toLowerCase()
+  let [t2, setT2] = useState(tasks)
+
+  if (tasks && !searchTerm &&
+    JSON.stringify(t2) !== JSON.stringify(tasks)) {
+    setT2(tasks)
+  }
+
+
   useEffect(() => {
-    dispatch(thunkFetchTaskById(task?.id)).then((task) => {
-       dispatch(thunkFetchAllTasksByGoalId(task?.goal_id))
-      })
-  }, [dispatch, tasks?.length])
+    dispatch(thunkFetchTaskById(taskId)).then((task) => {
+      dispatch(thunkFetchAllTasksByGoalId(task?.goal_id))
+    }).then(() => {
+
+      if (searchTerm) {
+        console.log("ST")
+        setT2(tasks.filter((task) => task.name.toLowerCase().includes(searchTerm) || task.description.toLowerCase().includes(searchTerm)))
+      } else {
+        console.log("else")
+        setT2(tasks)
+      }
+    })
+  }, [dispatch, searchTerm])
   const backToParentTask = () => {
     history.push(`/tasks/${taskId}`)
   }
@@ -40,8 +60,9 @@ function SubTasks() {
       </div>
       <h1 className="all-goal-title">Current SubTasks For {task?.name}</h1>
       <button onClick={backToParentTask}>Back to Parent Task</button>
-      <CurrentSubtasksForTaskCard tasks={tasks} taskId={parseInt(taskId)} />
-
+      <CurrentSubtasksForTaskCard tasks={t2} taskId={parseInt(taskId)} />
+      {!tasks.length && <h3>No Current Tasks For This Goal</h3>}
+      {(tasks?.length && !t2?.length) ? <h3>No Tasks Match Search Criteria.</h3> : null}
     </div>
   );
 }
