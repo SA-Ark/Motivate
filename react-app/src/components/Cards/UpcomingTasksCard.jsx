@@ -1,7 +1,7 @@
 
 import { useHistory } from "react-router-dom";
 
-function CurrentTasksForGoalCard({ tasks }) {
+function UpcomingTasksCard({ tasks }) {
 
   console.log(tasks, "tasks")
   const history = useHistory();
@@ -9,12 +9,12 @@ function CurrentTasksForGoalCard({ tasks }) {
   const onClick = (task) => {
 
 
-    history.push(`/tasks/${task?.id}`)
+    history.push(`/goals/upcoming/${task?.id}`)
 
   }
 
  let  tasks2 = tasks?.filter(task => task.finished_on === null && task.parent_task_id === null)
- 
+
   if (tasks2?.length) {
 
     return (
@@ -42,4 +42,4 @@ function CurrentTasksForGoalCard({ tasks }) {
   }
 }
 
-export default CurrentTasksForGoalCard
+export default UpcomingTasksCard

@@ -7,6 +7,7 @@ function FinishedTasksCard({ tasks }) {
   const onClick = (task) => {
     history.push(`/tasks/${task?.id}`)
   }
+  
   tasks = tasks.filter(task => task.finished_on !== null && task.parent_task_id === null)
   return (
 

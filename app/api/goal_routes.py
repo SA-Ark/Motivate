@@ -53,6 +53,7 @@ def create_goal():
             importance=form.importance.data,
             tags=form.tags.data,
             due_date=form.due_date.data,
+            recurring_goal=form.recurring_goal.data,
             parent_goal_id = form.parent_goal_id.data
         )
         db.session.add(new_goal)

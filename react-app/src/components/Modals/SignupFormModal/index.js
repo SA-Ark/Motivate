@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../../context/Modal";
 import { signUp } from "../../../store/session";
 import { useHistory } from "react-router-dom";
 import "./SignupForm.css";
+import { thunkCreateGoal } from "../../../store/goal";
 
 function SignupFormModal() {
+	const user = useSelector((state) => state.session?.user);
 	const dispatch = useDispatch();
 	const [email, setEmail] = useState("");
 	const [username, setUsername] = useState("");
@@ -15,6 +17,38 @@ function SignupFormModal() {
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const [errors, setErrors] = useState([]);
 	const { closeModal } = useModal();
+	const dailyGoalData= {
+		name: "dailyGoal",
+		description: `This is ${user?.username}'s daily goal`,
+		difficulty: "Easy",
+		importance: "High",
+		tags: "Daily_Goal",
+		recurring_goal: true
+	}
+	const weeklyGoalData= {
+		name: "weeklyGoal",
+		description: `This is ${user?.username}'s weekly goal`,
+		difficulty: "Easy",
+		importance: "High",
+		tags: "Weekly_Goal",
+		recurring_goal: true
+	}
+	const monthlyGoalData= {
+		name: "monthlyGoal",
+		description: `This is ${user?.username}'s monthly goal`,
+		difficulty: "Easy",
+		importance: "High",
+		tags: "Monthly_Goal",
+		recurring_goal: true
+	}
+	const yearlyGoalData= {
+		name: "yearlyGoal",
+		description: `This is ${user?.username}'s yearly goal`,
+		difficulty: "Easy",
+		importance: "High",
+		tags: "Yearly_Goal",
+		recurring_goal: true
+	}
 	const history = useHistory();
 
 	const handleSubmit = async (e) => {
@@ -24,7 +58,12 @@ function SignupFormModal() {
 			if (data) {
 				setErrors(data);
 			} else {
-				history.push("/allgoals")
+				history.push("/home")
+				dispatch(thunkCreateGoal(dailyGoalData))
+				.then(()=>dispatch(thunkCreateGoal(weeklyGoalData)))
+				.then(()=>dispatch(thunkCreateGoal(monthlyGoalData))).
+				then(()=>dispatch(thunkCreateGoal(yearlyGoalData)))
+
 				closeModal();
 			}
 		} else {

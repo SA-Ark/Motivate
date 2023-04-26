@@ -6,21 +6,26 @@ import CompleteSubtaskButton from '../Buttons/CompleteSubtaskButton';
 import CompleteTaskButton from '../Buttons/CompleteTaskButton';
 import { thunkFetchGoalById } from '../../store/goal';
 import { thunkFetchTaskById } from '../../store/task';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 
-function TaskCard({ task }) {
+function SingleUpcomingTaskCard() {
+
   const history = useHistory();
   const dispatch = useDispatch();
+  const task = useSelector(state => state.tasks?.singleTask)
   const goal = useSelector(state => state.goals?.singleGoal)
-  
-
-
+  const {id} = useParams()
   useEffect(()=>{
+    dispatch(thunkFetchTaskById(id))
+  }, [dispatch, id])
 
-    dispatch(thunkFetchGoalById(task?.goal_id))
-  }, [dispatch, task?.goal_id])
+    useEffect(()=>{
+  dispatch(thunkFetchGoalById(task?.goal_id))
+    }, [dispatch, task?.goal_id])
+
+
 
   const tasks = ()=>{
     history.push(`/goals/tasks/${task?.goal_id}`)
@@ -29,8 +34,8 @@ function TaskCard({ task }) {
     history.push(`/tasks/subtasks/${task?.id}`)
   }
 
-  const finishedSubtasks = ()=>{
-    history.push(`/tasks/subtasks/finished/${task?.id}`)
+  const upcomingTasks = ()=>{
+    history.push(`/goals/upcoming/${task?.goal_id}/${goal.name.slice(0, goal.name.length-4)}`)
   }
 
   const parentTask = ()=>{
@@ -70,17 +75,8 @@ function TaskCard({ task }) {
         />
       </div>
 
-      <div>
-
-        <DeleteTaskButton taskId={task?.id} />
-
-      </div>
-
-        {task?.parent_task_id? <CompleteSubtaskButton task={task}/>
-         : <CompleteTaskButton task={task}/>}
-
       <button onClick={currSubtasks}>See Current Subtasks For This Task</button>
-      <button onClick={finishedSubtasks}>See Finished Subtasks For This Task</button>
+
         {
           task?.parent_task_id &&
 
@@ -96,7 +92,8 @@ function TaskCard({ task }) {
 <div>
   {!goal?.recurring_goal?
       <button onClick={tasks}>Back to Current Tasks For This Goal</button>:
-      <button onClick={home}>Back to Home</button>
+      <button onClick={upcomingTasks}>Back to Upcoming Tasks</button>
+
   }
       <OpenModalButton
       buttonText="View & Update Notes"
@@ -108,4 +105,4 @@ function TaskCard({ task }) {
   )
 }
 
-export default TaskCard
+export default SingleUpcomingTaskCard

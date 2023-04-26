@@ -6,8 +6,8 @@ import { thunkFetchNoteByTaskId } from '../../store/taskNote';
 import TaskCard from '../Cards/TaskCard';
 import CreateSubtaskModal from '../Modals/CreateSubtaskModal';
 import OpenModalButton from '../OpenModalButton';
-
-function SingleTask() {
+import SingleUpcomingTaskCard from '../Cards/SingleUpcomingTaskCard';
+function SingleUpcomingTask() {
     const singleTask = useSelector(state=>state.tasks?.singleTask)
     const dispatch = useDispatch()
     const {id} = useParams()
@@ -17,7 +17,7 @@ function SingleTask() {
       dispatch(thunkFetchTaskById(id))
       dispatch(thunkFetchNoteByTaskId(id))
 
-        
+
     }, [dispatch, id])
 
 
@@ -35,10 +35,10 @@ function SingleTask() {
         </div>
       <h1>{singleTask?.name}</h1>
 
-       <TaskCard task={singleTask} />
+       <SingleUpcomingTaskCard task={singleTask} />
 
     </div>
   );
 }
 
-export default SingleTask;
+export default SingleUpcomingTask;

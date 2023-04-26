@@ -9,12 +9,15 @@ import { thunkFetchGoalById } from '../../store/goal';
 
 
 function Tasks() {
-  const tasks = useSelector(state => Object.values(state.tasks?.tasks))
+  let tasks = useSelector(state => Object.values(state.tasks?.tasks))
   const goal = useSelector(state => state.goals?.singleGoal)
   const history = useHistory()
   const dispatch = useDispatch()
   const { goalId } = useParams()
   const searchTerm = useSelector(state => state.search?.searchTerm)?.toLowerCase()
+  tasks = tasks?.filter((task) => task.goal_id === +goalId && task.finished_on === null)
+ 
+
   let [t2, setT2] = useState(tasks)
 
   if (tasks && !searchTerm &&

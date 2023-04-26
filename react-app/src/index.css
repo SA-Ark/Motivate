@@ -307,3 +307,13 @@ button:hover{
 .headers div{
   margin-bottom: 200px;
 }
+
+.greyed-out{
+  background-color: gray;
+}
+
+.greyed-out:hover{
+  background-color: gray;
+  box-shadow: 0px 0px 0px gray;
+  cursor: default;
+}

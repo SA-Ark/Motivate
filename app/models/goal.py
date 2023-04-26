@@ -20,11 +20,12 @@ class Goal(db.Model):
     completion_percent=db.Column(db.Integer, default=0, nullable=False)
     tags=db.Column(db.String(255), nullable=True)
     due_date=db.Column(db.DateTime, nullable=True)
+    recurring_goal = db.Column(db.Boolean, default=False, nullable=False)
     created_at=db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     updated_at=db.Column(db.DateTime, onupdate=datetime.utcnow, nullable=True)
     finished_on=db.Column(db.DateTime, nullable=True)
     badges=db.relationship('Badge', backref='goal', lazy=True)
-    
+
 
     note=db.relationship('GoalNote', backref='goal', uselist=False)
 
@@ -41,6 +42,7 @@ class Goal(db.Model):
             'importance': self.importance,
             'completion_percent': self.completion_percent,
             'tags': self.tags,
+            'recurring_goal': self.recurring_goal,
             'due_date': self.due_date if self.due_date else None,
             'created_at': self.created_at,
             'updated_at': self.updated_at if self.updated_at else None,

@@ -11,15 +11,15 @@ function CurrentSubtasksForTaskCard({ tasks, taskId }) {
 
   }
 
-  tasks = tasks.filter(task => task.finished_on === null && task.parent_task_id === taskId)
+  let tasks2 = tasks.filter(task => task.finished_on === null && task.parent_task_id === taskId)
 
-  if (tasks?.length) {
+  if (tasks2?.length) {
 
     return (
 
       <div>
 
-        {tasks?.map((task, index) => (
+        {tasks2?.map((task, index) => (
           <div key={task?.id || index}
             className="all-goals-card card"
             onClick={() => onClick(task)} >
@@ -39,7 +39,7 @@ function CurrentSubtasksForTaskCard({ tasks, taskId }) {
 
         null
 
-      
+
     )
   }
 }

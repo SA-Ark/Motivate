@@ -5,7 +5,7 @@ import { useModal } from "../../context/Modal";
 import { thunkCreateTask } from "../../store/task";
 
 
-const CreateTaskModal = ({goalId}) => {
+const CreateRecurringTask = ({goalId}) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { closeModal } = useModal()
@@ -29,6 +29,10 @@ let localTime = moment.tz(userTimezone);
 let minTime = localTime.add(10,"minutes").format('YYYY-MM-DDTHH:mm')
 
 
+let nextDaily = localTime.add(1,"days").format('YYYY-MM-DDTHH:mm')
+let nextWeekly = localTime.add(1,"weeks").format('YYYY-MM-DDTHH:mm')
+let nextMonthly = localTime.add(1,"months").format('YYYY-MM-DDTHH:mm')
+let nextYearly = localTime.add(1,"years").format('YYYY-MM-DDTHH:mm')
 
 
   const handleInputChange = event => {
@@ -129,7 +133,7 @@ let minTime = localTime.add(10,"minutes").format('YYYY-MM-DDTHH:mm')
         />
       </div> */}
        <div>
-        <label htmlFor="due_date">Due Date</label>
+        <label htmlFor="due_date">Due Date *</label>
         <input
           type="datetime-local"
           name="due_date"
@@ -137,6 +141,7 @@ let minTime = localTime.add(10,"minutes").format('YYYY-MM-DDTHH:mm')
           min={minTime}
           value={formValues.due_date}
           onChange={handleInputChange}
+          required
         />
       </div>
 
@@ -145,4 +150,4 @@ let minTime = localTime.add(10,"minutes").format('YYYY-MM-DDTHH:mm')
   );
 };
 
-export default CreateTaskModal;
+export default CreateRecurringTask;

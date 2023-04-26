@@ -8,16 +8,32 @@ import { useParams, useHistory } from 'react-router-dom';
 import { thunkFetchGoalById } from '../../store/goal';
 import FinishedTasksCard from '../Cards/FinishedTasksCard';
 
-function FinishedTasks() {
+function RecentlyFinishedTasks() {
   let tasks = useSelector(state => Object.values(state.tasks?.tasks))
   const goal = useSelector(state => state.goals?.singleGoal)
   const history = useHistory()
   const dispatch = useDispatch()
   const { goalId } = useParams()
 
+  const currDate = new Date()
+  const moment = require('moment-timezone');
+  const currTimezone = moment.tz.guess();
 
 
   tasks = tasks?.filter((task)=> task.goal_id === +goalId && task.finished_on !== null)
+
+  tasks = tasks?.filter((task)=>{
+    let due_date = moment.tz(task.due_date, "ddd, DD MMM YYYY HH:mm:ss z", currTimezone);
+     let milliseconds = due_date - currDate
+    if ((goal?.name === "dailyGoal" && milliseconds < 86400000)
+    || (goal?.name === "weeklyGoal" && milliseconds < 604800000)
+    || (goal?.name === "monthlyGoal" && milliseconds < 2629746000)
+    || (goal?.name === "yearlyGoal" && milliseconds < 31556952000) ){
+        return task
+    }
+})
+
+
 
   const searchTerm = useSelector(state => state.search?.searchTerm)?.toLowerCase()
   let [t2, setT2] = useState(tasks)
@@ -61,7 +77,7 @@ function FinishedTasks() {
             <CreateTaskModal goalId={goalId} />}
         />
       </div>
-      <h1 className="all-goal-title">Finished Tasks For {goal?.name}</h1>
+      <h1 className="all-goal-title">Recently Finished Tasks For {goal?.name}</h1>
       { goal?.recurring_goal?
       <button onClick={backToHome}> Back To Home</button>:
       <button onClick={backToGoal}> Back To Goal</button>}
@@ -72,4 +88,4 @@ function FinishedTasks() {
   );
 }
 
-export default FinishedTasks;
+export default RecentlyFinishedTasks;

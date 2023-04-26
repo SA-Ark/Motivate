@@ -6,7 +6,11 @@ import AllGoalsCard from '../Cards/AllGoalsCard';
 import OpenModalButton from '../OpenModalButton';
 
 function Goals() {
-  const goals = useSelector(state => Object.values(state.goals?.goals))
+  let goals = useSelector(state => Object.values(state.goals?.goals))
+  goals = goals?.filter((goal) => {
+    return goal.recurring_goal === false
+  })
+  console.log(goals, "goals")
   const dispatch = useDispatch()
   const searchTerm = useSelector(state => state.search?.searchTerm)?.toLowerCase()
   let [g2, setG2] = useState(goals)
@@ -22,7 +26,9 @@ function Goals() {
 
         if (searchTerm) {
 
-          setG2(goals.filter((goal) => goal.name.toLowerCase().includes(searchTerm) || goal.description.toLowerCase().includes(searchTerm)))
+          setG2(goals.filter((goal) => (goal.name.toLowerCase().includes(searchTerm)
+
+           )))
         } else {
 
           setG2(goals)
