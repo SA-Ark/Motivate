@@ -25,6 +25,7 @@ function LoginFormModal() {
   };
 
   return (
+    <div className="modal-fields">
     <>
       <h1>Log In</h1>
       <form onSubmit={handleSubmit}>
@@ -54,6 +55,7 @@ function LoginFormModal() {
         <button type="submit">Log In</button>
       </form>
     </>
+    </div>
   );
 }
 

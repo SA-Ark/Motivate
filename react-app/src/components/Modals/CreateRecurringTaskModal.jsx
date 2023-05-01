@@ -77,6 +77,7 @@ let nextYearly = localTime.add(1,"years").format('YYYY-MM-DDTHH:mm')
 
 
   return (
+    <div className="modal-fields">
     <form onSubmit={handleSubmit}>
       <ul>
         {errors.map((error, idx) => (
@@ -148,6 +149,7 @@ let nextYearly = localTime.add(1,"years").format('YYYY-MM-DDTHH:mm')
 
       <button type="submit">Create Task</button>
     </form>
+    </div>
   );
 };
 

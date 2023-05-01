@@ -28,11 +28,53 @@
   border-radius: 20px;
 }
 
-#modal-content *{
+/* #modal-content input,
+#modal-content textarea,
+#modal-content select,
+#modal-content label{
   padding: 5px;
   width: 300px;
+  margin-bottom: 20px;
+} */
+
+/* #modal-content div{
+  padding: 5px;
+  width: 300px;
+  margin-bottom: 20px;
+} */
+
+.modal-fields div{
+  padding: 5px;
+  width: 300px;
+  margin-bottom: 20px;
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
 }
 
+.modal-fields div *{
+  width: inherit;
+  margin-left: -50px;
+}
+
+.modal-fields label{
+  margin-left: -60px;
+}
+
+
+
 #modal-content button{
-margin-top: 20px;
+margin-top: 10px;
+}
+
+.modal-fields{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+}
+
+.modal-fields button{
+  margin: auto;
 }

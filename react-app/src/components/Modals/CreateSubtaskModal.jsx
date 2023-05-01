@@ -68,6 +68,7 @@ let minTime = localTime.add(10,"minutes").format('YYYY-MM-DDTHH:mm')
     })
   };
   return (
+    <div className="modal-fields">
     <form onSubmit={handleSubmit}>
       <ul>
         {errors.map((error, idx) => (
@@ -139,6 +140,7 @@ let minTime = localTime.add(10,"minutes").format('YYYY-MM-DDTHH:mm')
 
       <button type="submit">Create Task</button>
     </form>
+    </div>
   );
 };
 
