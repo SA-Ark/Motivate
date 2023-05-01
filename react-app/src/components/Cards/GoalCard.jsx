@@ -5,9 +5,24 @@ import EditGoalNoteModal from '../Modals/EditGoalNote';
 import CompleteGoalButton from '../Buttons/CompleteGoalButton';
 import { useHistory } from 'react-router-dom';
 import CreateTaskModal from '../Modals/CreateTaskModal';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { thunkGetAllBadges } from '../../store/badge';
+import { useEffect } from 'react';
 function GoalCard({ goal }) {
   const history = useHistory();
+  const dispatch = useDispatch()
+  let id;
+  useEffect(()=>{
+    dispatch(thunkGetAllBadges())
+  }, [dispatch]
+  )
+  const badges = useSelector(state => Object.values(state.badges?.badges))
+    badges.forEach((badge)=>{
+      if(badge?.goal_id === goal?.id){
+        id = badge?.id
+      }
+    })
+
   const tasks = ()=>{
     history.push(`/goals/tasks/${goal?.id}`)
   }
@@ -15,6 +30,15 @@ function GoalCard({ goal }) {
   const finishedTasks = ()=>{
     history.push(`/goals/finishedtasks/${goal?.id}`)
   }
+
+  const backToBadge = ()=>{
+    history.push(`/badges/${id}`)
+  }
+
+  let dueDate
+  goal?.due_date?
+  dueDate = new Date(goal?.due_date)?.toLocaleString()
+  : dueDate = null
 
   return (
     <div className="goal-card" key={goal?.id}>
@@ -25,12 +49,13 @@ function GoalCard({ goal }) {
       <p>Difficulty: {goal?.difficulty || "unspecified"}</p>
       <p>Importance: {goal?.importance ||"unspecified" }</p>
       {/* <p>Tags: {goal?.tags || "no tags"}</p> */}
-      <p>Due Date: {goal?.due_date || "unspecified"}</p>
+      <p>Due Date: {dueDate || "unspecified"}</p>
       {/* <p>{goal?.completion_percent}</p> */}
       {goal?.finished_on && <p>Finished On: {goal.finished_on}</p>}
 
       {
-      goal?.finished_on? null:
+      goal?.finished_on?
+      <button onClick={backToBadge}>Go Back To The Badge For This Goal</button>:
       <>
       <div>
         <OpenModalButton
@@ -68,5 +93,6 @@ function GoalCard({ goal }) {
     </div>
   )
 }
+
 
 export default GoalCard

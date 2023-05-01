@@ -49,6 +49,7 @@ def upgrade():
     sa.Column('importance', sa.String(length=50), nullable=True),
     sa.Column('completion_percent', sa.Integer(), nullable=False),
     sa.Column('tags', sa.String(length=255), nullable=True),
+    sa.Column('recurring_goal', sa.Boolean(), nullable=False),
     sa.Column('due_date', sa.DateTime(), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.Column('updated_at', sa.DateTime(), nullable=True),

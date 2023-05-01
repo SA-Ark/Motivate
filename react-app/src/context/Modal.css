@@ -15,11 +15,24 @@
   right: 0;
   left: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(6, 6, 6, 0.7);
 }
 
 #modal-content {
   position: absolute;
-  background-color:rgb(26, 44, 28);
+  background-color:rgb(6, 6, 6);
   border: 3px solid rgb(185, 210, 188);
+  padding-right: 40px;
+  padding-left: 30px;
+  padding-bottom: 20px;
+  border-radius: 20px;
+}
+
+#modal-content *{
+  padding: 5px;
+  width: 300px;
+}
+
+#modal-content button{
+margin-top: 20px;
 }

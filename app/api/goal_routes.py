@@ -45,6 +45,7 @@ def create_goal():
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate():
         # Get the form data
+        print(form.due_date.data, "*******")
         new_goal = Goal(
             user_id = current_user.id,
             name=form.name.data,
@@ -52,7 +53,8 @@ def create_goal():
             difficulty=form.difficulty.data,
             importance=form.importance.data,
             tags=form.tags.data,
-            due_date=form.due_date.data,
+            due_date= form.due_date.data,
+            recurring_goal=form.recurring_goal.data,
             parent_goal_id = form.parent_goal_id.data
         )
         db.session.add(new_goal)
@@ -138,7 +140,8 @@ def complete_goal(goal_id):
 
         badge.goal_id = goal_id
         badge.name = goal.name
-        badge.description= badge.description + f'\n {goal.description}'
+        # badge.description= badge.description + f'\n {goal.description}'
+        badge.description = goal.description
         badge.level= badge.level +1
     db.session.commit()
     return goal.to_dict(), 200

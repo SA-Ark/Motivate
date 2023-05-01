@@ -7,27 +7,13 @@ def seed_tasks():
     goals = Goal.query.all()
 
     for g in goals:
-        for i in range(randint(0,3)):
-            task = Task(
-            user_id = g.user_id,
-            goal_id= g.id,
-            name = f"task #{i}",
-            description= f"Complete this task to get closer to achieving {g.name}",
-            edit_access=2,
-            difficulty='Easy' if g.id%3 == 0 else ('Medium' if g.id%3 == 1 else 'Hard'),
-            priority='Urgent' if g.id%3 == 0 else ('Priority' if g.id%3 == 1 else 'Non-Priority'),
-            completion_percent=0,
-            tags='example',
-            due_date= datetime(datetime.now().year, randint(5,12), randint(5,12))
-            )
-            db.session.add(task)
-            for i in range(randint(1,6)):
-                sub_task = Task(
+        if g.recurring_goal != True:
+            for i in range(randint(0,3)):
+                task = Task(
                 user_id = g.user_id,
                 goal_id= g.id,
-                parent_task_id = task.id,
-                name = f"subtask #{i}",
-                description= f"Complete this task to get closer to achieving {task.name}",
+                name = f"task #{i}",
+                description= f"Complete this task to get closer to achieving {g.name}",
                 edit_access=2,
                 difficulty='Easy' if g.id%3 == 0 else ('Medium' if g.id%3 == 1 else 'Hard'),
                 priority='Urgent' if g.id%3 == 0 else ('Priority' if g.id%3 == 1 else 'Non-Priority'),
@@ -35,7 +21,23 @@ def seed_tasks():
                 tags='example',
                 due_date= datetime(datetime.now().year, randint(5,12), randint(5,12))
                 )
-                db.session.add(sub_task)
+                db.session.add(task)
+                db.session.commit()
+                for i in range(randint(1,6)):
+                    sub_task = Task(
+                    user_id = g.user_id,
+                    goal_id= g.id,
+                    parent_task_id = task.id,
+                    name = f"subtask #{i}",
+                    description= f"Complete this task to get closer to achieving {task.name}",
+                    edit_access=2,
+                    difficulty='Easy' if g.id%3 == 0 else ('Medium' if g.id%3 == 1 else 'Hard'),
+                    priority='Urgent' if g.id%3 == 0 else ('Priority' if g.id%3 == 1 else 'Non-Priority'),
+                    completion_percent=0,
+                    tags='example',
+                    due_date= datetime(datetime.now().year, randint(5,12), randint(5,12))
+                    )
+                    db.session.add(sub_task)
     db.session.commit()
 
 

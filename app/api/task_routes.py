@@ -40,6 +40,7 @@ def get_task_by_id(task_id):
 @task_routes.route('/<int:goal_id>', methods=['POST'])
 @login_required
 def create_task(goal_id):
+    print(goal_id, "goal id", type(goal_id))
     form = CreateTaskForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate():
@@ -57,6 +58,7 @@ def create_task(goal_id):
 
 
         )
+        print(new_task, "new task")
         db.session.add(new_task)
         db.session.commit()
         if new_task.parent_task_id:

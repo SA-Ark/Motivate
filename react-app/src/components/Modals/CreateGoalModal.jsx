@@ -3,6 +3,9 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useModal } from "../../context/Modal";
 import { thunkCreateGoal } from '../../store/goal';
+import moment from "moment-timezone";
+
+
 
 
 const CreateGoalModal = () => {
@@ -10,6 +13,10 @@ const CreateGoalModal = () => {
   const history = useHistory();
   const { closeModal } = useModal()
   const [errors, setErrors] = useState([]);
+  const [dueDate, setDueDate] = useState(null);
+  let userTimezone = moment.tz.guess();
+  let localTime = moment.tz(userTimezone);
+let minTime = localTime.add(10,"minutes").format('YYYY-MM-DDTHH:mm')
 
   const [formValues, setFormValues] = useState({
     name: "",
@@ -20,6 +27,7 @@ const CreateGoalModal = () => {
     due_date: "",
 
   });
+  const formattedDate = moment(formValues?.due_date)?.tz(moment.tz.guess())?.format("YYYY-MM-DDTHH:mm");
 
   const handleInputChange = event => {
     const { name, value } = event.target;
@@ -29,7 +37,28 @@ const CreateGoalModal = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = await dispatch(thunkCreateGoal(formValues));
+    // const isoDueDate = formValues.due_date ? formValues.due_date.toISOString().slice(0,-8) : '';
+    let localDate = formValues?.due_date
+    const dueDateString = formValues.due_date ? formValues.due_date.toLocaleString() : '';
+    const minDueDateString = new Date(Date.now() + 60000).toLocaleString();
+    const dueTime = new Date(dueDateString)?.getTime();
+    const minDueTime = new Date(minDueDateString)?.getTime();
+
+    if (localDate && dueTime < minDueTime) {
+      setErrors(['Due date cannot be earlier than 1 minute from now.']);
+      return;
+    }
+
+    let utcDate = moment.tz(localDate, userTimezone)
+    .utc().format('YYYY-MM-DDTHH:mm')
+    let vals;
+    if (moment.utc(utcDate).isValid()){
+      vals = { ...formValues, due_date: utcDate }
+    }else{
+      vals = { ...formValues, due_date: ""}
+    }
+    console.log(vals, "v")
+    const data = await dispatch(thunkCreateGoal(vals));
     if (data?.errors) {
       setErrors(data?.errors);
       history.push("/allgoals")
@@ -96,16 +125,33 @@ const CreateGoalModal = () => {
           onChange={handleInputChange}
         />
       </div> */}
-       <div>
+       <div className="date-picker-with-arrow" >
         <label htmlFor="due_date">Due Date</label>
         <input
           type="datetime-local"
           name="due_date"
           id="due_date"
-          min={(new Date(Date.now() + 60000)).toISOString().slice(0, -8)}
-          value={formValues.due_date}
+          min={minTime}
+          value={formattedDate}
           onChange={handleInputChange}
+
         />
+{/* <DatePicker
+     selected={dueDate}
+     onChange={date => {
+      setDueDate(date);
+      setFormValues({ ...formValues, due_date: date });
+    }}
+     minDate={new Date(Date.now() + 60000)}
+     showTimeSelect
+     timeFormat="HH:mm"
+     timeIntervals={15}
+     dateFormat="MMMM d, yyyy h:mm aa"
+     placeholderText="Select due date"
+
+     name="due_date"
+     id="due_date"
+    /> */}
       </div>
 
       <button type="submit">Create Goal</button>

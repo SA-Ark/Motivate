@@ -1,24 +1,27 @@
 
 import { useHistory } from "react-router-dom";
 
-function CurrentSubtasksForTaskCard({ tasks, taskId }) {
+function UpcomingTasksCard({ tasks }) {
+
+  console.log(tasks, "tasks")
   const history = useHistory();
-  console.log(taskId, 'TID')
+
   const onClick = (task) => {
 
 
-    history.push(`/tasks/${task?.id}`)
+    history.push(`/goals/upcoming/${task?.id}`)
 
   }
 
-  let tasks2 = tasks.filter(task => task.finished_on === null && task.parent_task_id === taskId)
+
+
+ let  tasks2 = tasks?.filter(task => task.finished_on === null && task.parent_task_id === null)
 
   if (tasks2?.length) {
 
     return (
 
       <div>
-
         {tasks2?.map((task, index) => (
           <div key={task?.id || index}
             className="all-goals-card card"
@@ -34,16 +37,11 @@ function CurrentSubtasksForTaskCard({ tasks, taskId }) {
 
     )
   }
-  else {
+  else if (!tasks2?.length ) {
     return (
-  <>
-
-  {tasks?.length? <h3>No Tasks Match Search Criteria.</h3> : null}
-  </>
-
-
+     null
     )
   }
 }
 
-export default CurrentSubtasksForTaskCard
+export default UpcomingTasksCard

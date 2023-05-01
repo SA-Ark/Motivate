@@ -18,7 +18,10 @@ function BadgeCard({ badge }) {
 useEffect(()=>{
 
       // dispatch(thunkFetchNoteByGoalId(badge?.goal_id))
-      dispatch(thunkFetchGoalById(badge?.goal_id))
+      if (badge?.goal_id){
+
+        dispatch(thunkFetchGoalById(badge?.goal_id))
+      }
 
     },[dispatch, badge?.goal_id])
 
@@ -35,7 +38,7 @@ useEffect(()=>{
   return (
     <div className="goal-card" key={badge?.id}>
       <p>Description: {badge?.description}</p>
-      <p>Completed On: {goal?.finished_on}</p>
+      <p>Completed On: {new Date(goal?.finished_on)?.toLocaleString()}</p>
       <p>Badge Level: {badge?.level}</p>
 
 
@@ -48,7 +51,7 @@ useEffect(()=>{
           <CreateChildGoalModal parentGoalId={goal?.id} />}
           />
         : <button onClick={goToChildGoal}>Go To Next Goal</button>}
-        <button onClick={seeChainedGoals}>See Previous Goals</button>
+        <button onClick={seeChainedGoals}>See Completed Goals For This Badge</button>
         </div>
 
     </div>

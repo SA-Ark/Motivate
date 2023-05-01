@@ -16,6 +16,9 @@ import FinishedTasks from "./components/Pages/FinishedTasks";
 import SubTasks from "./components/Pages/Subtasks";
 import FinishedSubTasks from "./components/Pages/FinishedSubtasks";
 import Home from "./components/Pages/Home";
+import RecentlyFinishedTasks from "./components/Pages/RecentlyFinishedTasks";
+import UpcomingTasks from "./components/Pages/UpcomingTasks";
+import SingleUpcomingTask from "./components/Pages/SingleUpcomingTask";
 
 function App() {
   const dispatch = useDispatch();
@@ -64,6 +67,15 @@ function App() {
           </ProtectedRoute>
           <ProtectedRoute path="/tasks/subtasks/finished/:taskId" exact={true} >
             <FinishedSubTasks />
+          </ProtectedRoute>
+          <ProtectedRoute path="/goals/currentlyfinished/:goalId" exact={true} >
+            <RecentlyFinishedTasks />
+          </ProtectedRoute>
+          <ProtectedRoute path="/goals/upcoming/:goalId/:recurring" exact={true} >
+            <UpcomingTasks />
+          </ProtectedRoute>
+          <ProtectedRoute path="/goals/upcoming/:id/" exact={true} >
+            <SingleUpcomingTask />
           </ProtectedRoute>
         </Switch>
       )}

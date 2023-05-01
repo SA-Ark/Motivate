@@ -1,31 +1,39 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { useModal } from "../../context/Modal";
-import { thunkCreateGoal } from '../../store/goal';
-import moment from "moment-timezone";
+import { thunkCreateTask } from "../../store/task";
 
-const CreateChildGoalModal = ({parentGoalId}) => {
+
+const CreateRecurringTask = ({goalId}) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { closeModal } = useModal()
   const [errors, setErrors] = useState([]);
-  let userTimezone = moment.tz.guess();
-  let localTime = moment.tz(userTimezone);
-let minTime = localTime.add(10,"minutes").format('YYYY-MM-DDTHH:mm')
 
   const [formValues, setFormValues] = useState({
     name: "",
     description: "",
     difficulty: "Medium",
-    importance: "Important",
+    priority: "Soon",
     tags: "",
     due_date: "",
-    parent_goal_id: parentGoalId
 
   });
 
-   const formattedDate = moment(formValues?.due_date)?.tz(moment.tz.guess())?.format("YYYY-MM-DDTHH:mm");
+let moment = require('moment-timezone');
+
+
+let userTimezone = moment.tz.guess();
+let localTime = moment.tz(userTimezone);
+let minTime = localTime.add(10,"minutes").format('YYYY-MM-DDTHH:mm')
+const formattedDate = moment(formValues?.due_date)?.tz(moment.tz.guess())?.format("YYYY-MM-DDTHH:mm");
+
+let nextDaily = localTime.add(1,"days").format('YYYY-MM-DDTHH:mm')
+let nextWeekly = localTime.add(1,"weeks").format('YYYY-MM-DDTHH:mm')
+let nextMonthly = localTime.add(1,"months").format('YYYY-MM-DDTHH:mm')
+let nextYearly = localTime.add(1,"years").format('YYYY-MM-DDTHH:mm')
+
 
   const handleInputChange = event => {
     const { name, value } = event.target;
@@ -33,22 +41,41 @@ let minTime = localTime.add(10,"minutes").format('YYYY-MM-DDTHH:mm')
   };
 
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   const data = await dispatch(thunkCreateTask(formValues, goalId))
+
+  //   if (data?.errors) {
+  //     setErrors(data?.errors);
+  //   } else {
+
+  //     console.log(data)
+  //     history.push(`/tasks/${data.id}`)
+  //     closeModal();
+  //   }
+
+
+  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let localDate = formValues?.due_date
+
+   let localDate = formValues?.due_date
     let utcDate = moment.tz(localDate, userTimezone)
     .utc().format('YYYY-MM-DDTHH:mm')
 
-    const data = await dispatch(thunkCreateGoal({ ...formValues, due_date: utcDate }));
-    if (data?.errors) {
-      setErrors(data?.errors);
-      history.push("/allgoals")
-    } else {
-      console.log(data, "Data")
-      history.push(`/goals/${data.id}`)
-      closeModal();
-    }
+      const data = await dispatch(thunkCreateTask({ ...formValues, due_date: utcDate }, goalId));
+
+      if (data?.errors) {
+        setErrors(data?.errors);
+      } else {
+        console.log(data);
+        history.push(`/tasks/${data.id}`);
+        closeModal();
+      }
+
   };
+
+
   return (
     <form onSubmit={handleSubmit}>
       <ul>
@@ -87,12 +114,12 @@ let minTime = localTime.add(10,"minutes").format('YYYY-MM-DDTHH:mm')
         </select>
       </div>
       <div>
-        <label htmlFor="importance">Importance *</label>
-        <select id="importance" name="importance" value={formValues.importance}
+        <label htmlFor="priority">Priority *</label>
+        <select id="priority" name="priority" value={formValues.importance}
         onChange={handleInputChange} required>
-          <option value="Crucial">Crucial</option>
-          <option value="Important">Important</option>
-          <option value="Not Important">Not Important</option>
+          <option value="Urgent">Urgent</option>
+          <option value="Soon">Soon</option>
+          <option value="Trivial">Trivial</option>
         </select>
       </div>
       {/* <div>
@@ -107,20 +134,21 @@ let minTime = localTime.add(10,"minutes").format('YYYY-MM-DDTHH:mm')
         />
       </div> */}
        <div>
-        <label htmlFor="due_date">Due Date</label>
+        <label htmlFor="due_date">Due Date *</label>
         <input
           type="datetime-local"
           name="due_date"
           id="due_date"
           min={minTime}
-          value={formValues.due_date}
+          value={formattedDate}
           onChange={handleInputChange}
+          required
         />
       </div>
 
-      <button type="submit">Create Goal</button>
+      <button type="submit">Create Task</button>
     </form>
   );
 };
 
-export default CreateChildGoalModal;
+export default CreateRecurringTask;

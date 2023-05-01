@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { thunkGetAllBadges } from '../../store/badge';
 import CreateGoalModal from '../Modals/CreateGoalModal';
@@ -8,12 +8,32 @@ import OpenModalButton from '../OpenModalButton';
 function Badges() {
     const badges = useSelector(state=>Object.values(state.badges?.badges))
     const dispatch = useDispatch()
+    const searchTerm = useSelector(state=> state.search?.searchTerm)?.toLowerCase()
+    let [b2, setB2] = useState(badges)
+
+  if (badges && !searchTerm &&
+     JSON.stringify(b2) !== JSON.stringify(badges)){
+    setB2(badges)
+  }
+
 
     useEffect(()=>{
       dispatch(thunkGetAllBadges())
+      .then(()=>{
+
+        if (searchTerm){
+
+          setB2(badges.filter((badge)=>badge.name.toLowerCase().includes(searchTerm) || badge.description.toLowerCase().includes(searchTerm) ))
+         
+        }else{
+
+          setB2(badges)
+        }
+      })
 
 
-    }, [dispatch, badges.length])
+
+    }, [dispatch, searchTerm])
 
 
   return (
@@ -26,7 +46,9 @@ function Badges() {
           />
         </div>
           <h1 className="all-goal-title">Badges</h1>
-     <BadgesCard badges={badges}/>
+          {!badges?.length && <h3>No Badges Yet. Complete a goal to earn a badge.</h3>}
+          {(badges?.length && !b2?.length)? <h3>No Badges Match Search Criteria.</h3> : null}
+     <BadgesCard badges={b2}/>
 
     </div>
   );

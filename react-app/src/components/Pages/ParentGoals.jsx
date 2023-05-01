@@ -13,19 +13,49 @@ function ParentGoals() {
 
     const [goals, setGoals] = useState([]);
 
+
+
     useEffect(() => {
       const fetchParentGoals = async (id) => {
         if (id) {
-          const data = await dispatch(thunkFetchGoalById(id));
+          const data = await dispatch(thunkFetchGoalById(id))
+          .then((data) =>{
 
-          setGoals(prevGoals => [...prevGoals, data]);
-          fetchParentGoals(data.parent_goal_id);
+            setGoals(prevGoals => [...prevGoals, data]);
+            if (data?.parent_goal_id){
+
+              fetchParentGoals(data?.parent_goal_id);
+            }
+
+        })
+
+
         }
       }
 
       fetchParentGoals(goalId);
     }, [dispatch, goalId]);
 
+    const searchTerm = useSelector(state => state.search?.searchTerm)?.toLowerCase()
+    let [g2, setG2] = useState(goals)
+
+    useEffect(()=>{
+
+
+      if (goals && !searchTerm &&
+      JSON.stringify(g2) !== JSON.stringify(goals)) {
+      setG2(goals)
+
+    }
+
+    if (searchTerm) {
+
+      setG2(goals.filter((goal) => goal.name.toLowerCase().includes(searchTerm) || goal.description.toLowerCase().includes(searchTerm)))
+    } else {
+
+      setG2(goals)
+    }
+    }, [dispatch, searchTerm, goals])
     console.log(goals);
 
 
@@ -40,8 +70,8 @@ function ParentGoals() {
         />
       </div>
       <h1 className="all-goal-title">Previously Completed Goals For This Badge</h1>
-
-      <FinishedGoalsCard goals={goals} />
+      {(goals?.length && !g2?.length) ? <h3>No Completed Goals Match Search Criteria.</h3> : null}
+      <FinishedGoalsCard goals={g2} />
     </div>
   );
 

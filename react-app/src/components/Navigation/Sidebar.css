@@ -6,6 +6,7 @@ nav {
     background-color: #333;
     padding: 10px;
     margin-top: 50px;
+    border-radius:20px;
   }
 
   .nav-menu {
@@ -61,12 +62,15 @@ nav {
 
  .nav-menu-links{
     margin-right: 10px;
-    padding: 2px;
-
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid transparent
   }
   .nav-menu-links:hover{
     margin-right: 10px;
-    padding: 2px;
-    border: 1px solid green;
-    background-color: lightgreen;
+    padding: 10px;
+    border: 1px solid white;
+    border-radius: 10px;
+    background-color: black;
+
   }

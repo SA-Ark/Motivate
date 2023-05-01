@@ -9,4 +9,5 @@ class CreateGoalForm(FlaskForm):
     importance = StringField('Importance', validators=[DataRequired(), Length(max=50)])
     tags = StringField('Tags', validators=[Optional(), Length(max=255)])
     parent_goal_id = IntegerField('Parent Goal Id', validators=[Optional()])
+    recurring_goal = BooleanField('Recurring Goal', validators=[Optional()])
     due_date = DateTimeField('Due Date',format='%Y-%m-%dT%H:%M', validators=[Optional()])

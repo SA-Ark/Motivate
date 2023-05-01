@@ -29,6 +29,45 @@ goals = [
 def seed_goals():
     users = User.query.all()
     for u in users:
+        recur_goals= [ Goal(
+            user_id = u.id,
+            name= "dailyGoal",
+            description= f"This is {u.username}'s daily goal.",
+            difficulty='Easy',
+            importance='High',
+            tags='Daily_Goal',
+            recurring_goal=True,
+        ),
+        Goal(
+            user_id = u.id,
+            name= "weeklyGoal",
+            description= f"This is {u.username}'s weekly goal.",
+            difficulty='Easy',
+            importance='High',
+            tags='Weekly_Goal',
+            recurring_goal=True,
+        ),
+        Goal(
+            user_id = u.id,
+            name= "monthlyGoal",
+            description= f"This is {u.username}'s monthly goal.",
+            difficulty='Easy',
+            importance='High',
+            tags='Monthly_Goal',
+            recurring_goal=True,
+        ),
+        Goal(
+            user_id = u.id,
+            name= "yearlyGoal",
+            description= f"This is {u.username}'s yearly goal.",
+            difficulty='Easy',
+            importance='High',
+            tags='Yearly_Goal',
+            recurring_goal=True,
+        )
+       ]
+        for goal in recur_goals:
+            db.session.add(goal)
         names = set()
         for i in range(6):
             completed = False

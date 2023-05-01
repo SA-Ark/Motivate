@@ -11,12 +11,12 @@ function AllGoalsCard ({goals}){
         <div>
           {goals?.map((goal, index) => (
             <div key={goal?.id || index}
-            className="all-goals-card"
+            className="all-goals-card card card"
             onClick={()=> onClick(goal)} >
               <h3>{goal?.name}</h3>
               <p>Description: {goal?.description}</p>
               <p>Importance & Difficulty: {goal?.importance ||"unspecified importance"} and {goal?.difficulty || "unspecified difficulty"}</p>
-              <p>Due Date: {goal?.due_date || "unspecified"}</p>
+              <p>Due Date: {new Date(goal?.due_date)?.toLocaleString() || "unspecified"}</p>
 
             </div>
           ))}

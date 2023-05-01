@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { thunkEditTask } from "../../store/task";
 import { useModal } from "../../context/Modal";
+import moment from "moment-timezone";
 
 const EditTaskModal = ({ id }) => {
 
@@ -11,6 +12,11 @@ const EditTaskModal = ({ id }) => {
   const task = useSelector(state => state.tasks?.singleTask);
   const [errors, setErrors] = useState([]);
   const {closeModal} = useModal()
+
+  let userTimezone = moment.tz.guess();
+  let localTime = moment.tz(userTimezone);
+  let minTime = localTime.add(10,"minutes").format('YYYY-MM-DDTHH:mm')
+
   const [formValues, setFormValues] = useState({
 
         name: task?.name || "",
@@ -29,10 +35,13 @@ const EditTaskModal = ({ id }) => {
     setFormValues({ ...formValues, [name]: value });
     console.log(formValues,"fORM VALS")
   };
-
+  const formattedDate = moment(formValues?.due_date)?.tz(moment.tz.guess())?.format("YYYY-MM-DDTHH:mm");
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = await dispatch(thunkEditTask(id, formValues));
+    let localDate = formValues?.due_date
+    let utcDate = moment.tz(localDate, userTimezone)
+    .utc().format('YYYY-MM-DDTHH:mm')
+    const data = await dispatch(thunkEditTask(id, { ...formValues, due_date: utcDate }));
     if (data?.errors) {
       setErrors(data?.errors);
 
@@ -99,14 +108,15 @@ const EditTaskModal = ({ id }) => {
         />
       </div> */}
       <div>
-        <label htmlFor="due_date">Due Date</label>
+        <label htmlFor="due_date">Due Date *</label>
         <input
           type="datetime-local"
           name="due_date"
           id="due_date"
-          min={(new Date(Date.now() + 60000)).toISOString().slice(0, -8)}
-          value={formValues.due_date}
+          min={minTime}
+          value={formattedDate}
           onChange={handleInputChange}
+          required
         />
       </div>
 
