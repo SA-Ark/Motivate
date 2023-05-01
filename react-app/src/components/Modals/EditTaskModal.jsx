@@ -52,6 +52,7 @@ const EditTaskModal = ({ id }) => {
   };
 
   return (
+    <div className="modal-fields">
     <form onSubmit={handleSubmit}>
       <ul>
         {errors.map((error, idx) => (
@@ -122,6 +123,7 @@ const EditTaskModal = ({ id }) => {
 
       <button type="submit">Update Task</button>
     </form>
+    </div>
   );
 };
 

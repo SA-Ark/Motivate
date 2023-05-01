@@ -74,6 +74,7 @@ function SignupFormModal() {
 	};
 
 	return (
+		<div className="modal-fields">
 		<>
 			<h1>Sign Up</h1>
 			<form onSubmit={handleSubmit}>
@@ -139,6 +140,7 @@ function SignupFormModal() {
 				<button type="submit">Sign Up</button>
 			</form>
 		</>
+		</div>
 	);
 }
 
