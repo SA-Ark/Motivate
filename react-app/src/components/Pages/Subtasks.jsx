@@ -23,6 +23,7 @@ function SubTasks() {
   if (!task?.id) {
     taskId = taskId
   }
+  tasks = tasks.filter(task => task?.parent_task_id === +taskId)
   const searchTerm = useSelector(state => state.search?.searchTerm)?.toLowerCase()
   let [t2, setT2] = useState(tasks)
 
@@ -49,19 +50,20 @@ function SubTasks() {
   const backToParentTask = () => {
     history.push(`/tasks/${taskId}`)
   }
+
   return (
     <div className="all-goals-page">
       <div className="create-goal-button">
         <OpenModalButton
           buttonText="Create New SubTask"
           modalComponent={
-            <CreateSubtaskModal parentTaskId={taskId} goalId={task?.goal_id} />}
+            <CreateSubtaskModal parentTask={task} goalId={task?.goal_id} />}
         />
       </div>
       <h1 className="all-goal-title">Current SubTasks For {task?.name}</h1>
       <button onClick={backToParentTask}>Back to Parent Task</button>
       <CurrentSubtasksForTaskCard tasks={t2} taskId={parseInt(taskId)} />
-      {!tasks.length && <h3>No Current Tasks For This Goal</h3>}
+      {!tasks.length && <h3>No Current Subtasks For This Task</h3>}
       {(tasks?.length && !t2?.length) ? <h3>No Tasks Match Search Criteria.</h3> : null}
     </div>
   );

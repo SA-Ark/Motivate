@@ -80,7 +80,7 @@ export const thunkFetchAllGoals = () => async (dispatch) => {
 
     const {name, description, difficulty, importance,
     tags, due_date, parent_goal_id, recurring_goal} = goalData
-
+    console.log(due_date, "dd thunk")
 
     const res = await fetch('/api/goals/', {
       method: 'POST',

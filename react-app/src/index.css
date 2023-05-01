@@ -2,7 +2,7 @@
 
 
 body {
-    background-color: black;
+    background-color: rgb(6, 6, 6);
     color: white;
     font-family: "Times New Roman", Times, serif;
   }
@@ -18,9 +18,53 @@ body {
     font-size: 40px;
     margin-left: 170px;
   }
-  .nav-link:hover{
+  /* .nav-link:hover{
     color: lightskyblue;
+  } */
+
+  /* .nav-link:hover {
+    color: #fff;
+    background: #f00;
+    background: linear-gradient(
+      to bottom,
+      #f00 0%,
+      #ff8f00 50%,
+      #f00 100%
+    );
+    background-size: 100% 200%;
+    animation: fire 0.8s linear infinite;
   }
+
+  @keyframes fire {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 0 -100%;
+    }
+  } */
+  .nav-link:hover {
+    animation: burn 0.5s ease-in-out forwards;
+  }
+
+  @keyframes burn {
+    0% {
+      text-shadow: none;
+    }
+    25% {
+      text-shadow: 0 0 20px #FFA500, 0 0 30px #FFA500, 0 0 40px #FFA500, 0 0 50px #FFA500, 0 0 75px #FFA500;
+    }
+    50% {
+      text-shadow: 0 0 20px #FFA500, 0 0 30px #FFA500, 0 0 40px #FFA500, 0 0 50px #FFA500, 0 0 100px #FFA500;
+    }
+    75% {
+      text-shadow: 0 0 20px #FFA500, 0 0 30px #FFA500, 0 0 40px #FFA500, 0 0 50px #FFA500, 0 0 150px #FFA500;
+    }
+    100% {
+      text-shadow: 0 0 20px #FFA500, 0 0 30px #FFA500, 0 0 40px #FFA500, 0 0 50px #FFA500, 0 0 200px #FFA500;
+    }
+  }
+
 
   .logged-out-nav-link:hover{
     color: lightskyblue;
@@ -66,7 +110,7 @@ margin-right: 120px;
 margin-top: 30px;
 height: 80vh;
 border: 2px solid white;
-background-image: url('./Images/peter_starry_sky_-_10.jpg');
+background-image: url('./Images/colored.gif');
   background-size: cover;
   background-size: 100vw;
   background-position: center center;
@@ -76,6 +120,13 @@ background-image: url('./Images/peter_starry_sky_-_10.jpg');
   z-index: -1;
 
 }
+
+
+
+.background-image:hover {
+  animation: shiftPixels 1s linear infinite;
+}
+
 
 .login{
     /* position: absolute;
@@ -88,6 +139,7 @@ background-image: url('./Images/peter_starry_sky_-_10.jpg');
 
     display: flex;
     justify-content: center;
+    margin-bottom: 100px;
 
   }
 
@@ -110,6 +162,7 @@ margin-top: 25px;
 .navigation{
     position: relative;
     margin-top: 10px;
+
 }
 
 
@@ -120,7 +173,8 @@ margin-top: 25px;
 
 .all-goals-card{
   padding: 10px;
-  border: 2px solid green;
+  border: 2px solid white;
+  border-radius: 5px;
   margin-bottom: 20px;
   margin-top: 20px;
   margin-left: 120px;
@@ -129,7 +183,7 @@ margin-top: 25px;
 }
 
 .all-goals-card:hover{
-  box-shadow: 2px 2px 2px lightgreen;
+  box-shadow: 2px 2px 2px white;
   cursor: pointer;
 }
 
@@ -143,9 +197,11 @@ margin-top: 25px;
 }
 
 button{
-  background-color: aquamarine;
+  background-color: rgb(0, 0, 0);
+  color: white;
   height: 36px;
   border-radius: 10px;
+  border: 2px solid white;
   margin: 2px;
   padding: 6px;
 
@@ -153,8 +209,8 @@ button{
 }
 
 button:hover{
-  background-color: blueviolet;
-  box-shadow: 2px 2px 2px darkgreen;
+  background-color: black;
+  box-shadow: 2px 2px 2px white;
   cursor: pointer;
 }
 
@@ -317,3 +373,64 @@ button:hover{
   box-shadow: 0px 0px 0px gray;
   cursor: default;
 }
+
+
+
+/* #dailies,
+#weeklies,
+#monthlies,
+#yearly {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  margin-bottom: 50px;
+} */
+
+#home-cards{
+  margin-bottom: 50px;
+}
+
+#daily-goal-container,
+#weekly-goal-container,
+#monthly-goal-container,
+#yearly-goal-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+#daily-goal-container > button,
+#weekly-goal-container > button,
+#monthly-goal-container > button,
+#yearly-goal-container > button {
+  position: absolute;
+  top: -30px;
+}
+
+#daily-buttons-container,
+#weekly-buttons-container,
+#monthly-buttons-container,
+#yearly-buttons-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+/* .home-buttons-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+} */

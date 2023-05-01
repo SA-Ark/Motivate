@@ -5,11 +5,25 @@ import { useModal } from "../../context/Modal";
 import { thunkCreateTask } from "../../store/task";
 
 
-const CreateSubtaskModal = ({parentTaskId, goalId}) => {
+const CreateSubtaskModal = ({parentTask, goalId}) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { closeModal } = useModal()
   const [errors, setErrors] = useState([]);
+  let moment = require('moment-timezone');
+
+//  const getPrimalParentTask = (parentTask) => {
+//     if (parentTask?.parent_task_id){
+//       return getPrimalParentTask(parentTask?.parent_task_id)
+//     }
+//     return parentTask
+//  }
+
+let userTimezone = moment.tz.guess();
+let localTime = moment.tz(userTimezone);
+let minTime = localTime.add(10,"minutes").format('YYYY-MM-DDTHH:mm')
+
+
 
   const [formValues, setFormValues] = useState({
     name: "",
@@ -18,10 +32,10 @@ const CreateSubtaskModal = ({parentTaskId, goalId}) => {
     priority: "Soon",
     tags: "",
     due_date: "",
-    parent_task_id: parentTaskId
+    parent_task_id: parentTask?.id
 
   });
-
+  const formattedDate = moment(formValues?.due_date)?.tz(moment.tz.guess())?.format("YYYY-MM-DDTHH:mm");
   const handleInputChange = event => {
     const { name, value } = event.target;
     setFormValues({ ...formValues, [name]: value });
@@ -30,7 +44,18 @@ const CreateSubtaskModal = ({parentTaskId, goalId}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = await dispatch(thunkCreateTask(formValues, goalId))
+    let parentDate = moment.tz(parentTask?.due_date,  moment.tz.guess()).toDate().getTime()
+    let thisDate = new Date(formValues?.due_date).getTime()
+
+    if (thisDate >= parentDate){
+      setErrors(["Subtask due date cannot be later than the due date of the parent task."])
+
+      return
+    }
+    let localDate = formValues?.due_date
+    let utcDate = moment.tz(localDate, userTimezone)
+    .utc().format('YYYY-MM-DDTHH:mm')
+    const data = await dispatch(thunkCreateTask({ ...formValues, due_date: utcDate }, goalId))
     .then((data)=>{
 
       if (data?.errors) {
@@ -100,14 +125,15 @@ const CreateSubtaskModal = ({parentTaskId, goalId}) => {
         />
       </div> */}
        <div>
-        <label htmlFor="due_date">Due Date</label>
+        <label htmlFor="due_date">Due Date *</label>
         <input
           type="datetime-local"
           name="due_date"
           id="due_date"
-          min={(new Date(Date.now() + 60000)).toISOString().slice(0, -8)}
-          value={formValues.due_date}
+          min={minTime}
+          value={formattedDate}
           onChange={handleInputChange}
+          required
         />
       </div>
 

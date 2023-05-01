@@ -3,13 +3,16 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useModal } from "../../context/Modal";
 import { thunkCreateGoal } from '../../store/goal';
-
+import moment from "moment-timezone";
 
 const CreateChildGoalModal = ({parentGoalId}) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { closeModal } = useModal()
   const [errors, setErrors] = useState([]);
+  let userTimezone = moment.tz.guess();
+  let localTime = moment.tz(userTimezone);
+let minTime = localTime.add(10,"minutes").format('YYYY-MM-DDTHH:mm')
 
   const [formValues, setFormValues] = useState({
     name: "",
@@ -22,6 +25,8 @@ const CreateChildGoalModal = ({parentGoalId}) => {
 
   });
 
+   const formattedDate = moment(formValues?.due_date)?.tz(moment.tz.guess())?.format("YYYY-MM-DDTHH:mm");
+
   const handleInputChange = event => {
     const { name, value } = event.target;
     setFormValues({ ...formValues, [name]: value });
@@ -30,7 +35,11 @@ const CreateChildGoalModal = ({parentGoalId}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = await dispatch(thunkCreateGoal(formValues));
+    let localDate = formValues?.due_date
+    let utcDate = moment.tz(localDate, userTimezone)
+    .utc().format('YYYY-MM-DDTHH:mm')
+
+    const data = await dispatch(thunkCreateGoal({ ...formValues, due_date: utcDate }));
     if (data?.errors) {
       setErrors(data?.errors);
       history.push("/allgoals")
@@ -103,7 +112,7 @@ const CreateChildGoalModal = ({parentGoalId}) => {
           type="datetime-local"
           name="due_date"
           id="due_date"
-          min={(new Date(Date.now() + 60000)).toISOString().slice(0, -8)}
+          min={minTime}
           value={formValues.due_date}
           onChange={handleInputChange}
         />

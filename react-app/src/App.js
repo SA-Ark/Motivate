@@ -68,7 +68,7 @@ function App() {
           <ProtectedRoute path="/tasks/subtasks/finished/:taskId" exact={true} >
             <FinishedSubTasks />
           </ProtectedRoute>
-          <ProtectedRoute path="/goals/recentlyfinished/:goalId" exact={true} >
+          <ProtectedRoute path="/goals/currentlyfinished/:goalId" exact={true} >
             <RecentlyFinishedTasks />
           </ProtectedRoute>
           <ProtectedRoute path="/goals/upcoming/:goalId/:recurring" exact={true} >

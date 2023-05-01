@@ -41,6 +41,8 @@ const finished_goal_tasks = /\/goals\/finishedtasks\/(\d+)/;
 const subtasks = /\/tasks\/subtasks\/(\d+)/;
 const finished_subtasks = /\/tasks\/subtasks\/finished\/(\d+)/;
 const parent_goals = /\/goals\/(\d+)\/parentgoals/;
+const upcoming_tasks = /\/goals\/upcoming\/(\d+)\/[a-zA-Z]+/;
+const currently_finished_tasks = /\/goals\/currentlyfinished\/(\d+)/;
 let match = false
 if(
   location.pathname.match(goal_tasks)
@@ -48,6 +50,8 @@ if(
   || location.pathname.match(subtasks)
   || location.pathname.match(finished_subtasks)
   ||location.pathname.match(parent_goals)
+  ||location.pathname.match(upcoming_tasks)
+  ||location.pathname.match(currently_finished_tasks)
 
 ){
   match = true;

@@ -25,13 +25,17 @@ function RecentlyFinishedTasks() {
   tasks = tasks?.filter((task)=>{
     let due_date = moment.tz(task.due_date, "ddd, DD MMM YYYY HH:mm:ss z", currTimezone);
      let milliseconds = due_date - currDate
-    if ((goal?.name === "dailyGoal" && milliseconds < 86400000)
-    || (goal?.name === "weeklyGoal" && milliseconds < 604800000)
-    || (goal?.name === "monthlyGoal" && milliseconds < 2629746000)
-    || (goal?.name === "yearlyGoal" && milliseconds < 31556952000) ){
-        return task
+    if ((goal?.name === "dailyGoal" && milliseconds < 86400000 && milliseconds > 0)
+    || (goal?.name === "weeklyGoal" && milliseconds < 604800000 && milliseconds > 0)
+    || (goal?.name === "monthlyGoal" && milliseconds < 2629746000 && milliseconds > 0)
+    || (goal?.name === "yearlyGoal" && milliseconds < 31556952000 && milliseconds > 0) ){
+      console.log(goal.name, milliseconds)
+
+      return task
     }
 })
+
+  
 
 
 

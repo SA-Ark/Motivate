@@ -16,7 +16,7 @@ function AllGoalsCard ({goals}){
               <h3>{goal?.name}</h3>
               <p>Description: {goal?.description}</p>
               <p>Importance & Difficulty: {goal?.importance ||"unspecified importance"} and {goal?.difficulty || "unspecified difficulty"}</p>
-              <p>Due Date: {goal?.due_date || "unspecified"}</p>
+              <p>Due Date: {new Date(goal?.due_date)?.toLocaleString() || "unspecified"}</p>
 
             </div>
           ))}

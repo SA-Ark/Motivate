@@ -35,6 +35,11 @@ function GoalCard({ goal }) {
     history.push(`/badges/${id}`)
   }
 
+  let dueDate
+  goal?.due_date?
+  dueDate = new Date(goal?.due_date)?.toLocaleString()
+  : dueDate = null
+
   return (
     <div className="goal-card" key={goal?.id}>
       <p>Description: {goal?.description}
@@ -44,7 +49,7 @@ function GoalCard({ goal }) {
       <p>Difficulty: {goal?.difficulty || "unspecified"}</p>
       <p>Importance: {goal?.importance ||"unspecified" }</p>
       {/* <p>Tags: {goal?.tags || "no tags"}</p> */}
-      <p>Due Date: {goal?.due_date || "unspecified"}</p>
+      <p>Due Date: {dueDate || "unspecified"}</p>
       {/* <p>{goal?.completion_percent}</p> */}
       {goal?.finished_on && <p>Finished On: {goal.finished_on}</p>}
 

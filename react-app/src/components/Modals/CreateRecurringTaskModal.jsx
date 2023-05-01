@@ -27,7 +27,7 @@ let moment = require('moment-timezone');
 let userTimezone = moment.tz.guess();
 let localTime = moment.tz(userTimezone);
 let minTime = localTime.add(10,"minutes").format('YYYY-MM-DDTHH:mm')
-
+const formattedDate = moment(formValues?.due_date)?.tz(moment.tz.guess())?.format("YYYY-MM-DDTHH:mm");
 
 let nextDaily = localTime.add(1,"days").format('YYYY-MM-DDTHH:mm')
 let nextWeekly = localTime.add(1,"weeks").format('YYYY-MM-DDTHH:mm')
@@ -58,8 +58,12 @@ let nextYearly = localTime.add(1,"years").format('YYYY-MM-DDTHH:mm')
   // };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const data = await dispatch(thunkCreateTask(formValues, goalId));
+
+   let localDate = formValues?.due_date
+    let utcDate = moment.tz(localDate, userTimezone)
+    .utc().format('YYYY-MM-DDTHH:mm')
+
+      const data = await dispatch(thunkCreateTask({ ...formValues, due_date: utcDate }, goalId));
 
       if (data?.errors) {
         setErrors(data?.errors);
@@ -68,10 +72,7 @@ let nextYearly = localTime.add(1,"years").format('YYYY-MM-DDTHH:mm')
         history.push(`/tasks/${data.id}`);
         closeModal();
       }
-    } catch (error) {
-      // Handle any errors that might occur during the dispatch
-      console.error("Error occurred during task creation:", error);
-    }
+
   };
 
 
@@ -139,7 +140,7 @@ let nextYearly = localTime.add(1,"years").format('YYYY-MM-DDTHH:mm')
           name="due_date"
           id="due_date"
           min={minTime}
-          value={formValues.due_date}
+          value={formattedDate}
           onChange={handleInputChange}
           required
         />

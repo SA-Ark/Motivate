@@ -10,7 +10,7 @@ import { thunkFetchTaskById } from '../../store/task';
 
 function FinishedSubtasks() {
   const history = useHistory();
-  let tasks = useSelector(state => Object.values(state.tasks?.tasks))
+  let tasks = useSelector(state => Object.values(state.tasks?.tasks)).filter(task=>task.finished_on!== null)
   const goal = useSelector(state => state.goals?.singleGoal)
   const task = useSelector(state => state.tasks?.singleTask)
   const dispatch = useDispatch()
@@ -40,21 +40,24 @@ function FinishedSubtasks() {
   const backToParentTask = () => {
     history.push(`/tasks/${taskId}`)
   }
+
+  console.log(tasks?.length, "tl", t2?.length)
+  console.log(tasks?.filter(task=>task.finished_on!== null))
   return (
     <div className="all-goals-page">
       <div className="create-goal-button">
         <OpenModalButton
           buttonText="Create New SubTask"
           modalComponent={
-            <CreateSubtaskModal parentTaskId={taskId} goalId={task?.goal_id} />}
+            <CreateSubtaskModal parentTask={task} goalId={task?.goal_id} />}
         />
       </div>
       <h1 className="all-goal-title">Finished Subtasks For {task?.name}</h1>
       <button onClick={backToParentTask}>Back to Parent Task</button>
       <FinishedSubtasksForTaskCard tasks={t2} taskId={parseInt(taskId)} />
-    
-      {!tasks?.filter(task=>task.finished_on!== null).length && <h3>No Finished Subtasks For This Task</h3>}
-      {(tasks?.filter(task=>task.finished_on!== null).length && !t2?.length) ? <h3>No Finished Subtasks Match Search Criteria.</h3> : null}
+
+      {!tasks?.length && <h3>No Finished Subtasks For This Task</h3>}
+      {(tasks?.length && !t2?.length) ? <h3>No Finished Subtasks Match Search Criteria.</h3> : null}
     </div>
   );
 }

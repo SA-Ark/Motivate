@@ -1,15 +1,22 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { useModal } from "../../context/Modal";
 import { thunkCreateTask } from "../../store/task";
-
+import { thunkFetchGoalById } from "../../store/goal";
 
 const CreateTaskModal = ({goalId}) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { closeModal } = useModal()
   const [errors, setErrors] = useState([]);
+  const goal = useSelector(state=>state.goals?.singleGoal)
+
+
+  useEffect(() => {
+    dispatch(thunkFetchGoalById(goalId))
+  }, [dispatch, goalId])
+
 
   const [formValues, setFormValues] = useState({
     name: "",
@@ -52,10 +59,22 @@ let minTime = localTime.add(10,"minutes").format('YYYY-MM-DDTHH:mm')
 
 
   // };
+
+  const formattedDate = moment(formValues?.due_date)?.tz(moment.tz.guess())?.format("YYYY-MM-DDTHH:mm");
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const data = await dispatch(thunkCreateTask(formValues, goalId));
+    let parentDate = moment.tz(goal?.due_date,  moment.tz.guess()).toDate().getTime()
+    let thisDate = new Date(formValues?.due_date).getTime()
+
+    if (thisDate >= parentDate){
+      setErrors(["Task due date cannot be later than the due date of the goal."])
+
+      return
+    }
+    let localDate = formValues?.due_date
+    let utcDate = moment.tz(localDate, userTimezone)
+    .utc().format('YYYY-MM-DDTHH:mm')
+      const data = await dispatch(thunkCreateTask({ ...formValues, due_date: utcDate }, goalId));
 
       if (data?.errors) {
         setErrors(data?.errors);
@@ -64,10 +83,7 @@ let minTime = localTime.add(10,"minutes").format('YYYY-MM-DDTHH:mm')
         history.push(`/tasks/${data.id}`);
         closeModal();
       }
-    } catch (error) {
-      // Handle any errors that might occur during the dispatch
-      console.error("Error occurred during task creation:", error);
-    }
+
   };
 
 
@@ -129,14 +145,15 @@ let minTime = localTime.add(10,"minutes").format('YYYY-MM-DDTHH:mm')
         />
       </div> */}
        <div>
-        <label htmlFor="due_date">Due Date</label>
+        <label htmlFor="due_date">Due Date *</label>
         <input
           type="datetime-local"
           name="due_date"
           id="due_date"
           min={minTime}
-          value={formValues.due_date}
+          value={formattedDate}
           onChange={handleInputChange}
+          required
         />
       </div>
 

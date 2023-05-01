@@ -7,7 +7,7 @@ function FinishedTasksCard({ tasks }) {
   const onClick = (task) => {
     history.push(`/tasks/${task?.id}`)
   }
-  
+
   tasks = tasks.filter(task => task.finished_on !== null && task.parent_task_id === null)
   return (
 
@@ -20,7 +20,7 @@ function FinishedTasksCard({ tasks }) {
           <h3>{task?.name}</h3>
           <p>Description: {task?.description}</p>
           <p>priority & Difficulty: {task?.priority || "unspecified priority"} and {task?.difficulty || "unspecified difficulty"}</p>
-          <p>Due Date: {task?.due_date || "unspecified"}</p>
+          <p>Due Date: {new Date(task?.due_date)?.toLocaleString() || "unspecified"}</p>
 
         </div>
       ))}

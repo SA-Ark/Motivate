@@ -11,22 +11,22 @@ function FinishedSubtasksForTaskCard({ tasks, taskId }) {
 
   }
 
-  tasks = tasks.filter(task => task.finished_on !== null && task.parent_task_id === taskId)
+ let tasks2 = tasks.filter(task => task.finished_on !== null && task.parent_task_id === taskId)
 
-  if (tasks?.length) {
+  if (tasks2?.length) {
 
     return (
 
       <div>
 
-        {tasks?.map((task, index) => (
+        {tasks2?.map((task, index) => (
           <div key={task?.id || index}
             className="all-goals-card card"
             onClick={() => onClick(task)} >
             <h3>{task?.name}</h3>
             <p>Description: {task?.description}</p>
             <p>priority & Difficulty: {task?.priority || "unspecified priority"} and {task?.difficulty || "unspecified difficulty"}</p>
-            <p>Due Date: {task?.due_date || "unspecified"}</p>
+            <p>Due Date: {new Date(task?.due_date)?.toLocaleString() || "unspecified"}</p>
 
           </div>
         ))}
@@ -36,7 +36,10 @@ function FinishedSubtasksForTaskCard({ tasks, taskId }) {
   }
   else {
     return (
-      null
+
+      <>
+      {tasks?.length? <h3>No Finished Subtasks for this task.</h3> : null}
+      </>
     )
   }
 }

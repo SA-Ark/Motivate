@@ -59,9 +59,9 @@ function SingleUpcomingTaskCard() {
       <p>Difficulty: {task?.difficulty || "unspecified"}</p>
       <p>Priority: {task?.priority ||"unspecified" }</p>
       {/* <p>Tags: {task?.tags || "no tags"}</p> */}
-      <p>Due Date: {task?.due_date || "unspecified"}</p>
+      <p>Due Date: {new Date(task?.due_date)?.toLocaleString() || "unspecified"}</p>
       {/* <p>{task?.completion_percent}</p> */}
-      {task?.finished_on && <p>Finished On: {task.finished_on}</p>}
+      {task?.finished_on && <p>Finished On: {new Date(task.finished_on)?.toLocaleString()}</p>}
 
       {
       task?.finished_on? null:

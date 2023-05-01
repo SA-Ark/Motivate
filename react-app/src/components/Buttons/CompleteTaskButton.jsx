@@ -12,9 +12,11 @@ const CompleteTaskButton = ({task})=>{
     const goal = useSelector(state => state.goals?.singleGoal)
     let remaining_tasks = tasks
     useEffect(()=>{
-        console.log(task?.goal_id)
+        
+        if(task?.goal_id){
         dispatch(thunkFetchAllTasksByGoalId(task?.goal_id))
         dispatch(thunkFetchGoalById(task?.goal_id))
+        }
 
     }, [dispatch, task?.goal_id])
 
@@ -28,16 +30,21 @@ const CompleteTaskButton = ({task})=>{
     const handleSubmit = async ()=>{
 
         if (goal?.recurring_goal === true){
-            console.log("recur")
+
+            const makeTaskCopy = async (task, parentTaskId) => {
             const newTask = {}
             newTask.name = task?.name
             newTask.description = task?.description
             newTask.difficulty = task?.difficulty
             newTask.priority = task?.priority
             newTask.tags = task?.tags
-            newTask.due_date = task?.due_date
+            if(parentTaskId){
+
+                newTask.parent_task_id = parentTaskId
+            }
             let moment = require('moment-timezone');
-            console.log(newTask.due_date, "due date 1")
+            if (task?.due_date){
+            newTask.due_date = task?.due_date
             let due_date = moment.tz(newTask.due_date, 'ddd, DD MMM YYYY HH:mm:ss [GMT]', moment.tz.guess());
             if (goal?.name === "dailyGoal"){
                 due_date = due_date.add(1, 'days')
@@ -50,15 +57,70 @@ const CompleteTaskButton = ({task})=>{
             }
 
             newTask.due_date = due_date.format('YYYY-MM-DDTHH:mm')
-
-
-            dispatch(thunkCreateTask(newTask, +goal?.id))
-
-
-            // dispatch(thunkCreateTask(newTask, +goal?.id))
         }
-       history.push(`/goals/finishedtasks/${task?.goal_id}`)
-        dispatch(thunkCompleteTask(task?.id))
+
+            // const res = await dispatch(thunkCreateTask(newTask, +goal?.id))
+
+            // return res
+
+           const res = await dispatch(thunkCreateTask(newTask, +goal?.id))
+
+        const subtasks = tasks.filter(subtask => subtask.parent_task_id === task.id);
+        for (let subtask of subtasks) {
+            await makeTaskCopy(subtask, res?.id);
+            }
+
+
+            }
+
+
+
+            //     const orderedTasks = []
+
+
+            //     function getAllSubtasks(task, allTasks) {
+            //         // Add the current task to the list of all tasks
+            //         allTasks.push(task);
+
+            //         // Recursively get all subtasks of the current task
+            //         const subtasks = tasks.filter(eachTask => eachTask.parent_task_id === task.id)
+            //         if (subtasks?.length) {
+            //           for (let i = 0; i <  subtasks.length; i++) {
+            //             getAllSubtasks(subtasks[i], allTasks);
+            //           }
+            //         }
+
+            //         return allTasks;
+            //       }
+
+
+            //     const finalTasks = getAllSubtasks(task, orderedTasks)
+
+
+
+            //     console.log(finalTasks.length, "O LEN")
+            //     let newTask
+            // for (let i = 0; i < finalTasks.length; i++){
+            //     if (newTask){
+            //         console.log(newTask?.id, "THIS IS IDDDD", newTask)
+            //         newTask = await makeTaskCopy(finalTasks[i], newTask?.id)
+            //         console.log("id", newTask)
+
+            //     }else{
+
+            //         newTask = await makeTaskCopy(finalTasks[i])
+            //         console.log("noid", newTask)
+            //     }
+
+            // }
+            await makeTaskCopy(task)
+            dispatch(thunkCompleteTask(task?.id))
+            history.push(`/home`)
+        }else{
+
+            dispatch(thunkCompleteTask(task?.id))
+            history.push(`/goals/finishedtasks/${task?.goal_id}`)
+        }
 
     }
 

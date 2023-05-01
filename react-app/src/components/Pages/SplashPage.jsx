@@ -1,8 +1,15 @@
 import ProfileButton from "../Navigation/ProfileButton";
 import SplashButtons from "../Navigation/SplashButtons";
 import DemoUserButton from "../Buttons/DemoUserButton";
-function SplashPage(){
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
+function SplashPage(){
+    const user = useSelector(state => state.session?.user)
+    const history = useHistory()
+    if (user){
+        history.push('/home')
+    }
     return(
         <div className="splash-container">
         <div className="splash-background">

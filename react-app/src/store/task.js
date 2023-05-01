@@ -80,7 +80,7 @@ export const thunkFetchAllTasksByGoalId = (goalId) => async (dispatch) => {
 
     const {name, description, difficulty, priority,
     tags, due_date, parent_task_id} = taskData
-      
+        console.log(taskData, "td")
     const res = await fetch(`/api/tasks/${goalId}`, {
       method: 'POST',
       headers: {
@@ -89,11 +89,11 @@ export const thunkFetchAllTasksByGoalId = (goalId) => async (dispatch) => {
       body: JSON.stringify({name, description, difficulty, priority,
         tags, due_date, parent_task_id} ),
     });
-
+    // console.log("thunk")
     if(res?.ok){
         const data = await res.json();
         dispatch(actionCreateTask(data));
-
+        // console.log(data, "NEW TASK DATA")
         return data
     }else if (res?.status <500){
         const data = await res.json()
@@ -103,6 +103,7 @@ export const thunkFetchAllTasksByGoalId = (goalId) => async (dispatch) => {
         }else {
 
             // Handle server errors (500 or greater)
+
             return {errors: ["An error occurred while creating the task. Please try again later."]};
           }
 

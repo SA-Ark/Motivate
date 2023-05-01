@@ -38,7 +38,7 @@ useEffect(()=>{
   return (
     <div className="goal-card" key={badge?.id}>
       <p>Description: {badge?.description}</p>
-      <p>Completed On: {goal?.finished_on}</p>
+      <p>Completed On: {new Date(goal?.finished_on)?.toLocaleString()}</p>
       <p>Badge Level: {badge?.level}</p>
 
 

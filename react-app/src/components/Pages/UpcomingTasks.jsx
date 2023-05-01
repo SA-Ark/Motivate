@@ -20,8 +20,8 @@ function UpcomingTasks() {
   const currTimezone = moment.tz.guess();
 
 
-  tasks = tasks?.filter((task)=> task.goal_id === +goalId && task.finished_on === null)
- 
+  tasks = tasks?.filter((task)=> task.goal_id === +goalId && task.finished_on === null && task.parent_task_id == null)
+
   tasks = tasks?.filter((task)=>{
     let due_date = moment.tz(task.due_date, "ddd, DD MMM YYYY HH:mm:ss z", currTimezone);
      let milliseconds = due_date - currDate
@@ -69,7 +69,7 @@ function UpcomingTasks() {
   const backToHome = () => {
     history.push(`/home`)
   }
-
+console.log(tasks?.length, "tasks", t2?.length)
 
   return (
     <div className="all-goals-page">
@@ -86,7 +86,7 @@ function UpcomingTasks() {
       <button onClick={backToGoal}> Back To Goal</button>}
       <UpcomingTasksCard tasks={t2} />
       {!tasks.length && <h3>No Upcoming Tasks For This Goal</h3>}
-      {(tasks?.length && !t2?.length) ? <h3>No Finished Tasks Match Search Criteria.</h3> : null}
+      {(tasks?.length && !t2?.length) ? <h3>No Upcoming Tasks Match Search Criteria.</h3> : null}
     </div>
   );
 }

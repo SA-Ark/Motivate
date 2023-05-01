@@ -33,7 +33,7 @@ const CompleteSubtaskButton = ({task})=>{
             }
             newTask.due_date = due_date
 
-            dispatch(thunkCreateTask(newTask, goal?.id))
+            // dispatch(thunkCreateTask(newTask, goal?.id))
         }
         dispatch(thunkCompleteTask(task?.id))
         history.push(`/tasks/subtasks/finished/${task?.parent_task_id}`)

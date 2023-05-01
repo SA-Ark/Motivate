@@ -14,10 +14,13 @@ function SingleTask() {
 
 
     useEffect(()=>{
-      dispatch(thunkFetchTaskById(id))
-      dispatch(thunkFetchNoteByTaskId(id))
 
-        
+
+        dispatch(thunkFetchTaskById(id))
+        dispatch(thunkFetchNoteByTaskId(id))
+      
+
+
     }, [dispatch, id])
 
 
@@ -30,7 +33,7 @@ function SingleTask() {
         <OpenModalButton
         buttonText="Create SubTask"
         modalComponent={
-          <CreateSubtaskModal parentTaskId={singleTask?.id} goalId={singleTask?.goal_id}/>}
+          <CreateSubtaskModal parentTask={singleTask} goalId={singleTask?.goal_id}/>}
           />
         </div>
       <h1>{singleTask?.name}</h1>

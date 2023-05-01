@@ -2,6 +2,7 @@ import EditTaskModal from '../Modals/EditTaskModal';
 import DeleteTaskButton from '../Buttons/DeleteTaskButton';
 import OpenModalButton from '../OpenModalButton';
 import EditTaskNoteModal from '../Modals/EditTaskNote';
+import CreateSubtaskModal from '../Modals/CreateSubtaskModal';
 import CompleteSubtaskButton from '../Buttons/CompleteSubtaskButton';
 import CompleteTaskButton from '../Buttons/CompleteTaskButton';
 import { thunkFetchGoalById } from '../../store/goal';
@@ -14,12 +15,14 @@ function TaskCard({ task }) {
   const history = useHistory();
   const dispatch = useDispatch();
   const goal = useSelector(state => state.goals?.singleGoal)
-  
+
 
 
   useEffect(()=>{
+    if(task?.goal_id){
 
-    dispatch(thunkFetchGoalById(task?.goal_id))
+      dispatch(thunkFetchGoalById(task?.goal_id))
+    }
   }, [dispatch, task?.goal_id])
 
   const tasks = ()=>{
@@ -45,6 +48,9 @@ function TaskCard({ task }) {
     history.push(`/home`)
   }
 
+  const dueDate = new Date(task?.due_date)?.toLocaleString()
+
+
   return (
     <div className="goal-card" key={task?.id}>
       <p>Description: {task?.description}
@@ -54,9 +60,9 @@ function TaskCard({ task }) {
       <p>Difficulty: {task?.difficulty || "unspecified"}</p>
       <p>Priority: {task?.priority ||"unspecified" }</p>
       {/* <p>Tags: {task?.tags || "no tags"}</p> */}
-      <p>Due Date: {task?.due_date || "unspecified"}</p>
+      <p>Due Date: {dueDate || "unspecified"}</p>
       {/* <p>{task?.completion_percent}</p> */}
-      {task?.finished_on && <p>Finished On: {task.finished_on}</p>}
+      {task?.finished_on && <p>Finished On: {new Date(task.finished_on)?.toLocaleString()}</p>}
 
       {
       task?.finished_on? null:
@@ -75,7 +81,14 @@ function TaskCard({ task }) {
         <DeleteTaskButton taskId={task?.id} />
 
       </div>
-
+      <div>
+        <OpenModalButton
+        buttonText="Create new Subtask"
+        modalComponent={
+        <CreateSubtaskModal parentTask={task} goalId={goal?.id} />
+        }
+        />
+      </div>
         {task?.parent_task_id? <CompleteSubtaskButton task={task}/>
          : <CompleteTaskButton task={task}/>}
 
@@ -94,10 +107,11 @@ function TaskCard({ task }) {
       </>
 }
 <div>
-  {!goal?.recurring_goal?
-      <button onClick={tasks}>Back to Current Tasks For This Goal</button>:
-      <button onClick={home}>Back to Home</button>
+  {!goal?.recurring_goal &&
+      <button onClick={tasks}>Back to Current Tasks For This Goal</button>
   }
+  {goal?.recurring_goal && task?.finished_on &&
+    <button onClick={home}>Go To Home</button> }
       <OpenModalButton
       buttonText="View & Update Notes"
         modalComponent={

@@ -11,8 +11,11 @@ const CompleteGoalButton = ({goalId})=>{
     const tasks = useSelector(state => Object.values(state.tasks?.tasks))
     let remaining_tasks = tasks
     useEffect(()=>{
+        if (goalId){
 
-        dispatch(thunkFetchAllTasksByGoalId(goalId))
+            dispatch(thunkFetchAllTasksByGoalId(goalId))
+        }
+        
     }, [dispatch, goalId])
     remaining_tasks =  remaining_tasks.filter((task) => task?.goal_id === goalId && task.finished_on === null)
     const handleSubmit = async ()=>{
