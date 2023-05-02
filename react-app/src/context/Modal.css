@@ -78,3 +78,33 @@ margin-top: 10px;
 .modal-fields button{
   margin: auto;
 }
+
+#login-modal{
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+#login-modal *{
+  margin: 10px;
+}
+
+#signup-modal{
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+#signup-modal *{
+  margin: 5px;
+}
+
+#signup-modal button{
+margin: auto;
+}
+
+#signup-modal label,
+#signup-modal input {
+  display: inline-block;
+  vertical-align: middle;
+}
