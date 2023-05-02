@@ -434,3 +434,7 @@ button:hover{
   left: 50%;
   transform: translateX(-50%);
 } */
+
+.favicon-icon{
+  border-radius: 50%;
+}
