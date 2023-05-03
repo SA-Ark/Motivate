@@ -56,7 +56,7 @@ function ParentGoals() {
       setG2(goals)
     }
     }, [dispatch, searchTerm, goals])
-    console.log(goals);
+
 
 
 

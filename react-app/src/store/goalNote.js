@@ -63,7 +63,7 @@ const actionEditNote = (note) => {
       },
       body: JSON.stringify({goal_id, note_body, note_state} ),
     });
-    console.log(res, "RES")
+
     if(res?.ok){
         const data = await res.json();
 
@@ -82,7 +82,7 @@ const actionEditNote = (note) => {
 
   export const thunkEditGoalNote = (noteData) => async (dispatch) => {
     const {goalId, noteBody, noteStyle} = noteData
-    console.log(goalId, noteBody,"THUNK")
+
     const goal_id = goalId
     const note_body = noteBody
     const note_style = noteStyle
@@ -97,7 +97,7 @@ const actionEditNote = (note) => {
 
     if(res?.ok){
         const data = await res.json();
-        console.log(data, "DATA THUNK")
+      
         dispatch(actionEditNote(data));
 
         return data

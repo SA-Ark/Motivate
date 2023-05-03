@@ -26,15 +26,14 @@ let minTime = localTime.add(10,"minutes").format('YYYY-MM-DDTHH:mm')
         due_date: goal?.due_date ? goal.due_date: "",
 
   });
-  console.log(goal, "GOAL")
-  console.log(formValues, "duedate")
+
 
 
 
   const handleInputChange = event => {
     const { name, value } = event.target;
     setFormValues({ ...formValues, [name]: value });
-    console.log(formValues,"fORM VALS")
+    
   };
   const formattedDate = moment(formValues?.due_date)?.tz(moment.tz.guess())?.format("YYYY-MM-DDTHH:mm");
   const handleSubmit = async (event) => {

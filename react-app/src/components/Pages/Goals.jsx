@@ -10,7 +10,7 @@ function Goals() {
   goals = goals?.filter((goal) => {
     return goal.recurring_goal === false
   })
-  console.log(goals, "goals")
+ 
   const dispatch = useDispatch()
   const searchTerm = useSelector(state => state.search?.searchTerm)?.toLowerCase()
   let [g2, setG2] = useState(goals)

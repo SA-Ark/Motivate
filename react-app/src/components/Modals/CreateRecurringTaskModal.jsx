@@ -68,7 +68,7 @@ let nextYearly = localTime.add(1,"years").format('YYYY-MM-DDTHH:mm')
       if (data?.errors) {
         setErrors(data?.errors);
       } else {
-        console.log(data);
+    
         history.push(`/tasks/${data.id}`);
         closeModal();
       }

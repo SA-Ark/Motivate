@@ -28,10 +28,10 @@ function FinishedSubtasks() {
        .then(() => {
 
         if (searchTerm) {
-          console.log("ST")
+
           setT2(tasks.filter((task) => task.name.toLowerCase().includes(searchTerm) || task.description.toLowerCase().includes(searchTerm)))
         } else {
-          console.log("else")
+
           setT2(tasks)
         }
       })
@@ -41,8 +41,7 @@ function FinishedSubtasks() {
     history.push(`/tasks/${taskId}`)
   }
 
-  console.log(tasks?.length, "tl", t2?.length)
-  console.log(tasks?.filter(task=>task.finished_on!== null))
+
   return (
     <div className="all-goals-page">
       <div className="create-goal-button">

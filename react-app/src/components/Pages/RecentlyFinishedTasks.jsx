@@ -29,13 +29,13 @@ function RecentlyFinishedTasks() {
     || (goal?.name === "weeklyGoal" && milliseconds < 604800000 && milliseconds > 0)
     || (goal?.name === "monthlyGoal" && milliseconds < 2629746000 && milliseconds > 0)
     || (goal?.name === "yearlyGoal" && milliseconds < 31556952000 && milliseconds > 0) ){
-      console.log(goal.name, milliseconds)
+   
 
       return task
     }
 })
 
-  
+
 
 
 

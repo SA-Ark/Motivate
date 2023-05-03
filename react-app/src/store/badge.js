@@ -31,7 +31,7 @@ export const thunkGetAllBadges = () => async (dispatch) => {
   if (res.ok) {
     const badges = await res.json();
     dispatch(actionSetBadges(badges));
-    console.log(badges, "BADGES")
+    
     return badges
   }else if (res?.status <500){
     const data = await res.json()

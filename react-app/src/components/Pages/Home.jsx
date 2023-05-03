@@ -41,7 +41,7 @@ function Home(){
         dispatch(thunkFetchAllGoals())
     }, [dispatch])
 
-    console.log(dailyGoal?.id, weeklyGoal?.id, monthlyGoal?.id, yearlyGoal?.id)
+
     useEffect(() => {
         // Wait for goals to be fetched before dispatching task thunks
         if (goals?.length > 0) {
@@ -60,7 +60,7 @@ function Home(){
         } else {
             setTasks(allTasks)
         }
-        console.log(tasks, "tasks, useEffect")
+       
     }, [searchTerm])
 
 
