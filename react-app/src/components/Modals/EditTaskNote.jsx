@@ -63,8 +63,7 @@ const EditTaskNoteModal = ({ taskId }) => {
   const plainText = contentState.getPlainText();
   const rawState = JSON.stringify(convertToRaw(contentState));
   setNoteBody(plainText);
-  console.log(plainText, "plaintext")
-  console.log(rawState, "raw")
+ 
     const noteData = {
        noteBody: plainText,
        noteStyle: rawState,

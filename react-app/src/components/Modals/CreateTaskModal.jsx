@@ -79,7 +79,7 @@ let minTime = localTime.add(10,"minutes").format('YYYY-MM-DDTHH:mm')
       if (data?.errors) {
         setErrors(data?.errors);
       } else {
-        console.log(data);
+        
         history.push(`/tasks/${data.id}`);
         closeModal();
       }

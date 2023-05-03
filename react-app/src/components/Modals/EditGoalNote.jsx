@@ -46,7 +46,7 @@ const EditGoalNoteModal = ({ goalId }) => {
 
 
 
-  console.log(stateNote, "statenote")
+
 
 
 
@@ -69,8 +69,7 @@ const EditGoalNoteModal = ({ goalId }) => {
   const plainText = contentState.getPlainText();
   const rawState = JSON.stringify(convertToRaw(contentState));
   setNoteBody(plainText);
-  console.log(plainText, "plaintext")
-  console.log(rawState, "raw")
+
     const noteData = {
        noteBody: plainText,
        noteStyle: rawState,
@@ -101,7 +100,7 @@ const EditGoalNoteModal = ({ goalId }) => {
           editorState={editorState}
           onEditorStateChange={setEditorState}
           noteState={stateNote?.note_style}
-         
+
         />
 
       </div>

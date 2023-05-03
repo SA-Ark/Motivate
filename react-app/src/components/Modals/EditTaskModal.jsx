@@ -33,7 +33,7 @@ const EditTaskModal = ({ id }) => {
   const handleInputChange = event => {
     const { name, value } = event.target;
     setFormValues({ ...formValues, [name]: value });
-    console.log(formValues,"fORM VALS")
+  
   };
   const formattedDate = moment(formValues?.due_date)?.tz(moment.tz.guess())?.format("YYYY-MM-DDTHH:mm");
   const handleSubmit = async (event) => {

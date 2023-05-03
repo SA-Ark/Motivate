@@ -44,7 +44,7 @@ let minTime = localTime.add(10,"minutes").format('YYYY-MM-DDTHH:mm')
       setErrors(data?.errors);
       history.push("/allgoals")
     } else {
-      console.log(data, "Data")
+     
       history.push(`/goals/${data.id}`)
       closeModal();
     }

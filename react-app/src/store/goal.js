@@ -80,7 +80,7 @@ export const thunkFetchAllGoals = () => async (dispatch) => {
 
     const {name, description, difficulty, importance,
     tags, due_date, parent_goal_id, recurring_goal} = goalData
-    console.log(due_date, "dd thunk")
+
 
     const res = await fetch('/api/goals/', {
       method: 'POST',
@@ -138,7 +138,7 @@ export const thunkFetchAllGoals = () => async (dispatch) => {
 
 
   export const thunkEditGoal = (id, goalData) => async (dispatch) => {
-    console.log(id, goalData, "DATA IN THUNK")
+
     const res = await fetch(`/api/goals/${id}`, {
       method: 'PUT',
       headers: {
@@ -173,7 +173,7 @@ export const thunkFetchAllGoals = () => async (dispatch) => {
       },
       body: "none",
     });
-    console.log("HI")
+
     if(res?.ok){
         const data = await res.json();
         dispatch(actionEditGoal(data));
@@ -252,7 +252,7 @@ const goalReducer = (state = initialState, action) => {
 
         case DELETE_GOAL:
             const newGoals = { ...state };
-            console.log(newGoals, "NEW GOALS")
+           
             delete newGoals.goals[action.goalId];
             return {
                 ...newGoals,

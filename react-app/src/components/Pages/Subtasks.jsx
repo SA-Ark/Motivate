@@ -39,10 +39,10 @@ function SubTasks() {
     }).then(() => {
 
       if (searchTerm) {
-        console.log("ST")
+
         setT2(tasks.filter((task) => task.name.toLowerCase().includes(searchTerm) || task.description.toLowerCase().includes(searchTerm)))
       } else {
-        console.log("else")
+     
         setT2(tasks)
       }
     })

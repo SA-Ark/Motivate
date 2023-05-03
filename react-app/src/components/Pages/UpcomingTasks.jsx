@@ -69,7 +69,7 @@ function UpcomingTasks() {
   const backToHome = () => {
     history.push(`/home`)
   }
-console.log(tasks?.length, "tasks", t2?.length)
+
 
   return (
     <div className="all-goals-page">

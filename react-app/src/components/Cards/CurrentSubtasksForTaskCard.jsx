@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 
 function CurrentSubtasksForTaskCard({ tasks, taskId }) {
   const history = useHistory();
-  console.log(taskId, 'TID')
+ 
   const onClick = (task) => {
 
 

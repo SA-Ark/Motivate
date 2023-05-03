@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 
 function CurrentTasksForGoalCard({ tasks }) {
 
-  console.log(tasks, "tasks")
+
   const history = useHistory();
 
   const onClick = (task) => {

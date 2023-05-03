@@ -57,7 +57,7 @@ let minTime = localTime.add(10,"minutes").format('YYYY-MM-DDTHH:mm')
     }else{
       vals = { ...formValues, due_date: ""}
     }
-    console.log(vals, "v")
+   
     const data = await dispatch(thunkCreateGoal(vals));
     if (data?.errors) {
       setErrors(data?.errors);
