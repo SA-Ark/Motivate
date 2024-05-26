@@ -5,3 +5,7 @@ __pycache__/
 .DS_Store
 .vscode/
 dev.db
+app.db
+instance/
+motivateenv/
+
